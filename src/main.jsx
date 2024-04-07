@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import SignUp from './pages/SignUp/SignUp.jsx';
 import SignIn from './pages/SignIn/SignIn.jsx';
+import RestaurantDetalis from './pages/Restaurant/RestaurantDetalis.jsx';
+import Review from './pages/Restaurant/Review.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: 'sign-in',
     element: <SignIn />
+  },
+  {
+    path: 'Restaurant',
+    element: <RestaurantDetalis/>
+  },
+  {
+    path: 'FoodReview',
+    element: <Review/>
   }
 ]);
 
