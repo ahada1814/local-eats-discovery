@@ -2,7 +2,7 @@ import { Field, Formik } from "formik";
 import { GrGoogle } from "react-icons/gr";
 import { IoClose } from "react-icons/io5";
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const valueViewer = (val) => {
     console.log(val);
   };
@@ -75,4 +75,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
