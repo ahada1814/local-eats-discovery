@@ -1,9 +1,14 @@
 import "./App.css";
+import { Outlet } from "react-router-dom";
+
 
 function App() {
+  
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello Niggas</h1>
+      <h5 className="flex justify-center items-center uppercase text-red-600 text-5xl">This is  the HOME PAGE </h5>
+      <Outlet> </Outlet>
+      
     </>
   );
 }

@@ -10,27 +10,44 @@ import SignUp from './pages/SignUp/SignUp.jsx';
 import SignIn from './pages/SignIn/SignIn.jsx';
 import RestaurantDetalis from './pages/Restaurant/RestaurantDetalis.jsx';
 import Review from './pages/Restaurant/Review.jsx';
-
+import RestProfile from './pages/RestOwnerDashboard/RestProfile.jsx';
+import AddItems from './pages/RestOwnerDashboard/AddItems.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    children: [
+      {
+        path: '/sign-up',
+        element: <SignUp />
+      },
+      {
+        path: '/sign-in',
+        element: <SignIn />
+      },
+      {
+        path: '/Restaurant',
+        element: <RestaurantDetalis/>
+      },
+      {
+        path: '/FoodReview',
+        element: <Review/>
+      },
+      {
+        path: '/RestProfile',
+        element: <RestProfile/>
+      }
+    ]
   },
   {
-    path: '/sign-up',
-    element: <SignUp />
-  },
-  {
-    path: 'sign-in',
-    element: <SignIn />
-  },
-  {
-    path: 'Restaurant',
-    element: <RestaurantDetalis/>
-  },
-  {
-    path: 'FoodReview',
-    element: <Review/>
+    path: "/rest-profile", 
+    element: <RestProfile />,
+    children: [
+      {
+        path: '/rest-profile/AddItems',
+        element: <AddItems/>
+      },
+    ]
   }
 ]);
 
