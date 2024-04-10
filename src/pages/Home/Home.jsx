@@ -7,7 +7,7 @@ export const Home = () => {
     <>
       <div className="coverImg">
         <div className="flex gap-2 justify-end pt-6 pr-10">
-          <button className="bg-white w-28 py-3 px-[2px] text-[#3D83D9] rounded-2xl font-bold">
+          <button className="bg-white hover:bg-[#3D83D9] hover:text-white hover:scale-95 hover:trans w-28 py-3 px-[2px] text-[#3D83D9] rounded-2xl font-bold">
             Sign Up
           </button>
           <button className="bg-[#3D83D9] w-28 py-3 px-[2px] text-white rounded-2xl font-bold">
@@ -22,13 +22,13 @@ export const Home = () => {
         </h1>
         <div className="flex gap-2 items-center justify-center mt-8">
           <input
-            className="p-4 w-96 rounded-lg shadow-lg text-black"
+            className="p-4 w-96 rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
             type="search"
             placeholder="Search Nearby Restaurant"
           />
-          <div className="bg-[#3D83D9] p-1 w-14 rounded-lg">
+          <button className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 p-1 w-14 rounded-lg">
             <img className="rounded-lg" width={1080} height={720} src={searchIcon} alt="" />
-          </div>
+          </button>
         </div>
       </div>
     </>
