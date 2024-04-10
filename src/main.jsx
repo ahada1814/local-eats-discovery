@@ -12,11 +12,16 @@ import RestaurantDetalis from './pages/Restaurant/RestaurantDetalis.jsx';
 import Review from './pages/Restaurant/Review.jsx';
 import RestProfile from './pages/RestOwnerDashboard/RestProfile.jsx';
 import AddItems from './pages/RestOwnerDashboard/AddItems.jsx';
+import { Home } from './pages/Home/Home.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: '/',
+        element: <Home />
+      },
       {
         path: '/sign-up',
         element: <SignUp />
