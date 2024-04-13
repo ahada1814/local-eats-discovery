@@ -5,7 +5,8 @@ import {
   onAuthStateChanged,
   updateProfile,
   signOut,
-  // GoogleAuthProvider,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
@@ -16,19 +17,18 @@ const auth = getAuth(app);
 const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
-  // const provider = new GoogleAuthProvider();
+  const provider = new GoogleAuthProvider();
 
+  // observer == it helps to give the current situation of user auth
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const uid = user.id;
-
-        console.log(user, uid);
+        const uid = user.uid;
+        console.log(uid);
       } else {
         console.log("User is logged out");
       }
     });
-
     setLoading(false);
     return () => {
       return unsubscribe();
@@ -62,20 +62,33 @@ const AuthProviders = ({ children }) => {
   };
 
   // Email Login
-  const loginWithEmail = (email, password) => {
+  const loginWithEmail = async (email, password) => {
     setLoading(true);
 
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      setLoading(false);
+      console.log(user);
+      return user;
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setLoading(false);
+      console.error(errorCode, errorMessage);
+    }
   };
+
+  // google pop up login
+
+  const googleLogin = () => {
+   return signInWithPopup(auth, provider)
+  }
+
 
   const logOut = () => {
     setLoading(true);
@@ -87,6 +100,7 @@ const AuthProviders = ({ children }) => {
     createUserWithEmail,
     loginWithEmail,
     logOut,
+    googleLogin
   };
 
   return (

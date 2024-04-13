@@ -1,8 +1,40 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SignInForm from "./SignInForm";
 import bgImage from "/src/assets/background.png";
+import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
+import { useContext } from "react";
 
 const SignIn = () => {
+  const { loginWithEmail, googleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handledUserCreation = async (values, { setSubmitting }) => {
+    try {
+      const loginResponse = await loginWithEmail(values.email, values.password);
+      if (loginResponse) {
+        setSubmitting(false);
+        navigate("/");
+      } else {
+        console.log("Login Failed");
+      }
+    } catch (error) {
+      console.log(error.message, error.code);
+      setSubmitting(false);
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((userCredential) => {
+        console.log("Login successful", userCredential);
+        navigate('/')
+      
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
+  };
+
   return (
     <div
       style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}
@@ -23,7 +55,10 @@ const SignIn = () => {
           <button>Sign In</button>
         </Link>
       </div>
-      <SignInForm />
+      <SignInForm
+        handledUserCreation={handledUserCreation}
+        handleGoogleLogin={handleGoogleLogin}
+      />
     </div>
   );
 };

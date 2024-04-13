@@ -6,14 +6,22 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { createUserWithEmail } = useContext(AuthContext);
+  const { createUserWithEmail, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
     try {
-      await createUserWithEmail(values.email, values.password, values.userName);
-      setSubmitting(false);
-      navigate("/");
+      const userCreateResponse = await createUserWithEmail(
+        values.email,
+        values.password,
+        values.userName
+      );
+      if (userCreateResponse) {
+        setSubmitting(false);
+        navigate("/");
+      } else {
+        console.log("Failed to create a User");
+      }
     } catch (error) {
       // TODO: A TOAST SAYING A ALERT
       if (error.code === "auth/email-already-in-use") {
@@ -23,9 +31,22 @@ const SignUp = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((userCredential) => {
+        console.log("Login successful", userCredential);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
+  };
+
   return (
-    <div style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}
-         className="bg-no-repeat bg-cover">
+    <div
+      style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}
+      className="bg-no-repeat bg-cover"
+    >
       <div className="flex gap-2 justify-end pt-6 pr-10">
         <Link
           to="/sign-up"
@@ -40,7 +61,10 @@ const SignUp = () => {
           <button>Sign In</button>
         </Link>
       </div>
-      <SignUpForm handledUserCreation={handledUserCreation} />
+      <SignUpForm
+        handledUserCreation={handledUserCreation}
+        handleGoogleLogin={handleGoogleLogin}
+      />
     </div>
   );
 };
