@@ -2,20 +2,12 @@ import { Field, Formik } from "formik";
 import { GrGoogle } from "react-icons/gr";
 import { IoClose } from "react-icons/io5";
 
-const SignUpForm = () => {
-  const valueViewer = (val) => {
-    console.log(val);
-  };
+const SignUpForm = ({handledUserCreation}) => {
 
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          valueViewer(values);
-          setSubmitting(false);
-        }, 400);
-      }}
+      initialValues={{ userName: "", email: "", password: "" }}
+      onSubmit={handledUserCreation}
     >
       {({ errors, touched, handleSubmit, isSubmitting }) => (
         <div className="flex items-center w-full justify-center font-roboto">
@@ -28,22 +20,20 @@ const SignUpForm = () => {
                     <IoClose size={28} />
                   </button>
                 </div>
-                <button className="border gap-3 flex items-center justify-center w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none">
+                <button className="border gap-3 flex items-center justify-center w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none hover:bg-gray-300 hover:text-[#3D83D9]">
                   <GrGoogle size={24} />
                   <h1 className="font-bold text-xl">Log in with Google</h1>
                 </button>
-                <button className="border gap-3 flex items-center justify-center w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none">
-                  <h1 className="font-bold text-xl">
-                    Register Using Email Address
-                  </h1>
-                </button>
+                <h1 className="font-bold mx-auto text-xl mt-4">
+                  Register Using Email Address
+                </h1>
               </div>
               <div className="mb-5 flex flex-col gap-3 items-start text-white">
-                <h1 className="font-bold text-xl">Email</h1>
+                <h1 className="font-bold text-xl">Name</h1>
                 <Field
                   className="border w-full border-gray-300 bg-transparent rounded-md py-4 px-4 focus:outline-none focus:border-white font-roboto"
-                  type="email"
-                  name="email"
+                  type="text"
+                  name="userName"
                   placeholder="Enter Your Full Name"
                 />
               </div>

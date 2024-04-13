@@ -18,7 +18,7 @@ const SignInForm = () => {
       }}
     >
       {({ errors, touched, handleSubmit, isSubmitting }) => (
-        <div className="flex items-center w-full justify-center">
+        <div className="flex items-center w-full justify-center font-roboto">
           <div className="bg-[#3D83D9] bg-opacity-70 p-8 w-3/12 rounded-md">
             <form onSubmit={handleSubmit} className="flex flex-col">
               <div className="mb-5 flex flex-col gap-3 items-start text-white">
