@@ -4,7 +4,7 @@ import randomResturant from "../../assets/bgg.jpg";
 const ResturantsCards = () => {
   return (
     <div className="flex justify-center items-center mt-5">
-    <div className="bg-white flex border-b-2 border-black w-4/12 h-36 justify-center p-4 gap-36 rounded-lg">
+    <div className="bg-white flex border-b-2 border-black w-[31%] h-36 justify-center p-4 gap-36 rounded-lg">
         <div className="flex flex-col gap-2 justify-center">
           <h1 className="font-bold">Barishal Gate Resturant</h1>
           <div className="flex gap-2">
