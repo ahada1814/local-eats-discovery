@@ -14,7 +14,7 @@ export const LogOut = ({logOut}) => {
         Log out
       </button>
       {
-        user.photoURL ? <img className="rounded-full w-14 border-4 border-white" width={1080} height={720} src={user?.photoURL} alt="" /> : <img src={profile} className="rounded-full w-14 border-4 border-white" width={1080} height={720} alt="demo"/>
+        user.photoURL ? <img className="rounded-full w-14 border-4 border-[#FFC153]" width={1080} height={720} src={user?.photoURL} alt="" /> : <img src={profile} className="rounded-full w-14 border-4 border-[#FFC153]" width={1080} height={720} alt="demo"/>
       }
     </div>
   );
