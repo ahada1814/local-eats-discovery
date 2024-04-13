@@ -17,7 +17,7 @@ const SignInForm = ({ handledUserCreation, handleGoogleLogin }) => {
         </div>
         <button
           onClick={handleGoogleLogin}
-          className="border gap-3 flex items-center text-white justify-center mb-5 w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none"
+          className="border gap-3 flex items-center text-white justify-center w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none hover:bg-white hover:text-[#3D83D9] mb-5 duration-200 hover:border-blue-600"
         >
           <GrGoogle size={24} />
           <h1 className="font-bold text-xl">Log in with Google</h1>
@@ -32,7 +32,7 @@ const SignInForm = ({ handledUserCreation, handleGoogleLogin }) => {
               <div className="">
                 <form onSubmit={handleSubmit} className="flex flex-col">
                   <div className="mb-5 flex flex-col gap-3 items-start text-white">
-                    <h1 className="font-bold text-xl">Email</h1>
+                    <h1 className="font-bold text-xl border-t w-full pt-4">Email</h1>
                     <Field
                       className="border w-full border-gray-300 bg-transparent rounded-md py-4 px-4 focus:outline-none focus:border-white"
                       type="email"

@@ -8,14 +8,14 @@ const SignUpForm = ({ handledUserCreation, handleGoogleLogin }) => {
     <div className="flex items-center w-full justify-center font-roboto">
       <div className="bg-[#3D83D9] bg-opacity-70 p-8 w-3/12 rounded-md">
         <div className="flex justify-between text-white items-center w-full mb-5">
-          <h1 className="font-bold text-2xl">Log in</h1>
+          <h1 className="font-bold text-2xl">Sign up</h1>
           <button className="border border-white w-10 flex justify-center items-center h-10 rounded-full">
             <IoClose size={28} />
           </button>
         </div>
         <button
           onClick={handleGoogleLogin}
-          className="border gap-3 flex items-center text-white justify-center w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none hover:bg-gray-300 hover:text-[#3D83D9]"
+          className="border gap-3 flex items-center text-white justify-center w-full border-gray-300 bg-transparent rounded-md py-3 px-4 focus:outline-none hover:bg-white hover:text-[#3D83D9] duration-200 hover:border-blue-600"
         >
           <GrGoogle size={24} />
           <h1 className="font-bold text-xl">Log in with Google</h1>
@@ -34,7 +34,7 @@ const SignUpForm = ({ handledUserCreation, handleGoogleLogin }) => {
                     </h1>
                   </div>
                   <div className="mb-5 flex flex-col gap-3 items-start text-white">
-                    <h1 className="font-bold text-xl">Name</h1>
+                    <h1 className="font-bold text-xl border-t w-full pt-4">Name</h1>
                     <Field
                       className="border w-full border-gray-300 bg-transparent rounded-md py-4 px-4 focus:outline-none focus:border-white font-roboto"
                       type="text"

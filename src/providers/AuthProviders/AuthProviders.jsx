@@ -16,6 +16,7 @@ const auth = getAuth(app);
 
 const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   const provider = new GoogleAuthProvider();
 
@@ -47,6 +48,7 @@ const AuthProviders = ({ children }) => {
       const user = userCredential.user;
       await updateProfile(user, { displayName });
       setLoading(false);
+      setUser(user);
       console.log(user);
       return user;
     } catch (error) {
@@ -73,6 +75,7 @@ const AuthProviders = ({ children }) => {
       );
       const user = userCredential.user;
       setLoading(false);
+      setUser(user);
       console.log(user);
       return user;
     } catch (error) {
@@ -85,22 +88,38 @@ const AuthProviders = ({ children }) => {
 
   // google pop up login
 
-  const googleLogin = () => {
-   return signInWithPopup(auth, provider)
-  }
+  const googleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user);
+      console.log(result.user);
+      return result; // Return the result
+    } catch (error) {
+      console.error("Google sign-in error:", error.message);
+      throw error; 
+    }
+  };
 
-
-  const logOut = () => {
+  const logOut = async () => {
     setLoading(true);
-    return signOut(auth);
+    return await signOut(auth)
+      .then(() => {
+        setUser(null);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Sign out error:", error.message);
+        setLoading(false);
+      });
   };
 
   const authInfo = {
     loading,
+    user,
     createUserWithEmail,
     loginWithEmail,
     logOut,
-    googleLogin
+    googleLogin,
   };
 
   return (

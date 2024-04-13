@@ -23,16 +23,14 @@ const SignIn = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then((userCredential) => {
-        console.log("Login successful", userCredential);
-        navigate('/')
-      
-      })
-      .catch((error) => {
-        console.error("Login failed:", error);
-      });
+  const handleGoogleLogin = async () => {
+    try {
+      const userCredential = await googleLogin(); // Await googleLogin() call
+      console.log("Login successful", userCredential);
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
