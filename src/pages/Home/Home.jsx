@@ -12,10 +12,12 @@ export const Home = () => {
   const { logOut, user } = useContext(AuthContext);
   const autocompleteRef = useRef(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  // console.log(user);
   console.log(selectedPlace);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA9Ju-w68zo9bdhaXi2q6YvBIjN3pnP1sk",
+    // googleMapsApiKey: "AIzaSyCqM7pt7ROIta-_EhHhpcNljsx_bfN3rD8",
     libraries: ["places"],
   });
 
