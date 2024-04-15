@@ -1,6 +1,18 @@
+/* .cvrImg {
+    background-image: linear-gradient(#cdcaca3d, #d3d3d356), url('../../assets/rawPage.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: screen;
+} */
+
 .cvrImg {
     background-image: linear-gradient(#cdcaca3d, #d3d3d356), url('../../assets/rawPage.png');
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh;
+    height: 100vh; /* Default height for large devices */
+
+    /* Media query for small devices */
+    @media only screen and (max-width: 767px) {
+        height: fit-content; /* Set height to screen height for small devices */
+    }
 }

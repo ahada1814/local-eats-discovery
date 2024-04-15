@@ -16,8 +16,7 @@ export const Home = () => {
   console.log(selectedPlace);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyA9Ju-w68zo9bdhaXi2q6YvBIjN3pnP1sk",
-    // googleMapsApiKey: "AIzaSyCqM7pt7ROIta-_EhHhpcNljsx_bfN3rD8",
+    googleMapsApiKey: `${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`,
     libraries: ["places"],
   });
 
@@ -65,9 +64,9 @@ export const Home = () => {
           )}
         </div>
         <figure className="flex justify-center mb-8 items-center mt-4">
-          <img className="w-96" src={logo} alt="" />
+          <img className="w-52 md:w-96" src={logo} alt="" />
         </figure>
-        <h1 className="font-roboto font-base text-center text-white text-5xl">
+        <h1 className="font-roboto font-base text-center text-white text-3xl md:text-5xl">
           Your Nearby Restaurant
         </h1>
         <div className="flex gap-4 items-center justify-center mt-8">
@@ -82,7 +81,7 @@ export const Home = () => {
               <input
                 type="text"
                 placeholder="Search Nearby Restaurant"
-                className="py-4 pl-8 w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+                className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
               />
             </Autocomplete>
           )}

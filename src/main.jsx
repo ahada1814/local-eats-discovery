@@ -11,6 +11,8 @@ import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import { Home } from "./pages/Home/Home.jsx";
 import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
+import ViewMenu from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
+import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,10 +39,6 @@ const router = createBrowserRouter([
         path: "/FoodReview",
         element: <Review />,
       },
-      {
-        path: "/RestProfile",
-        element: <RestProfile />,
-      },
     ],
   },
   {
@@ -51,6 +49,14 @@ const router = createBrowserRouter([
         path: "/rest-profile/AddItems",
         element: <AddItems />,
       },
+      {
+        path: "/rest-profile/view-menus",
+        element: <ViewMenu />,
+      },
+      {
+        path: '/rest-profile/edit-profile',
+        element: <EditProfile />
+      }
     ],
   },
 ]);
