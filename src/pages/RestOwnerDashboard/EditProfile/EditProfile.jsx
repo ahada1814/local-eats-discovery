@@ -1,9 +1,13 @@
 import { Formik, Form, Field } from "formik";
 import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
+import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 
 export const EditProfile = () => {
   const [isEditingEmail, setIsEditingEmail] = useState(false);
+
+  const {selectedPlace, test} = useAutocomplete()
+  console.log(selectedPlace, test);
 
   return (
     <Formik

@@ -1,42 +1,18 @@
 import logo from "/src/assets/logo 1.png";
 import searchIcon from "/src/assets/search.svg";
 import "./home.css";
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { Link } from "react-router-dom";
 import Location from "./Location";
 import { LogOut } from "../../components/LogOut/LogOut";
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
+import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
 
 export const Home = () => {
   const { logOut, user } = useContext(AuthContext);
-  const autocompleteRef = useRef(null);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  // console.log(user);
-  console.log(selectedPlace);
+  const {autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace} = useAutocomplete();
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: `${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`,
-    libraries: ["places"],
-  });
-
-  const handlePlaceSelect = () => {
-    if (autocompleteRef.current !== null) {
-      const place = autocompleteRef.current.getPlace();
-      console.log(place);
-      if (place.geometry && place.geometry.location) {
-        setSelectedPlace({
-          name: place.name,
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng(),
-        });
-      } else {
-        console.log("Selected place does not have geometry information.");
-      }
-    } else {
-      console.log("Autocomplete is not loaded yet!");
-    }
-  };
 
   return (
     <>
@@ -96,6 +72,7 @@ export const Home = () => {
           </button>
         </div>
         <Location />
+        <h1 className="font-bold text-orange-400 text-3xl">{selectedPlace?.latitude}</h1>
       </div>
     </>
   );
