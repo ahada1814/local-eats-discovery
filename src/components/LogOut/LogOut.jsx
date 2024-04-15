@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
-import profile from '../../assets/profileLogo.png'
+import profile from "../../assets/profileLogo.png";
 
-export const LogOut = ({logOut}) => {
-    const {user} = useContext(AuthContext)
-    console.log(user.photoURL);
+export const LogOut = ({ logOut }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="flex justify-center space-x-5 items-center">
       <button
@@ -13,9 +13,23 @@ export const LogOut = ({logOut}) => {
       >
         Log out
       </button>
-      {
-        user.photoURL ? <img className="rounded-full w-14 border-4 border-[#FFC153]" width={1080} height={720} src={user?.photoURL} alt="" /> : <img src={profile} className="rounded-full w-14 border-4 border-[#FFC153]" width={1080} height={720} alt="demo"/>
-      }
+      {user?.photoURL ? (
+        <img
+          className="rounded-full w-14 ring-4   ring-white"
+          width={1080}
+          height={720}
+          src={user?.photoURL}
+          alt=""
+        />
+      ) : (
+        <img
+          src={profile}
+          className="rounded-full w-14 ring-2 ring-white"
+          width={1080}
+          height={720}
+          alt="demo"
+        />
+      )}
     </div>
   );
 };

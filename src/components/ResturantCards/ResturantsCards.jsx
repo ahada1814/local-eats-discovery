@@ -1,29 +1,37 @@
 import { IoStar } from "react-icons/io5";
-import randomResturant from "../../assets/bgg.jpg";
+import { Link } from "react-router-dom";
 
-const ResturantsCards = () => {
+const ResturantsCards = ({ restaurant }) => {
   return (
-    <div className="flex justify-center items-center mt-5">
-    <div className="bg-white flex hover:scale-105 hover:bg-slate-100 duration-300 border-b-2 border-blue-500 w-[31%] h-36 justify-center p-4 gap-36 rounded-lg">
-        <div className="flex flex-col gap-2 justify-center">
-          <h1 className="font-bold">Barishal Gate Resturant</h1>
-          <div className="flex gap-2">
-            <h1 className="font-semibold">(5.0)</h1>
-            <p className="text-yellow-300 flex gap-2 items-center">
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-            </p>
-            <h1 className="font-semibold">(50)</h1>
+    <Link to={`/Restaurant/${restaurant._id}`}>
+      <div className="flex justify-center items-center mt-5">
+        <div className="bg-white flex border-b-2 hover:bg-slate-100 hover:scale-105 duration-300 border-black w-[30%] h-36 justify-center p-4 gap-40 rounded-lg">
+          <div className="flex flex-col gap-2 justify-center">
+            <h1 className="font-bold">{restaurant?.restaurant_name}</h1>
+            <div className="flex gap-2">
+              <h1 className="font-semibold">({restaurant?.ratings})</h1>
+              <p className="text-yellow-300 flex gap-2 items-center">
+                <IoStar />
+                <IoStar />
+                <IoStar />
+                <IoStar />
+                <IoStar />
+              </p>
+              <h1 className="font-semibold">(50)</h1>
+            </div>
+            <p className="text-sm font-semibold">{restaurant?.place_name}</p>
+            <p className="text-sm">{restaurant?.opening_time}</p>
           </div>
-          <p className="text-sm font-semibold">210, arafat house, Kali Bari Rd, Barishal</p>
-          <p className="text-sm">Open 10 AM to 10 PM</p>
+          <img
+            className="w-40 border rounded-md"
+            width={1080}
+            height={720}
+            src={restaurant?.image}
+            alt=""
+          />
         </div>
-        <img className="w-40 border rounded-md" width={1080} height={720} src={randomResturant} alt="" />
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -29,8 +29,9 @@ const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
-        path: "/Restaurant",
+        path: "/Restaurant/:id",
         element: <RestaurantDetalis />,
+        loader: ({params}) => fetch(`${import.meta.env.VITE_API_KEY}all-restaurants/${params.id}`)
       },
       {
         path: "/FoodReview",
