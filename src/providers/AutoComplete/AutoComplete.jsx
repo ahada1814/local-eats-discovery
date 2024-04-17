@@ -7,7 +7,8 @@ const AutocompleteProvider = ({ children }) => {
   const autocompleteRef = useRef(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
 
-  const handlePlaceSelect = () => {
+
+  const handlePlaceSelect = (selectedPlace) => {
     if (autocompleteRef.current !== null) {
       const place = autocompleteRef.current.getPlace();
       if (place.geometry && place.geometry.location) {
@@ -16,13 +17,15 @@ const AutocompleteProvider = ({ children }) => {
           latitude: place.geometry.location.lat(),
           longitude: place.geometry.location.lng(),
         });
+        console.log(selectedPlace);
+
       } else {
         console.log("Selected place does not have geometry information.");
       }
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
-  };
+  };  
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: `${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`,
