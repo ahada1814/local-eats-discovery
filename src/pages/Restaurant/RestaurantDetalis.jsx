@@ -10,7 +10,7 @@ const RestaurantDetalis = () => {
   
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_REACT_API}single-restaurants/${id}`)
+    fetch(`${import.meta.env.VITE_REACT_API}single-restaurant/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch restaurants");

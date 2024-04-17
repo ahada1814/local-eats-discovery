@@ -18,14 +18,13 @@ const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  console.log(user);
   console.log(currentLocation);
+
+  console.log(user);
 
   const provider = new GoogleAuthProvider();
 
-
-  // For Location 
-
+  // For Location
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -45,45 +44,8 @@ const AuthProviders = ({ children }) => {
   }, []);
 
 
+   // User created with email
 
-  // observer == it helps to give the current situation of user auth
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user)
-        const person = {
-          name: user.displayName,
-          email: user.email,
-          displayPhoto: user.photoURL,
-          uid: user.uid,
-        }
-        console.log(person);
-        fetch(`${import.meta.env.VITE_REACT_API}added-user`,{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(person)
-        })
-        .then(response => {
-            if(!response.ok){
-              console.log('Failed to add user')
-            } else {
-              console.log("user posted successfully");
-            }
-        })
-        .catch(error => console.error("Error adding user", error))
-      } else {
-        console.log("User is logged out");
-      }
-    });
-    setLoading(false);
-    return () => {
-      return unsubscribe();
-    };
-  }, []);
-
-  // User created with email
   const createUserWithEmail = async (email, password, displayName) => {
     setLoading(true);
     try {
@@ -94,10 +56,11 @@ const AuthProviders = ({ children }) => {
       );
       const user = userCredential.user;
       await updateProfile(user, { displayName });
+
       setLoading(false);
       setUser(user);
-      console.log(user);
       return user;
+
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -109,6 +72,9 @@ const AuthProviders = ({ children }) => {
       }
     }
   };
+
+
+ 
 
   // Email Login
   const loginWithEmail = async (email, password) => {
@@ -143,7 +109,7 @@ const AuthProviders = ({ children }) => {
       return result; // Return the result
     } catch (error) {
       console.error("Google sign-in error:", error.message);
-      throw error; 
+      throw error;
     }
   };
 
@@ -159,6 +125,49 @@ const AuthProviders = ({ children }) => {
         setLoading(false);
       });
   };
+  
+
+    // observer == it helps to give the current situation of user auth
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log(user.displayName);
+          setUser(user);
+          const person = {
+            name: user.displayName,
+            email: user.email,
+            displayPhoto: user.photoURL,
+            uid: user.uid,
+            phNumber: user.phoneNumber,
+            role: 'user'
+          };
+          console.log(person);
+          fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(person),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                console.log("Failed to add user");
+              } else {
+                console.log("user posted successfully");
+              }
+            })
+            .catch((error) => console.error("Error adding user", error));
+        } else {
+          console.log("User is logged out");
+        }
+      });
+      setLoading(false);
+      return () => {
+        return unsubscribe();
+      };
+    }, []);
+  
+
 
   const authInfo = {
     loading,
