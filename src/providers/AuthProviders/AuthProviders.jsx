@@ -18,9 +18,9 @@ setKey(`${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`);
 
 const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [user, setUser] = useState(null); // the user
+  const [currentLocation, setCurrentLocation] = useState(null); // getting the lat and lang
+  const [address, setAddress] = useState(null); // getting the address
   console.log(currentLocation, address);
 
   console.log(user);
@@ -33,12 +33,12 @@ const AuthProviders = ({ children }) => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+
           setCurrentLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
 
-          console.log(position.coords.latitude, position.coords.longitude);
           fromLatLng(position.coords.latitude, position.coords.longitude)
             .then((response) => {
               console.log(response);
@@ -49,6 +49,10 @@ const AuthProviders = ({ children }) => {
               console.error("Error fetching address:", error);
             });
         },
+
+      
+     
+
         (error) => {
           console.error("Error getting geolocation:", error);
         }
