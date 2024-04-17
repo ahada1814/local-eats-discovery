@@ -3,7 +3,6 @@ import ResturantsCards from "../../components/ResturantCards/ResturantsCards";
 
 const Location = () => {
   const [restaurants, setRestaurants] = useState([]);
-  console.log(restaurants);
 
   useEffect(() => {
     // Fetch restaurant data from your API

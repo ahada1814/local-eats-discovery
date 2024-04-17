@@ -1,43 +1,18 @@
 import logo from "/src/assets/logo 1.png";
 import searchIcon from "/src/assets/search.svg";
 import "./home.css";
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { Link } from "react-router-dom";
 import Location from "./Location";
 import { LogOut } from "../../components/LogOut/LogOut";
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
+import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
 
 export const Home = () => {
   const { logOut, user } = useContext(AuthContext);
-  const autocompleteRef = useRef(null);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  // console.log(user);
-  console.log(selectedPlace);
+  const {autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace} = useAutocomplete();
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyA9Ju-w68zo9bdhaXi2q6YvBIjN3pnP1sk",
-    // googleMapsApiKey: "AIzaSyCqM7pt7ROIta-_EhHhpcNljsx_bfN3rD8",
-    libraries: ["places"],
-  });
-
-  const handlePlaceSelect = () => {
-    if (autocompleteRef.current !== null) {
-      const place = autocompleteRef.current.getPlace();
-      console.log(place);
-      if (place.geometry && place.geometry.location) {
-        setSelectedPlace({
-          name: place.name,
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng(),
-        });
-      } else {
-        console.log("Selected place does not have geometry information.");
-      }
-    } else {
-      console.log("Autocomplete is not loaded yet!");
-    }
-  };
 
   return (
     <>
@@ -65,9 +40,9 @@ export const Home = () => {
           )}
         </div>
         <figure className="flex justify-center mb-8 items-center mt-4">
-          <img className="w-96" src={logo} alt="" />
+          <img className="w-52 md:w-96" src={logo} alt="" />
         </figure>
-        <h1 className="font-roboto font-base text-center text-white text-5xl">
+        <h1 className="font-roboto font-base text-center text-white text-3xl md:text-5xl">
           Your Nearby Restaurant
         </h1>
         <div className="flex gap-4 items-center justify-center mt-8">
@@ -82,7 +57,11 @@ export const Home = () => {
               <input
                 type="text"
                 placeholder="Search Nearby Restaurant"
+<<<<<<< HEAD
                 className="py-4 pl-8 w-[500px] rounded-lg shadow-lg focus:outline-blue-500 focus:outline-offset-1 text-black"
+=======
+                className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+>>>>>>> 3ec6547e4c27b45baf6d9b8e911d508de09aa323
               />
             </Autocomplete>
           )}
@@ -97,6 +76,7 @@ export const Home = () => {
           </button>
         </div>
         <Location />
+        <h1 className="font-bold text-orange-400 text-3xl">{selectedPlace?.latitude}</h1>
       </div>
     </>
   );

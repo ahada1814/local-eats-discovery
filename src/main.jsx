@@ -11,6 +11,9 @@ import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import { Home } from "./pages/Home/Home.jsx";
 import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
+import ViewMenu from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
+import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
+import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,15 +34,12 @@ const router = createBrowserRouter([
       {
         path: "/Restaurant/:id",
         element: <RestaurantDetalis />,
-        loader: ({params}) => fetch(`${import.meta.env.VITE_API_KEY}all-restaurants/${params.id}`)
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_KEY}all-restaurants/${params.id}`),
       },
       {
         path: "/FoodReview",
         element: <Review />,
-      },
-      {
-        path: "/RestProfile",
-        element: <RestProfile />,
       },
     ],
   },
@@ -51,14 +51,24 @@ const router = createBrowserRouter([
         path: "/rest-profile/AddItems",
         element: <AddItems />,
       },
+      {
+        path: "/rest-profile/view-menus",
+        element: <ViewMenu />,
+      },
+      {
+        path: "/rest-profile/edit-profile",
+        element: <EditProfile />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AuthProviders>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
-  </AuthProviders>
+  <AutocompleteProvider>
+    <AuthProviders>
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    </AuthProviders>
+  </AutocompleteProvider>
 );
