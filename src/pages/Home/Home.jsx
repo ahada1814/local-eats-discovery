@@ -11,8 +11,8 @@ import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
 
 export const Home = () => {
   const { logOut, user } = useContext(AuthContext);
-  const {autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace} = useAutocomplete();
-
+  const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
+    useAutocomplete();
 
   return (
     <>
@@ -46,7 +46,7 @@ export const Home = () => {
           Your Nearby Restaurant
         </h1>
         <div className="flex gap-4 items-center justify-center mt-8">
-          {isLoaded && (
+          {isLoaded ? (
             <Autocomplete
               onLoad={(autocomplete) =>
                 (autocompleteRef.current = autocomplete)
@@ -60,6 +60,12 @@ export const Home = () => {
                 className="py-4 pl-8 w-[500px] rounded-lg shadow-lg focus:outline-blue-500 focus:outline-offset-1 text-black"
               />
             </Autocomplete>
+          ) : (
+            <input
+              type="text"
+              placeholder="Search Nearby Restaurant"
+              className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+            />
           )}
           <button className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg">
             <img
@@ -72,7 +78,9 @@ export const Home = () => {
           </button>
         </div>
         <Location />
-        <h1 className="font-bold text-orange-400 text-3xl">{selectedPlace?.latitude}</h1>
+        <h1 className="font-bold text-orange-400 text-3xl">
+          {selectedPlace?.latitude}
+        </h1>
       </div>
     </>
   );
