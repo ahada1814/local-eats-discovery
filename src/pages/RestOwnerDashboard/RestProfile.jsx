@@ -10,7 +10,7 @@ const RestProfile = () => {
     <>
       <div className="bg-slate-200 h-fit">
         <BannerSecrion />
-        <div className="flex">
+        <div className="flex ">
           <Drawer />
           <Outlet />
         </div>

@@ -14,6 +14,7 @@ import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
 import ViewMenu from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
 import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
+import Message from "./pages/Message/Message.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/rest-profile/edit-profile",
         element: <EditProfile />,
+      },
+      {
+        path: "/rest-profile/message",
+        element: <Message />,
       },
     ],
   },
