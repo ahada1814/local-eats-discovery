@@ -10,21 +10,25 @@ import {
 } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
+import { fromLatLng, setKey, } from 'react-geocode';
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
+setKey(`${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`);
 
 const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  console.log(currentLocation);
+  const [address, setAddress] = useState(null);
+  console.log(currentLocation, address);
 
   console.log(user);
 
   const provider = new GoogleAuthProvider();
 
   // For Location
+
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -33,6 +37,17 @@ const AuthProviders = ({ children }) => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
+
+          console.log(position.coords.latitude, position.coords.longitude);
+          fromLatLng(position.coords.latitude, position.coords.longitude)
+            .then((response) => {
+              console.log(response);
+              const address = response.results[0].formatted_address;
+              setAddress(address);
+            })
+            .catch((error) => {
+              console.error("Error fetching address:", error);
+            });
         },
         (error) => {
           console.error("Error getting geolocation:", error);
@@ -42,6 +57,25 @@ const AuthProviders = ({ children }) => {
       console.log("Geolocation is not supported");
     }
   }, []);
+
+  // useEffect(() => {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setCurrentLocation({
+  //           latitude: position.coords.latitude,
+  //           longitude: position.coords.longitude,
+  //         });
+  //       },
+        
+  //       (error) => {
+  //         console.error("Error getting geolocation:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.log("Geolocation is not supported");
+  //   }
+  // }, []);
 
 
    // User created with email
