@@ -57,11 +57,7 @@ export const Home = () => {
               <input
                 type="text"
                 placeholder="Search Nearby Restaurant"
-<<<<<<< HEAD
                 className="py-4 pl-8 w-[500px] rounded-lg shadow-lg focus:outline-blue-500 focus:outline-offset-1 text-black"
-=======
-                className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
->>>>>>> 3ec6547e4c27b45baf6d9b8e911d508de09aa323
               />
             </Autocomplete>
           )}
