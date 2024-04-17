@@ -1,6 +1,6 @@
 const AddItems = () => {
   return (
-    <div className="flex flex-col items-start justify-start gap-3 w-[60%] ps-20 pt-8">
+    <div className="flex flex-col items-start justify-start gap-3 w-[60%] ps-20 pt-8 h-screen">
       <h5 className="text-3xl font-bold">Add Menu</h5>
       <div className="bg-white w-full p-4 rounded-md">
         <span className="text-xs">Menu name</span>
