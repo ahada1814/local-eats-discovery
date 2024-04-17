@@ -8,7 +8,7 @@ const RestProfile = () => {
 
   return (
     <>
-      <div className="bg-slate-200 h-fit">
+      <div className="bg-slate-200 min-h-screen">
         <BannerSecrion />
         <div className="flex ">
           <Drawer />

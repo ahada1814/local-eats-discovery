@@ -10,11 +10,13 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
+    console.log(values);
     try {
       const userCreateResponse = await createUserWithEmail(
         values.email,
         values.password,
-        values.userName
+        values.userName,
+        values.number
       );
       if (userCreateResponse) {
         setSubmitting(false);
