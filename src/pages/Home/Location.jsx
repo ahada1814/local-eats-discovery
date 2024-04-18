@@ -6,8 +6,8 @@ const Location = () => {
 
   useEffect(() => {
     // Fetch restaurant data from your API
-    // fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`)
-    fetch(`https://local-eats-discovery-server.vercel.app/all-restaurants`)
+    fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`)
+    // fetch(`https://local-eats-discovery-server.vercel.app/all-restaurants`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch restaurants");
