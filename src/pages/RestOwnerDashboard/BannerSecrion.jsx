@@ -2,6 +2,8 @@ import "./profile.css";
 import person from "../../assets/woner.png";
 import { useRef, useState } from "react";
 import { IoCameraOutline } from "react-icons/io5";
+import { GoArrowLeft } from "react-icons/go";
+import { Link } from "react-router-dom";
 
 const BannerSecrion = () => {
   const [selectedImage, setSelectedImage] = useState();
@@ -23,7 +25,8 @@ const BannerSecrion = () => {
   };
 
   return (
-    <div className="coverImg text-white flex relative md:static justify-start  items-end ">
+    <div className="coverImg text-white flex relative justify-start  items-end ">
+    <Link to='/' className="absolute top-4 hidden md:block left-4 hover:bg-slate-400 hover:text-black hover:scale-05 rounded-full p-2"><GoArrowLeft size={30} /></Link>
       <div className="bg-[#ffffffa5] w-full flex justify-start items-center gap-5 ps-8 absolute">
         <div className="flex flex-col-reverse gap">
           <input

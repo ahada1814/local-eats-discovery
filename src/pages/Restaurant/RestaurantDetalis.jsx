@@ -1,13 +1,13 @@
 import CommonAddress from "./CommonAddress";
 import CommonBannar from "./CommonBannar";
 import food from "../../assets/trending image 1.png";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import logo from "../../assets/logo 1.png";
 
 const RestaurantDetalis = () => {
   const { id } = useParams();
   const [restaurants, setRestaurants] = useState();
-  
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_REACT_API}single-restaurant/${id}`)
@@ -27,7 +27,10 @@ const RestaurantDetalis = () => {
   }, []);
 
   return (
-    <div className="bgImg flex justify-center items-center">
+    <div className="bgImg flex justify-center relative items-center">
+      <Link to="/">
+          <img src={logo} className="text-white w-40 hover:scale-90 duration-200 absolute top-4 left-4" />
+      </Link>
       <div className="bg-[#F5F5F5] w-[65%] h-[82%]  mx-auto  rounded-lg py-10">
         <div>
           {/* banner section */}
