@@ -34,9 +34,12 @@ const AuthProviders = ({ children }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
 
+          const latitude = position.coords.latitude
+          const longitude = position.coords.longitude
+
           setCurrentLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude,
+            longitude
           });
 
           fromLatLng(position.coords.latitude, position.coords.longitude)
@@ -44,14 +47,17 @@ const AuthProviders = ({ children }) => {
               console.log(response);
               const address = response.results[0].formatted_address;
               setAddress(address);
+
+              localStorage.setItem('locationData', JSON.stringify({
+                latitude,
+                longitude,
+                address
+              }));
             })
             .catch((error) => {
               console.error("Error fetching address:", error);
             });
         },
-
-      
-     
 
         (error) => {
           console.error("Error getting geolocation:", error);
@@ -62,28 +68,8 @@ const AuthProviders = ({ children }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         setCurrentLocation({
-  //           latitude: position.coords.latitude,
-  //           longitude: position.coords.longitude,
-  //         });
-  //       },
-        
-  //       (error) => {
-  //         console.error("Error getting geolocation:", error);
-  //       }
-  //     );
-  //   } else {
-  //     console.log("Geolocation is not supported");
-  //   }
-  // }, []);
-
 
    // User created with email
-
   const createUserWithEmail = async (email, password, displayName) => {
     setLoading(true);
     try {
@@ -94,6 +80,8 @@ const AuthProviders = ({ children }) => {
       );
       const user = userCredential.user;
       await updateProfile(user, { displayName });
+
+      localStorage.setItem('user', JSON.stringify(user));
 
       setLoading(false);
       setUser(user);
@@ -169,41 +157,53 @@ const AuthProviders = ({ children }) => {
     useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log(user.displayName);
           setUser(user);
-          const person = {
-            name: user.displayName,
-            email: user.email,
-            displayPhoto: user.photoURL,
-            uid: user.uid,
-            phNumber: user.phoneNumber,
-            role: 'user'
-          };
-          console.log(person);
-          fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(person),
-          })
-            .then((response) => {
-              if (!response.ok) {
-                console.log("Failed to add user");
-              } else {
-                console.log("user posted successfully");
-              }
+  
+          // Retrieve location data from localStorage
+          const locationData = JSON.parse(localStorage.getItem('locationData'));
+          if (locationData) {
+        
+            // Post user data along with location and address to the backend
+            const person = {
+              name: user.displayName,
+              email: user.email,
+              displayPhoto: user.photoURL,
+              uid: user.uid,
+              phNumber: user.phoneNumber,
+              role: 'user',
+              location: locationData
+            };
+
+            console.log(person);
+  
+            fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(person),
             })
-            .catch((error) => console.error("Error adding user", error));
+              .then((response) => {
+                if (!response.ok) {
+                  console.log("Failed to add user");
+                } else {
+                  console.log("User posted successfully");
+                }
+              })
+              .catch((error) => console.error("Error adding user", error));
+          } else {
+            console.log("Location data not found in localStorage");
+          }
         } else {
           console.log("User is logged out");
         }
       });
+  
       setLoading(false);
-      return () => {
-        return unsubscribe();
-      };
+  
+      return () => unsubscribe();
     }, []);
+  
   
 
 
