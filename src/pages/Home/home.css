@@ -9,7 +9,8 @@
     background-image: linear-gradient(#cdcaca3d, #d3d3d356), url('../../assets/rawPage.png');
     background-size: cover;
     background-repeat: no-repeat;
-    height: fit-content; /* Default height for large devices */
+    background-attachment: fixed;
+    height: 100vh; /* Default height for large devices */
 
     /* Media query for small devices */
     @media only screen and (max-width: 767px) {

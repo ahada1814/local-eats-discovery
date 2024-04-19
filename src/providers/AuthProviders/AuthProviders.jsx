@@ -11,6 +11,7 @@ import {
 import  {app}from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
+import { addUserToDatabase } from "../../hooks/api";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -20,21 +21,17 @@ const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(); // the user
   const [currentLocation, setCurrentLocation] = useState(null); // getting the lat and lang
-  const [address, setAddress] = useState(null); // getting the address
+  const [address, setAddress] = useState(); // getting the address
   const [role, setRole] = useState("");
 
   const [userData, setUserData] = useState('');
 
-  // console.log(role);
-
   // console.log(currentLocation, address);
 
-  // console.log(user);
 
   const provider = new GoogleAuthProvider();
 
   // For Location
-
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -148,7 +145,7 @@ const AuthProviders = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      // console.log(result.user);
+      console.log(result.user);
       return result; // Return the result
     } catch (error) {
       console.error("Google sign-in error:", error.message);
@@ -172,58 +169,20 @@ const AuthProviders = ({ children }) => {
   // observer == it helps to give the current situation of user auth
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-  
       if (currentUser) {
         setUser(currentUser);
-
-        // console.log(currentUser?.displayName);
-        // console.log(user?.displayName);
-        // Retrieve location data from localStorage
+        console.log(currentUser);
         const locationData = JSON.parse(localStorage.getItem("locationData"));
-
-        // console.log(userData);
-        if (locationData && currentUser.displayName) {
-          console.log(currentUser.displayName);
-          console.log(currentUser.userName);
-          console.log(userData);
-          const person = {
-            name: currentUser.userName || currentUser.displayName || userData,
-            email: currentUser.email,
-            displayPhoto: currentUser.photoURL,
-            uid: currentUser.uid,
-            phNumber: currentUser.phoneNumber,
-            role: role || "user",
-            location: locationData,
-          };
-          console.log(person);
-
-          fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(person),
-          })
-            .then((response) => {
-              if (!response.ok) {
-                console.log("Failed to add user");
-              } else {
-                console.log("User posted successfully");
-              }
-            })
-            .catch((error) => console.error("Error adding user", error));
-        } else {
-          console.log("Location data not found in localStorage and display name not found");
-        }
+        addUserToDatabase(currentUser, locationData, userData, role);
       } else {
         console.log("User is logged out");
       }
     });
-
+  
     setLoading(false);
-
+  
     return () => unsubscribe();
-  }, []);
+  }, [user, role, userData]);
   
 
   useEffect(() => {

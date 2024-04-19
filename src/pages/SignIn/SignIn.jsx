@@ -7,7 +7,10 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../Firebase/firebase.config";
 
 const SignIn = () => {
-  const { loginWithEmail, googleLogin,user } = useContext(AuthContext);
+  const { loginWithEmail, googleLogin, user } = useContext(AuthContext);
+
+  console.log(user);
+
   const navigate = useNavigate();
   console.log(user);
 
@@ -35,8 +38,7 @@ const SignIn = () => {
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await googleLogin(); // Await googleLogin() call
-      
-      
+      console.log(userCredential);
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
