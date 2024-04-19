@@ -17,7 +17,7 @@ const Location = ({selectedPlace, filteredRestaurants}) => {
       .then((data) => {
         
         setRestaurants(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching restaurants:", error);

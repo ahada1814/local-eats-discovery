@@ -5,7 +5,10 @@ import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { useContext } from "react";
 
 const SignIn = () => {
-  const { loginWithEmail, googleLogin } = useContext(AuthContext);
+  const { loginWithEmail, googleLogin, user } = useContext(AuthContext);
+
+  console.log(user);
+
   const navigate = useNavigate();
 
   const handledUserCreation = async (values, { setSubmitting }) => {
@@ -26,6 +29,7 @@ const SignIn = () => {
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await googleLogin(); // Await googleLogin() call
+      console.log(userCredential);
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);

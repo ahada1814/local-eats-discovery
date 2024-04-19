@@ -6,11 +6,6 @@ export const filterRestaurantsByDistance = (restaurants, selectLat, selectLong, 
     const filtered = restaurants.filter((restaurant) => {
       const { latitude, longitude } = restaurant.location;
 
-      // console.log(`Restaurant: ${restaurant.place_name}`);
-      // console.log(`Restaurant Lat: ${latitude}, Long: ${longitude}`);
-      // console.log(`Selected Lat: ${selectLat}, Long: ${selectLong}`);
-
-  
       const dLat = toRadians(latitude - selectLat);
       const dLon = toRadians(longitude - selectLong);
       const a =

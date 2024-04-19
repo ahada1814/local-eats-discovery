@@ -19,7 +19,7 @@ export const Home = () => {
 
     const [filteredRestaurants, setFilteredRestaurants] = useState([])
 
-  console.log(filteredRestaurants);
+  // console.log(filteredRestaurants);
 
   const fetchAndFilterRestaurants = async () => {
     try {

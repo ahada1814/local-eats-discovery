@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { createUserWithEmail, googleLogin, update } = useContext(AuthContext);
+  const { createUserWithEmail, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
