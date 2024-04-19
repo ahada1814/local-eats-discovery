@@ -26,8 +26,6 @@ const AuthProviders = ({ children }) => {
 
   const [userData, setUserData] = useState('');
 
-  console.log(user);
-
   // console.log(currentLocation, address);
 
 
