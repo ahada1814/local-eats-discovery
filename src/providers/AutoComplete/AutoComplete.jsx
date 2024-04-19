@@ -6,10 +6,12 @@ const AutocompleteContext = createContext();
 const AutocompleteProvider = ({ children }) => {
   const autocompleteRef = useRef(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [mapLoading, setMapLoading] = useState(false)
 
 
   const handlePlaceSelect = (selectedPlace) => {
     if (autocompleteRef.current !== null) {
+      setMapLoading(true)
       const place = autocompleteRef.current.getPlace();
       if (place.geometry && place.geometry.location) {
         setSelectedPlace({
@@ -19,6 +21,7 @@ const AutocompleteProvider = ({ children }) => {
         });
         console.log(selectedPlace);
 
+        setMapLoading(false)
       } else {
         console.log("Selected place does not have geometry information.");
       }
@@ -32,11 +35,10 @@ const AutocompleteProvider = ({ children }) => {
     libraries: ["places"],
   });
 
-  const test = 'ha kaj kore'
 
   return (
     <AutocompleteContext.Provider
-      value={{ autocompleteRef, selectedPlace, handlePlaceSelect, isLoaded, test }}
+      value={{ autocompleteRef, selectedPlace, handlePlaceSelect, isLoaded, mapLoading }}
     >
       {children}
     </AutocompleteContext.Provider>

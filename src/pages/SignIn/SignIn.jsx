@@ -9,7 +9,7 @@ import { db } from "../../Firebase/firebase.config";
 const SignIn = () => {
   const { loginWithEmail, googleLogin,user } = useContext(AuthContext);
   const navigate = useNavigate();
-  
+  console.log(user);
 
 
  
@@ -19,7 +19,9 @@ const SignIn = () => {
       if (loginResponse) {
         setSubmitting(false);
         
-        // await setDoc(doc(db,'users',user.uid))
+        await setDoc(doc(db,'users',user.uid),{
+          
+        })
         navigate("/");
       } else {
         console.log("Login Failed");

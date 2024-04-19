@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { createUserWithEmail, googleLogin } = useContext(AuthContext);
+  const { createUserWithEmail, googleLogin, update } = useContext(AuthContext);
   const navigate = useNavigate();
   
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
@@ -18,6 +18,15 @@ const SignUp = () => {
         values.userName,
         values.number
       );
+
+      // update(values.userName)
+      //   .then(() => {
+      //     console.log('kisu akta hoise');
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.message);
+      //   });
+
       if (userCreateResponse) {
         setSubmitting(false);
         navigate("/");

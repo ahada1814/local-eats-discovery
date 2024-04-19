@@ -1,6 +1,8 @@
 import BannerSecrion from "./BannerSecrion";
 import { Outlet, useLocation } from "react-router-dom";
 import Drawer from "../../components/Drawer/Drawer";
+import { EditProfile } from "./EditProfile/EditProfile";
+
 
 const RestProfile = () => {
   const location = useLocation();
@@ -12,7 +14,9 @@ const RestProfile = () => {
         <BannerSecrion />
         <div className="flex ">
           <Drawer />
-          <Outlet />
+          {
+            location.pathname == '/rest-profile' ? <EditProfile />  : <Outlet />
+          }
         </div>
       </div>
     </>
