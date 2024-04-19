@@ -11,39 +11,53 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
 import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
-
 export const Home = () => {
   const { logOut, user } = useContext(AuthContext);
-  const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace, mapLoading } =
-    useAutocomplete();
+  const {
+    autocompleteRef,
+    handlePlaceSelect,
+    isLoaded,
+    selectedPlace,
+    mapLoading,
+  } = useAutocomplete();
 
-    const [filteredRestaurants, setFilteredRestaurants] = useState([])
+
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   // console.log(filteredRestaurants);
 
   const fetchAndFilterRestaurants = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`);
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API}all-restaurants`
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch restaurants');
+        throw new Error("Failed to fetch restaurants");
       }
       const restaurants = await response.json();
-  
-      const filtered = filterRestaurantsByDistance(restaurants,selectedPlace.longitude, selectedPlace.latitude, 10);
-  
+
+      const filtered = filterRestaurantsByDistance(
+        restaurants,
+        selectedPlace.longitude,
+        selectedPlace.latitude,
+        10
+      );
+
       setFilteredRestaurants(filtered);
-  
     } catch (error) {
-      console.error('Error fetching and filtering restaurants:', error);
+      console.error("Error fetching and filtering restaurants:", error);
     }
   };
-
 
   return (
     <>
       <div className="cvrImg">
         <div className="flex gap-2 justify-end pt-6 pr-10">
-          {!user ? (
+          {user ? (
+            <>
+              <LogOut logOut={logOut} />
+            </>
+          ) : (
             <>
               <Link
                 to="/sign-up"
@@ -57,10 +71,6 @@ export const Home = () => {
               >
                 <button>Sign In</button>
               </Link>
-            </>
-          ) : (
-            <>
-              <LogOut logOut={logOut} />
             </>
           )}
         </div>
@@ -92,17 +102,17 @@ export const Home = () => {
               className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
             />
           )}
-          <button 
-          onClick={fetchAndFilterRestaurants}
-          className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg">
-            { !mapLoading ? (
+          <button
+            onClick={fetchAndFilterRestaurants}
+            className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg"
+          >
+            {!mapLoading ? (
               <img
                 className="rounded-lg"
                 width={1080}
                 height={720}
                 src={searchIcon}
                 alt=""
-                
               />
             ) : (
               <img
@@ -115,7 +125,10 @@ export const Home = () => {
             )}
           </button>
         </div>
-        <Location selectedPlace={selectedPlace} filteredRestaurants={filteredRestaurants} />
+        <Location
+          selectedPlace={selectedPlace}
+          filteredRestaurants={filteredRestaurants}
+        />
         <h1 className="font-bold text-orange-400 text-3xl">
           {selectedPlace?.latitude}
         </h1>

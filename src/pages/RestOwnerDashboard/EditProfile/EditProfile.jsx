@@ -1,26 +1,33 @@
 import { Formik, Form, Field } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 import { Autocomplete } from "@react-google-maps/api";
+import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
+
 
 export const EditProfile = () => {
   const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
     useAutocomplete();
-  console.log(selectedPlace);
+  // console.log(selectedPlace);
+
+  const {user, number} = useContext(AuthContext);
+  console.log(user);
+
+  
+  
 
   return (
     <>
       <Formik
         initialValues={{
-          fullName: "Devon Lane",
-          email: "info@loriumipsum.com",
-          password: "somethingIdontknow",
-          phoneNumber: "+00000000000000000",
+          fullName: user?.displayName,
+          email: user?.email,
+          password: "******",
+          phoneNumber: number,
           address: selectedPlace?.name || "",
-          // address: null,
         }}
         onSubmit={(values) => {
           console.log({
@@ -37,12 +44,12 @@ export const EditProfile = () => {
               <span className="text-xs">User Full Name</span>
               {isEditingEmail ? (
                 <Field
-                  className="text-xl font-semibold border-b-2 outline-none border-yellow-300 pb-1"
+                    className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
                   type="text"
                   name="fullName"
                 />
               ) : (
-                <h3 className="text-xl font-semibold">Devon Lane</h3>
+                <h3 className="text-xl font-semibold">{user?.displayName}</h3>
               )}
             </div>
           </div>
@@ -51,12 +58,12 @@ export const EditProfile = () => {
               <span className="text-xs">Email Address</span>
               {isEditingEmail ? (
                 <Field
-                  className="text-xl font-semibold border-b-2 outline-none border-yellow-300 pb-1"
+                    className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
                   type="email"
                   name="email"
                 />
               ) : (
-                <h3 className="text-xl font-semibold">info@loriumipsum.com</h3>
+                <h3 className="text-xl font-semibold">{user?.email}</h3>
               )}
             </div>
           </div>
@@ -65,12 +72,12 @@ export const EditProfile = () => {
               <span className="text-xs">Password</span>
               {isEditingEmail ? (
                 <Field
-                  className="text-xl font-semibold border-b-2 outline-none border-yellow-300 pb-1"
+                    className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
                   type="text"
                   name="password"
                 />
               ) : (
-                <h3 className="text-xl font-semibold">somethingIdontknow</h3>
+                <h3 className="text-xl font-semibold">*******</h3>
               )}
             </div>
           </div>
@@ -79,12 +86,12 @@ export const EditProfile = () => {
               <span className="text-xs">Phone Number</span>
               {isEditingEmail ? (
                 <Field
-                  className="text-xl font-semibold border-b-2 outline-none border-yellow-300 pb-1"
+                   className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
                   type="tel"
                   name="phoneNumber"
                 />
               ) : (
-                <h3 className="text-xl font-semibold">+00000000000000000</h3>
+                <h3 className="text-xl font-semibold">{number ? number: '12345'}</h3>
               )}
             </div>
           </div>
@@ -114,15 +121,15 @@ export const EditProfile = () => {
               <input
                 type="address"
                 name="address"
-                value={selectedPlace?.name}
-                className="focus:outline-none"
+                value={`${selectedPlace ? selectedPlace.name : 'Add your location'}`}
+                className="focus:outline-none font-semibold text-lg"
               />
             )}
           </div>
           <div className="flex space-x-4 justify-end border w-full mt-4">
             <button
               type="submit"
-              className="bg-black gap-2 px-6 py-2 text-white font-semibold rounded-md flex items-center"
+              className="bg-black hover:bg-opacity-80 hover:scale-95 duration-200 gap-2 px-6 py-2 text-white font-semibold rounded-md flex items-center"
               onClick={() => setIsEditingEmail(!isEditingEmail)}
             >
               Edit
@@ -130,7 +137,7 @@ export const EditProfile = () => {
             </button>
             <button
               type="submit"
-              className="bg-[#FFC153] px-6 py-2 text-white font-semibold rounded-md"
+              className="bg-[#FFC153] px-6 py-2 duration-200 text-white font-semibold hover:bg-opacity-80 hover:scale-95 rounded-md"
             >
               Update
             </button>

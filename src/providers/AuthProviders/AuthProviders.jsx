@@ -23,7 +23,7 @@ const AuthProviders = ({ children }) => {
   const [currentLocation, setCurrentLocation] = useState(null); // getting the lat and lang
   const [address, setAddress] = useState(); // getting the address
   const [role, setRole] = useState("");
-
+  const [number, setNumber] = useState();
   const [userData, setUserData] = useState('');
 
   // console.log(currentLocation, address);
@@ -49,7 +49,7 @@ const AuthProviders = ({ children }) => {
               // console.log(response);
               const address = response.results[0].formatted_address;
               setAddress(address);
-
+            
               localStorage.setItem(
                 "locationData",
                 JSON.stringify({
@@ -74,8 +74,9 @@ const AuthProviders = ({ children }) => {
   }, []);
 
   // User created with email
-  const createUserWithEmail = async (email, password, displayName) => {
+  const createUserWithEmail = async (email, password, displayName, number) => {
     setUserData(displayName);
+    setNumber(number)
     setLoading(true);
 
     // console.log(email, password, displayName, number, "recent");
@@ -83,7 +84,7 @@ const AuthProviders = ({ children }) => {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const user = userCredential.user;
       // await updateProfile(user, { displayName });
@@ -144,8 +145,8 @@ const AuthProviders = ({ children }) => {
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+      console.log(result.user, 'ki bal kam kore na?');
       setUser(result.user);
-      console.log(result.user);
       return result; // Return the result
     } catch (error) {
       console.error("Google sign-in error:", error.message);
@@ -217,7 +218,8 @@ const AuthProviders = ({ children }) => {
     currentLocation,
     address,
     userData,
-    update
+    update, 
+    number
   };
 
   return (

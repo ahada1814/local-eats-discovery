@@ -6,7 +6,7 @@ import { EditProfile } from "./EditProfile/EditProfile";
 
 const RestProfile = () => {
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
 
   return (
     <>
