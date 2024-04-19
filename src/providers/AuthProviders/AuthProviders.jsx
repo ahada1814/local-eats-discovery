@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
-import { fromLatLng, setKey, } from 'react-geocode';
+import { fromLatLng, setKey } from "react-geocode";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -21,9 +21,15 @@ const AuthProviders = ({ children }) => {
   const [user, setUser] = useState(null); // the user
   const [currentLocation, setCurrentLocation] = useState(null); // getting the lat and lang
   const [address, setAddress] = useState(null); // getting the address
-  console.log(currentLocation, address);
+  const [role, setRole] = useState("");
 
-  console.log(user);
+  const [userData, setUserData] = useState('');
+
+  // console.log(role);
+
+  // console.log(currentLocation, address);
+
+  // console.log(user);
 
   const provider = new GoogleAuthProvider();
 
@@ -33,26 +39,28 @@ const AuthProviders = ({ children }) => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-
-          const latitude = position.coords.latitude
-          const longitude = position.coords.longitude
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
 
           setCurrentLocation({
             latitude,
-            longitude
+            longitude,
           });
 
           fromLatLng(position.coords.latitude, position.coords.longitude)
             .then((response) => {
-              console.log(response);
+              // console.log(response);
               const address = response.results[0].formatted_address;
               setAddress(address);
 
-              localStorage.setItem('locationData', JSON.stringify({
-                latitude,
-                longitude,
-                address
-              }));
+              localStorage.setItem(
+                "locationData",
+                JSON.stringify({
+                  latitude,
+                  longitude,
+                  address,
+                })
+              );
             })
             .catch((error) => {
               console.error("Error fetching address:", error);
@@ -68,10 +76,12 @@ const AuthProviders = ({ children }) => {
     }
   }, []);
 
-
-   // User created with email
+  // User created with email
   const createUserWithEmail = async (email, password, displayName) => {
+    setUserData(displayName);
     setLoading(true);
+
+    // console.log(email, password, displayName, number, "recent");
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -79,14 +89,15 @@ const AuthProviders = ({ children }) => {
         password
       );
       const user = userCredential.user;
-      await updateProfile(user, { displayName });
+      // await updateProfile(user, { displayName });
+      await update(displayName)
 
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
 
       setLoading(false);
       setUser(user);
+      // console.log(user);
       return user;
-
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -99,8 +110,14 @@ const AuthProviders = ({ children }) => {
     }
   };
 
+  const update = async (userName) => {
+    setLoading(true);
+    setUserData(userName)
+    return await updateProfile(auth.currentUser, {
+      displayName: userName,
+    });
+  };
 
- 
 
   // Email Login
   const loginWithEmail = async (email, password) => {
@@ -115,7 +132,7 @@ const AuthProviders = ({ children }) => {
       const user = userCredential.user;
       setLoading(false);
       setUser(user);
-      console.log(user);
+      // console.log(user);
       return user;
     } catch (error) {
       const errorCode = error.code;
@@ -131,7 +148,7 @@ const AuthProviders = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      console.log(result.user);
+      // console.log(result.user);
       return result; // Return the result
     } catch (error) {
       console.error("Google sign-in error:", error.message);
@@ -151,61 +168,84 @@ const AuthProviders = ({ children }) => {
         setLoading(false);
       });
   };
-  
 
-    // observer == it helps to give the current situation of user auth
-    useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setUser(user);
+  // observer == it helps to give the current situation of user auth
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
   
-          // Retrieve location data from localStorage
-          const locationData = JSON.parse(localStorage.getItem('locationData'));
-          if (locationData) {
-        
-            // Post user data along with location and address to the backend
-            const person = {
-              name: user.displayName,
-              email: user.email,
-              displayPhoto: user.photoURL,
-              uid: user.uid,
-              phNumber: user.phoneNumber,
-              role: 'user',
-              location: locationData
-            };
+      if (currentUser) {
+        setUser(currentUser);
 
-            console.log(person);
-  
-            fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(person),
+        // console.log(currentUser?.displayName);
+        // console.log(user?.displayName);
+        // Retrieve location data from localStorage
+        const locationData = JSON.parse(localStorage.getItem("locationData"));
+
+        // console.log(userData);
+        if (locationData && currentUser.displayName) {
+          console.log(currentUser.displayName);
+          console.log(currentUser.userName);
+          console.log(userData);
+          const person = {
+            name: currentUser.userName || currentUser.displayName || userData,
+            email: currentUser.email,
+            displayPhoto: currentUser.photoURL,
+            uid: currentUser.uid,
+            phNumber: currentUser.phoneNumber,
+            role: role || "user",
+            location: locationData,
+          };
+          console.log(person);
+
+          fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(person),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                console.log("Failed to add user");
+              } else {
+                console.log("User posted successfully");
+              }
             })
-              .then((response) => {
-                if (!response.ok) {
-                  console.log("Failed to add user");
-                } else {
-                  console.log("User posted successfully");
-                }
-              })
-              .catch((error) => console.error("Error adding user", error));
-          } else {
-            console.log("Location data not found in localStorage");
-          }
+            .catch((error) => console.error("Error adding user", error));
         } else {
-          console.log("User is logged out");
+          console.log("Location data not found in localStorage and display name not found");
         }
-      });
-  
-      setLoading(false);
-  
-      return () => unsubscribe();
-    }, []);
-  
+      } else {
+        console.log("User is logged out");
+      }
+    });
+
+    setLoading(false);
+
+    return () => unsubscribe();
+  }, []);
   
 
+  useEffect(() => {
+    // console.log(user);
+    if (user?.email) {
+      fetch(`${import.meta.env.VITE_REACT_API}verify-user/${user?.email}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setRole(data.role);
+          // console.log(data.role);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("There was a problem fetching the role:", error);
+        });
+    }
+  }, [user]);
 
   const authInfo = {
     loading,
@@ -213,7 +253,12 @@ const AuthProviders = ({ children }) => {
     createUserWithEmail,
     loginWithEmail,
     logOut,
+    role,
     googleLogin,
+    currentLocation,
+    address,
+    userData,
+    update
   };
 
   return (

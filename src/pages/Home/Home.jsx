@@ -1,18 +1,43 @@
 import logo from "/src/assets/logo 1.png";
 import searchIcon from "/src/assets/search.svg";
+import fidget from "/src/assets/fidget.svg";
 import "./home.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { Link } from "react-router-dom";
 import Location from "./Location";
 import { LogOut } from "../../components/LogOut/LogOut";
 import { Autocomplete } from "@react-google-maps/api";
 import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
+import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
+
 
 export const Home = () => {
   const { logOut, user } = useContext(AuthContext);
-  const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
+  const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace, mapLoading } =
     useAutocomplete();
+
+    const [filteredRestaurants, setFilteredRestaurants] = useState([])
+
+  console.log(filteredRestaurants);
+
+  const fetchAndFilterRestaurants = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch restaurants');
+      }
+      const restaurants = await response.json();
+  
+      const filtered = filterRestaurantsByDistance(restaurants,selectedPlace.longitude, selectedPlace.latitude, 10);
+  
+      setFilteredRestaurants(filtered);
+  
+    } catch (error) {
+      console.error('Error fetching and filtering restaurants:', error);
+    }
+  };
+
 
   return (
     <>
@@ -67,17 +92,30 @@ export const Home = () => {
               className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
             />
           )}
-          <button className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg">
-            <img
-              className="rounded-lg"
-              width={1080}
-              height={720}
-              src={searchIcon}
-              alt=""
-            />
+          <button 
+          onClick={fetchAndFilterRestaurants}
+          className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg">
+            { !mapLoading ? (
+              <img
+                className="rounded-lg"
+                width={1080}
+                height={720}
+                src={searchIcon}
+                alt=""
+                
+              />
+            ) : (
+              <img
+                className="rounded-lg animate-spin"
+                width={1080}
+                height={720}
+                src={fidget}
+                alt=""
+              />
+            )}
           </button>
         </div>
-        <Location />
+        <Location selectedPlace={selectedPlace} filteredRestaurants={filteredRestaurants} />
         <h1 className="font-bold text-orange-400 text-3xl">
           {selectedPlace?.latitude}
         </h1>
