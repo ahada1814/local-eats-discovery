@@ -8,7 +8,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import app from "../../Firebase/firebase.config";
+import  {app}from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey, } from 'react-geocode';
 
@@ -18,12 +18,12 @@ setKey(`${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`);
 
 const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null); // the user
+  const [user, setUser] = useState(); // the user
   const [currentLocation, setCurrentLocation] = useState(null); // getting the lat and lang
   const [address, setAddress] = useState(null); // getting the address
   console.log(currentLocation, address);
 
-  console.log(user);
+  // console.log(user);
 
   const provider = new GoogleAuthProvider();
 
@@ -38,10 +38,9 @@ const AuthProviders = ({ children }) => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
-
+        // revrse geo code
           fromLatLng(position.coords.latitude, position.coords.longitude)
             .then((response) => {
-              console.log(response);
               const address = response.results[0].formatted_address;
               setAddress(address);
             })
@@ -127,7 +126,6 @@ const AuthProviders = ({ children }) => {
       const user = userCredential.user;
       setLoading(false);
       setUser(user);
-      console.log(user);
       return user;
     } catch (error) {
       const errorCode = error.code;
@@ -143,7 +141,8 @@ const AuthProviders = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      console.log(result.user);
+      
+      
       return result; // Return the result
     } catch (error) {
       console.error("Google sign-in error:", error.message);
@@ -169,7 +168,7 @@ const AuthProviders = ({ children }) => {
     useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log(user.displayName);
+          
           setUser(user);
           const person = {
             name: user.displayName,
@@ -179,7 +178,7 @@ const AuthProviders = ({ children }) => {
             phNumber: user.phoneNumber,
             role: 'user'
           };
-          console.log(person);
+          
           fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
             method: "POST",
             headers: {

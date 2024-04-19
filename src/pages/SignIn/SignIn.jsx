@@ -2,17 +2,24 @@ import { Link, useNavigate } from "react-router-dom";
 import SignInForm from "./SignInForm";
 import bgImage from "/src/assets/background.png";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../Firebase/firebase.config";
 
 const SignIn = () => {
-  const { loginWithEmail, googleLogin } = useContext(AuthContext);
+  const { loginWithEmail, googleLogin,user } = useContext(AuthContext);
   const navigate = useNavigate();
+  
 
+
+ 
   const handledUserCreation = async (values, { setSubmitting }) => {
     try {
       const loginResponse = await loginWithEmail(values.email, values.password);
       if (loginResponse) {
         setSubmitting(false);
+        
+        // await setDoc(doc(db,'users',user.uid))
         navigate("/");
       } else {
         console.log("Login Failed");
@@ -26,6 +33,8 @@ const SignIn = () => {
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await googleLogin(); // Await googleLogin() call
+      
+      
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);

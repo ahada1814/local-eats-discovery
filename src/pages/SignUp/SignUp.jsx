@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const { createUserWithEmail, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
     console.log(values);
     try {
