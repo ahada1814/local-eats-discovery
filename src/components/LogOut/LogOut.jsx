@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 
 export const LogOut = ({ logOut }) => {
   const { user } = useContext(AuthContext);
-  console.log(user.uid);
-
+  
   return (
     <div className="flex justify-center space-x-5 items-center">
       <button

@@ -1,6 +1,6 @@
 import "./profile.css";
 import person from "../../assets/woner.png";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { IoCameraOutline } from "react-icons/io5";
 import { GoArrowLeft } from "react-icons/go";
 import { Link } from "react-router-dom";
@@ -8,14 +8,28 @@ import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 
 const BannerSecrion = () => {
   const fileInputRef = useRef(null);
-  const { uploadImage, imageUrl, loading } = useContext(AuthContext);
+  const { uploadImage, loading } = useContext(AuthContext);
+  const [localImageUrl, setLocalImageUrl] = useState()
+
+
+  useEffect(() => {
+    // Check if there's an uploaded image URL in local storage
+    const uploadedImageUrl = localStorage.getItem('uploadedImageUrl');
+    if (uploadedImageUrl) {
+      setLocalImageUrl(uploadedImageUrl);
+    }
+  }, []);
+
 
   // Function to handle file selection
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       try {
-        await uploadImage(file);
+        const imageUrl = await uploadImage(file);
+        // Store the uploaded image URL in local storage
+        localStorage.setItem('uploadedImageUrl', imageUrl);
+        setLocalImageUrl(imageUrl);
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -53,9 +67,9 @@ const BannerSecrion = () => {
             <h1>loading...</h1>
           ) : (
             <>
-              {imageUrl ? (
+              {localImageUrl ? (
                 <img
-                  src={imageUrl}
+                  src={localImageUrl}
                   width={1080}
                   height={720}
                   className="w-[100px] h-[100px] rounded-lg"

@@ -12,8 +12,7 @@ export const EditProfile = () => {
     useAutocomplete();
 
   const { user, number, imageUrl } = useContext(AuthContext);
-  console.log(user?.email);
-
+  
   const demoUser = "owner";
 
   const submitFormData = async (values) => {

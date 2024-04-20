@@ -1,6 +1,5 @@
 export const filterRestaurantsByDistance = (restaurants, selectLat, selectLong, distance) => {
 
-    console.log('ha kaj kore');
     const earthRadius = 6371; // Earth radius in kilometers
   
     const filtered = restaurants.filter((restaurant) => {

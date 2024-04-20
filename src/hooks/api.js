@@ -27,3 +27,16 @@ export const addUserToDatabase = async (currentUser, locationData, userData, rol
     })
     .catch((error) => console.error("Error adding user", error));
 };
+
+
+export const fetchRestaurants = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch restaurants");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error("Error fetching restaurants:", error);
+  }
+};

@@ -11,7 +11,8 @@ import {
 import  {app}from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-import { addUserToDatabase } from "../../hooks/api";
+import { addUserToDatabase, fetchRestaurants } from "../../hooks/api";
+import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
 
 export const AuthContext = createContext(null);
@@ -27,6 +28,7 @@ const AuthProviders = ({ children }) => {
   const [number, setNumber] = useState();
   const [userData, setUserData] = useState('');
   const [imageUrl, setImageUrl] = useState()
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   // console.log(currentLocation, address);
 
@@ -37,35 +39,44 @@ const AuthProviders = ({ children }) => {
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-
-          setCurrentLocation({
-            latitude,
-            longitude,
-          });
-        // revrse geo code
-          fromLatLng(position.coords.latitude, position.coords.longitude)
-            .then((response) => {
-              // console.log(response);
-              const address = response.results[0].formatted_address;
-              setAddress(address);
-            
-              localStorage.setItem(
-                "locationData",
-                JSON.stringify({
-                  latitude,
-                  longitude,
-                  address,
-                })
-              );
-            })
-            .catch((error) => {
-              console.error("Error fetching address:", error);
+        async (position) => {
+          try {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+  
+            setCurrentLocation({
+              latitude,
+              longitude,
             });
+  
+            // Reverse geocode
+            const response = await fromLatLng(latitude, longitude);
+            const address = response.results[0].formatted_address;
+            setAddress(address);
+  
+            const restaurants = await fetchRestaurants();
+  
+            const filtered = filterRestaurantsByDistance(
+              restaurants,
+              latitude,
+              longitude,
+              10 
+            );
+  
+            console.log(filtered);
+            setFilteredRestaurants(filtered);
+            localStorage.setItem(
+              "locationData",
+              JSON.stringify({
+                latitude,
+                longitude,
+                address,
+              })
+            );
+          } catch (error) {
+            console.error("Error:", error);
+          }
         },
-
         (error) => {
           console.error("Error getting geolocation:", error);
         }
@@ -215,7 +226,7 @@ const AuthProviders = ({ children }) => {
     try {
       setLoading(true)
       const response = await fetch(
-        "https://api.imgbb.com/1/upload?key=146609dc8988265238b2191a07bb8e34",
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGEBB_UPLOAD_API_KEY}`,
         {
           method: "POST",
           body: formData,
@@ -231,11 +242,10 @@ const AuthProviders = ({ children }) => {
       setLoading(false)
 
       console.error("Error uploading image:", error);
-      throw error; // Re-throw the error to handle it in the caller
+      throw error; 
     }
   };
   
-
   const authInfo = {
     loading,
     user,
@@ -250,7 +260,8 @@ const AuthProviders = ({ children }) => {
     update, 
     number,
     uploadImage,
-    imageUrl
+    imageUrl,
+    filteredRestaurants
   };
 
   return (

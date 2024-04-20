@@ -1,32 +1,35 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ResturantsCards from "../../components/ResturantCards/ResturantsCards";
+import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
+import { fetchRestaurants } from "../../hooks/api";
 
-const Location = ({ selectedPlace, filteredRestaurants }) => {
+const Location = ({ filteredRestaurantsState }) => {
+  const { filteredRestaurants } = useContext(AuthContext);
   const [restaurants, setRestaurants] = useState([]);
 
   // console.log(selectedPlace);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch restaurants");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setRestaurants(data);
-        // console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching restaurants:", error);
-      });
-  }, [selectedPlace]);
+    if (!filteredRestaurants.length) {
+      fetchRestaurants()
+        .then((data) => {
+          setRestaurants(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching restaurants:", error);
+        });
+    }
+    
+  }, [restaurants]);
 
   return (
     <>
-      {filteredRestaurants.length > 0
+      {filteredRestaurants && !filteredRestaurantsState.length
         ? filteredRestaurants.map((restaurant) => (
+            <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+          ))
+        : filteredRestaurantsState.length > 0
+        ? filteredRestaurantsState.map((restaurant) => (
             <ResturantsCards key={restaurant._id} restaurant={restaurant} />
           ))
         : restaurants.map((restaurant) => (
@@ -37,3 +40,6 @@ const Location = ({ selectedPlace, filteredRestaurants }) => {
 };
 
 export default Location;
+
+
+
