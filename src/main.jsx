@@ -16,6 +16,7 @@ import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 import Message from "./pages/Message/Message.jsx";
 
+import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,11 +53,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/rest-profile/AddItems",
-        element: <AddItems />,
+        element: <ResturantRoutes><AddItems /></ResturantRoutes>,
       },
       {
         path: "/rest-profile/view-menus",
-        element: <ViewMenu />,
+        element: <ResturantRoutes><ViewMenu /></ResturantRoutes>,
       },
       {
         path: "/rest-profile/edit-profile",
