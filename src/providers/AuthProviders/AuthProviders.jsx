@@ -12,6 +12,7 @@ import  {app}from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
 import { addUserToDatabase } from "../../hooks/api";
+import getUser from "../../hooks/getUser.JS";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -145,7 +146,7 @@ const AuthProviders = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      console.log(result.user);
+      // console.log(result.user);
       return result; // Return the result
     } catch (error) {
       console.error("Google sign-in error:", error.message);
@@ -171,9 +172,13 @@ const AuthProviders = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        getUser(currentUser)
         console.log(currentUser);
         const locationData = JSON.parse(localStorage.getItem("locationData"));
         addUserToDatabase(currentUser, locationData, userData, role);
+
+        
+        
       } else {
         console.log("User is logged out");
       }
@@ -204,7 +209,7 @@ const AuthProviders = ({ children }) => {
           console.error("There was a problem fetching the role:", error);
         });
     }
-  }, [user]);
+  }, []);
 
   const authInfo = {
     loading,
