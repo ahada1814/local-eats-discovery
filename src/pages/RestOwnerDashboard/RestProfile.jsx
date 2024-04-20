@@ -12,7 +12,7 @@ const RestProfile = () => {
     <>
       <div className="bg-slate-200 min-h-screen">
         <BannerSecrion />
-        <div className="flex">
+        <div className="flex ">
           <Drawer />
           {
             location.pathname == '/rest-profile' ? <EditProfile />  : <Outlet />

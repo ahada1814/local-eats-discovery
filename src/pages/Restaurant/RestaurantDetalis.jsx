@@ -1,9 +1,9 @@
 import CommonAddress from "./CommonAddress";
 import CommonBannar from "./CommonBannar";
-import food from "../../assets/trending image 1.png";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import logo from "../../assets/logo 1.png";
+import Menue from "./Menue";
 
 const RestaurantDetalis = () => {
   const { id } = useParams();
@@ -41,24 +41,9 @@ const RestaurantDetalis = () => {
             <CommonAddress restaurants={restaurants} />
             <div className="w-[55%] ">
               <h5 className="text-3xl font-bold mb-3">Trending Orders</h5>
-              <div className="grid grid-cols-3 gap-5">
-                {restaurants?.food_items.map((f) => (
-                  <div key={f} className="drop-shadow-2xl">
-                    <div className="flex justify-center items-center gap-4 bg-white py-2 px-2 rounded-md">
-                      <div className="flex flex-col justify-start items-start">
-                        <h3 className="text-xl font-semibold">{f.name}</h3>
-                        <p className="mt-2 text-gray-600">4 persons</p>
-                        <p className="mt-2 text-[#EA6A12] font-semibold">
-                          ${f.price}
-                        </p>
-                      </div>
-                      <div>
-                        <img src={food} alt="" className="w-[70px]" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              
+
+              <Menue restaurants={restaurants} />
             </div>
           </div>
         </div>

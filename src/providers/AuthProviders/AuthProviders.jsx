@@ -8,7 +8,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import app from "../../Firebase/firebase.config";
+import  {app}from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
 import { addUserToDatabase } from "../../hooks/api";
@@ -43,7 +43,7 @@ const AuthProviders = ({ children }) => {
             latitude,
             longitude,
           });
-
+        // revrse geo code
           fromLatLng(position.coords.latitude, position.coords.longitude)
             .then((response) => {
               // console.log(response);

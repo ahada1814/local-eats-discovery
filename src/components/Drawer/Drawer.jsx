@@ -23,7 +23,7 @@ const Drawer = () => {
 
   return (
     <>
-      <div className="bg-white w-96 hidden md:block">
+      <div className="bg-white w-96 hidden md:block ">
         <div className="flex flex-col font-semibold text-xl w-64 mx-auto pt-10 h-96">
           {!demoUser ? (
             <Link to="/rest-profile/view-menus" className="pb-4">
