@@ -10,7 +10,6 @@ export const addUserToDatabase = async (currentUser, locationData, userData, rol
     role: role || "user",
     location: locationData,
   };
-console.log(person);
 
   return fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
     method: "POST",

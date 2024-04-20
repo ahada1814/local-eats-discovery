@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export const LogOut = ({ logOut }) => {
   const { user } = useContext(AuthContext);
+  console.log(user.uid);
 
   return (
     <div className="flex justify-center space-x-5 items-center">
@@ -16,7 +17,7 @@ export const LogOut = ({ logOut }) => {
         Log out
       </button>
       {user?.photoURL ? (
-        <Link to="/rest-profile">
+        <Link to={`/rest-profile/${user.uid}`}>
           <img
             className="rounded-full w-14 ring-4 hover:scale-95 hover:ring-orange-400 duration-300 ring-white"
             width={1080}

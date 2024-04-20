@@ -48,23 +48,25 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/rest-profile",
+    path: "/rest-profile/:id",
     element: <RestProfile />,
+    loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
     children: [
       {
-        path: "/rest-profile/AddItems",
+        path: "AddItems",
         element: <ResturantRoutes><AddItems /></ResturantRoutes>,
       },
       {
-        path: "/rest-profile/view-menus",
+        path: "view-menus",
         element: <ResturantRoutes><ViewMenu /></ResturantRoutes>,
       },
       {
-        path: "/rest-profile/edit-profile",
+        path: "edit-profile",
         element: <EditProfile />,
       },
       {
-        path: "/rest-profile/message",
+        path: "message",
         element: <Message />,
       },
     ],

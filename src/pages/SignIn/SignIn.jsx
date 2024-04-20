@@ -2,20 +2,17 @@ import { Link, useNavigate } from "react-router-dom";
 import SignInForm from "./SignInForm";
 import bgImage from "/src/assets/background.png";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
-import { useContext, useState } from "react";
+import { useContext, } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../Firebase/firebase.config";
 
 const SignIn = () => {
   const { loginWithEmail, googleLogin, user } = useContext(AuthContext);
 
-  console.log(user);
 
   const navigate = useNavigate();
-  console.log(user);
-
-
- 
+  
+  
   const handledUserCreation = async (values, { setSubmitting }) => {
     try {
       const loginResponse = await loginWithEmail(values.email, values.password);
@@ -34,7 +31,7 @@ const SignIn = () => {
       setSubmitting(false);
     }
   };
-
+  
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await googleLogin(); // Await googleLogin() call
@@ -44,7 +41,7 @@ const SignIn = () => {
       console.error("Login failed:", error);
     }
   };
-
+  
   return (
     <div
       style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}

@@ -13,6 +13,7 @@ import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
 import { addUserToDatabase } from "../../hooks/api";
 
+
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 setKey(`${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`);
@@ -25,6 +26,7 @@ const AuthProviders = ({ children }) => {
   const [role, setRole] = useState("");
   const [number, setNumber] = useState();
   const [userData, setUserData] = useState('');
+  const [imageUrl, setImageUrl] = useState()
 
   // console.log(currentLocation, address);
 
@@ -172,7 +174,6 @@ const AuthProviders = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        console.log(currentUser.uid);
         const locationData = JSON.parse(localStorage.getItem("locationData"));
         addUserToDatabase(currentUser, locationData, userData, role);
       } else {
@@ -207,6 +208,34 @@ const AuthProviders = ({ children }) => {
     }
   }, [user]);
 
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+  
+    try {
+      setLoading(true)
+      const response = await fetch(
+        "https://api.imgbb.com/1/upload?key=146609dc8988265238b2191a07bb8e34",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      setImageUrl(data.data.url)
+
+      setLoading(false)
+
+      return data.data.url; 
+    } catch (error) {
+      setLoading(false)
+
+      console.error("Error uploading image:", error);
+      throw error; // Re-throw the error to handle it in the caller
+    }
+  };
+  
+
   const authInfo = {
     loading,
     user,
@@ -219,7 +248,9 @@ const AuthProviders = ({ children }) => {
     address,
     userData,
     update, 
-    number
+    number,
+    uploadImage,
+    imageUrl
   };
 
   return (
