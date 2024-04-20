@@ -172,7 +172,7 @@ const AuthProviders = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        console.log(currentUser);
+        console.log(currentUser.uid);
         const locationData = JSON.parse(localStorage.getItem("locationData"));
         addUserToDatabase(currentUser, locationData, userData, role);
       } else {
