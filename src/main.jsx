@@ -44,6 +44,10 @@ const router = createBrowserRouter([
         path: "/FoodReview",
         element: <Review />,
       },
+      {
+        path: "/view-menus",
+        element: <ViewMenu />,
+      },
      
     ],
   },
@@ -56,10 +60,6 @@ const router = createBrowserRouter([
       {
         path: "AddItems",
         element: <ResturantRoutes><AddItems /></ResturantRoutes>,
-      },
-      {
-        path: "view-menus",
-        element: <ResturantRoutes><ViewMenu /></ResturantRoutes>,
       },
       {
         path: "edit-profile",

@@ -60,10 +60,10 @@ const AuthProviders = ({ children }) => {
               restaurants,
               latitude,
               longitude,
-              10 
+              10
             );
   
-            console.log(filtered);
+            // console.log(filtered);
             setFilteredRestaurants(filtered);
             localStorage.setItem(
               "locationData",
@@ -189,6 +189,7 @@ const AuthProviders = ({ children }) => {
         addUserToDatabase(currentUser, locationData, userData, role);
       } else {
         console.log("User is logged out");
+        localStorage.removeItem('uploadedImageUrl', imageUrl);
       }
     });
   

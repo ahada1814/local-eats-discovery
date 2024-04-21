@@ -3,6 +3,7 @@ import ResturantsCards from "../../components/ResturantCards/ResturantsCards";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { fetchRestaurants } from "../../hooks/api";
 
+
 const Location = ({ filteredRestaurantsState }) => {
   const { filteredRestaurants } = useContext(AuthContext);
   const [restaurants, setRestaurants] = useState([]);
@@ -19,8 +20,7 @@ const Location = ({ filteredRestaurantsState }) => {
           console.error("Error fetching restaurants:", error);
         });
     }
-    
-  }, [restaurants]);
+  }, [filteredRestaurants]);
 
   return (
     <>
@@ -40,6 +40,3 @@ const Location = ({ filteredRestaurantsState }) => {
 };
 
 export default Location;
-
-
-

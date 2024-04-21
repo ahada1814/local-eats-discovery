@@ -12,29 +12,46 @@ export const EditProfile = () => {
     useAutocomplete();
 
   const { user, number, imageUrl } = useContext(AuthContext);
-  
+
   const demoUser = "owner";
 
   const submitFormData = async (values) => {
+    const locationDataString = localStorage.getItem("locationData");
+    const locationData = JSON.parse(locationDataString);
+
+    const latitude = locationData.latitude;
+    const longitude = locationData.longitude;
+
     try {
-     
       const formData = {
-        ...values,
-        address: selectedPlace?.name || "",
-        longitude: selectedPlace?.longitude,
-        latitude: selectedPlace?.latitude,
-        imageUrl: imageUrl
+        restaurant_name: values?.restaurantName,
+        place_name: selectedPlace?.name,
+        ratings: 0,
+        email: values?.email,
+        uid: user?.uid,
+        ownerEmail: user?.email,
+        opening_time: "",
+        image: imageUrl || "",
+        phoneNumber: values?.phoneNumber,
+        food_items: [],
+        location: {
+          latitude: selectedPlace?.latitude || latitude,
+          longitude: selectedPlace?.longitude || longitude,
+        },
       };
 
       console.log(formData);
 
-      const response = await fetch(`${import.meta.env.VITE_REACT_API}name-update/${user.email}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API}added-new-restarunt`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         console.log("Form data submitted successfully!");
@@ -46,6 +63,11 @@ export const EditProfile = () => {
     }
   };
 
+  // const handleFormSubmit = (e) => {
+  //   e.preventDefault();
+  //   submitFormData();
+  // };
+
   return (
     <>
       <Formik
@@ -55,11 +77,14 @@ export const EditProfile = () => {
           // password: "******",
           phoneNumber: number,
           address: selectedPlace?.name || "",
-          restaurantName: "Your Restaurant Name",
+          restaurantName: "",
         }}
         onSubmit={submitFormData}
       >
-        <Form className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 w-4/5 md:w-[550px] lg:w-[60%] md:ps-20 pt-8">
+        <Form
+          // onSubmit={handleFormSubmit}
+          className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 w-4/5 md:w-[550px] lg:w-[60%] md:ps-20 pt-8"
+        >
           <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
             <div className="flex flex-col space-y-1">
               <span className="text-xs">User Name</span>
@@ -106,20 +131,6 @@ export const EditProfile = () => {
               )}
             </div>
           </div>
-          {/* <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
-            <div className="flex flex-col space-y-1">
-              <span className="text-xs">Password</span>
-              {isEditingEmail ? (
-                <Field
-                  className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
-                  type="text"
-                  name="password"
-                />
-              ) : (
-                <h3 className="text-xl font-semibold">*******</h3>
-              )}
-            </div>
-          </div> */}
           <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
             <div className="flex flex-col space-y-1">
               <span className="text-xs">Phone Number</span>
@@ -149,11 +160,16 @@ export const EditProfile = () => {
                     onPlaceChanged={handlePlaceSelect}
                     libraries={["places"]}
                   >
-                    <Field
+                    <input
                       className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
                       type="address"
                       name="address"
                       placeholder="Search your address"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); // Prevent form submission on Enter key press
+                        }
+                      }}
                     />
                   </Autocomplete>
                 )}
@@ -162,9 +178,11 @@ export const EditProfile = () => {
               <input
                 type="address"
                 name="address"
-                value={`${
-                  selectedPlace ? selectedPlace.name : "Add your location"
-                }`}
+                readOnly
+                placeholder='Add Your Location'
+                // placeholder={`${
+                //   selectedPlace ? selectedPlace.name : "Add your location"
+                // }`}
                 className="focus:outline-none font-semibold text-lg"
               />
             )}

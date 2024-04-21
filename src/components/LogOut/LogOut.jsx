@@ -26,7 +26,7 @@ export const LogOut = ({ logOut }) => {
           />
         </Link>
       ) : (
-        <Link to="/rest-profile">
+        <Link to={`/rest-profile/${user.uid}`}>
           <img
             src={profile}
             className="rounded-full w-14 ring-4 hover:scale-95 hover:ring-orange-400 duration-300 ring-white"

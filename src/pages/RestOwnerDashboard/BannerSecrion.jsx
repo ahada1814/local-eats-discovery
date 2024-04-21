@@ -5,6 +5,7 @@ import { IoCameraOutline } from "react-icons/io5";
 import { GoArrowLeft } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
+import { GridLoader } from "react-spinners";
 
 const BannerSecrion = () => {
   const fileInputRef = useRef(null);
@@ -64,7 +65,7 @@ const BannerSecrion = () => {
             Select
           </button>
           {loading ? (
-            <h1>loading...</h1>
+            <GridLoader />
           ) : (
             <>
               {localImageUrl ? (

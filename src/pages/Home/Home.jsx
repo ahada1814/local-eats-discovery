@@ -30,16 +30,18 @@ export const Home = () => {
       // Fetch restaurants
       const restaurants = await fetchRestaurants();
   
+      console.log(restaurants);
+
       // Filter restaurants
       const filtered = filterRestaurantsByDistance(
         restaurants,
-        selectedPlace.longitude,
         selectedPlace.latitude,
-        10 // Or whatever distance you want to use
+        selectedPlace.longitude,
+        10
       );
-  
-      // Set the filtered restaurants into a new state
+      
       setFilteredRestaurantsState(filtered);
+      console.log(filtered);
     } catch (error) {
       console.error("Error fetching and filtering restaurants:", error);
     }
@@ -131,7 +133,7 @@ export const Home = () => {
         </div>
         <Location
           selectedPlace={selectedPlace}
-          filteredRestaurants={filteredRestaurants}
+          // filteredRestaurants={filteredRestaurants}
           filteredRestaurantsState={filteredRestaurantsState}
         />
         <h1 className="font-bold text-orange-400 text-3xl">
