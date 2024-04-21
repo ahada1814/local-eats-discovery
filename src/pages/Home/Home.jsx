@@ -30,7 +30,7 @@ export const Home = () => {
       // Fetch restaurants
       const restaurants = await fetchRestaurants();
   
-      console.log(restaurants);
+      // console.log(restaurants);
 
       // Filter restaurants
       const filtered = filterRestaurantsByDistance(

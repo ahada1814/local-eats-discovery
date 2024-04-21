@@ -1,58 +1,66 @@
 import { useContext, useState } from "react";
-import { Link, useNavigate, } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 
 const Drawer = () => {
   const [isOpen, setOpen] = useState(false);
-  const {logOut} = useContext(AuthContext)
-
+  const { logOut } = useContext(AuthContext);
 
   const openMenu = () => {
     setOpen(!isOpen);
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const userLogOut = () => {
-    logOut()
-    navigate('/')
-  }
+    logOut();
+    navigate("/");
+  };
 
-  const demoUser = "owner";
+  const demoUser = "user";
 
   return (
     <>
       <div className="bg-white w-96 hidden md:block ">
         <div className="flex flex-col font-semibold text-xl w-64 mx-auto pt-10 h-96">
-          {demoUser == 'owner' ? (
+          {demoUser == "owner" ? (
             <Link to="/view-menus" className="pb-4">
               View Menu
             </Link>
           ) : (
             <></>
           )}
-          {demoUser == 'owner' ? (
-            <Link
-              to="AddItems"
-              className="border-t py-4 border-slate-300"
-            >
+          {demoUser == "owner" ? (
+            <Link to="AddItems" className="border-t py-4 border-slate-300">
               Add Menu
             </Link>
           ) : (
             <></>
           )}
-          <Link to="/" className={`${demoUser == 'owner' ? 'border-t' : 'border-none'} py-4 border-slate-300`}>
+          <Link
+            to="/"
+            className={`${
+              demoUser == "owner" ? "border-t" : "border-none"
+            } py-4 border-slate-300`}
+          >
             Messages
           </Link>
-          <Link
-            to="edit-profile"
-            className="border-t py-4 border-slate-300"
-          >
+          <Link to="edit-profile" className="border-t py-4 border-slate-300">
             Edit Profile
           </Link>
-          <button onClick={userLogOut} className="border-t flex py-4 border-slate-300">
+          {demoUser == "owner" ? (
+            <Link to="owner-profile" className="border-t py-4 border-slate-300">
+              Rest Profile
+            </Link>
+          ) : (
+            <></>
+          )}
+          <button
+            onClick={userLogOut}
+            className="border-t flex py-4 border-slate-300"
+          >
             Logout
           </button>
         </div>

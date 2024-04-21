@@ -5,7 +5,7 @@ import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 import { Autocomplete } from "@react-google-maps/api";
 import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
 
-export const EditProfile = () => {
+export const OwnerProfile = () => {
   const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
@@ -13,21 +13,30 @@ export const EditProfile = () => {
 
   const { user, number, imageUrl } = useContext(AuthContext);
 
+  const demoUser = "owner";
 
   const submitFormData = async (values) => {
+    const locationDataString = localStorage.getItem("locationData");
+    const locationData = JSON.parse(locationDataString);
+  
+    const latitude = locationData.latitude;
+    const longitude = locationData.longitude;
   
     try {
       const formData = {
-        name: values.fullName,
+        restaurant_name: values?.restaurantName,
         place_name: selectedPlace?.name,
-        email: user?.email,
+        ratings: 0,
+        email: values?.email,
         uid: user?.uid,
+        ownerEmail: user?.email,
+        opening_time: "",
         image: imageUrl || "",
-        phNumber: values?.phoneNumber,
+        phoneNumber: values?.phoneNumber,
+        food_items: [],
         location: {
-          latitude: selectedPlace?.latitude,
-          longitude: selectedPlace?.longitude,
-          address: selectedPlace?.name
+          latitude: selectedPlace?.latitude || latitude,
+          longitude: selectedPlace?.longitude || longitude,
         },
       };
   
@@ -40,11 +49,12 @@ export const EditProfile = () => {
       let method;
   
       if (hasDataPosted) {
-        method = "PATCH"; 
-        url = `${import.meta.env.VITE_REACT_API}user-update/${user.uid}`;
+        // If data has been posted before, use PATCH or PUT
+        method = "PATCH"; // Change to "PUT" if your backend requires it
+        url = `${import.meta.env.VITE_REACT_API}update-restarunt`;
       } else {
         method = "POST";
-        url = `${import.meta.env.VITE_REACT_API}added-user`;
+        url = `${import.meta.env.VITE_REACT_API}added-new-restarunt`;
       }
   
       const response = await fetch(url, {
@@ -76,12 +86,15 @@ export const EditProfile = () => {
         initialValues={{
           fullName: user?.displayName,
           email: user?.email,
+          // password: "******",
           phoneNumber: number,
           address: selectedPlace?.name || "",
+          restaurantName: "",
         }}
         onSubmit={submitFormData}
       >
         <Form
+          // onSubmit={handleFormSubmit}
           className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 w-4/5 md:w-[550px] lg:w-[60%] md:ps-20 pt-8"
         >
           <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
@@ -98,6 +111,24 @@ export const EditProfile = () => {
               )}
             </div>
           </div>
+          {demoUser ? (
+            <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
+              <div className="flex flex-col space-y-1">
+                <span className="text-xs">Restaurant Name</span>
+                {isEditingEmail ? (
+                  <Field
+                    className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+                    type="text"
+                    name="restaurantName"
+                  />
+                ) : (
+                  <h3 className="text-xl font-semibold">Restaurant Name</h3>
+                )}
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
             <div className="flex flex-col space-y-1">
               <span className="text-xs">Email Address</span>
@@ -128,6 +159,7 @@ export const EditProfile = () => {
               )}
             </div>
           </div>
+          {/* This is map field */}
           <div className="bg-white w-full p-4 rounded-md flex flex-col space-y-1">
             <span className="text-xs">Address</span>
             {isEditingEmail ? (
@@ -159,10 +191,10 @@ export const EditProfile = () => {
                 type="address"
                 name="address"
                 readOnly
-                // placeholder='Add Your Location'
-                placeholder={`${
-                  selectedPlace ? selectedPlace.name : "Add your location"
-                }`}
+                placeholder='Add Your Location'
+                // placeholder={`${
+                //   selectedPlace ? selectedPlace.name : "Add your location"
+                // }`}
                 className="focus:outline-none font-semibold text-lg"
               />
             )}

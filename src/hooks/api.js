@@ -1,5 +1,11 @@
-export const addUserToDatabase = async (currentUser, locationData, userData, role) => {
+// For posting all the user to database.
 
+export const addUserToDatabase = async (
+  currentUser,
+  locationData,
+  userData,
+  role
+) => {
   const person = {
     // name: currentUser.userName || currentUser.displayName || userData,
     name: currentUser.displayName || userData,
@@ -28,15 +34,44 @@ export const addUserToDatabase = async (currentUser, locationData, userData, rol
     .catch((error) => console.error("Error adding user", error));
 };
 
-
+// For fetching All the Restaurants
 export const fetchRestaurants = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_REACT_API}all-restaurants`);
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_API}all-restaurants`
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch restaurants");
     }
     return await response.json();
   } catch (error) {
     throw new Error("Error fetching restaurants:", error);
+  }
+};
+
+// For putting restaurants dishes to database.
+
+export const updateItem = async (formData, id) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_API}single-restaurant-item-update/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update item");
+    }
+
+    const responseData = await response.json();
+    return responseData; // Optional: Return any response from the server
+  } catch (error) {
+    console.error("Error updating item:", error);
+    throw error;
   }
 };

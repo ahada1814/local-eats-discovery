@@ -30,9 +30,7 @@ const AuthProviders = ({ children }) => {
   const [imageUrl, setImageUrl] = useState()
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
-  // console.log(currentLocation, address);
-
-
+  
   const provider = new GoogleAuthProvider();
 
   // For Location
@@ -190,13 +188,14 @@ const AuthProviders = ({ children }) => {
       } else {
         console.log("User is logged out");
         localStorage.removeItem('uploadedImageUrl', imageUrl);
+        localStorage.removeItem('locationData');
       }
     });
   
     setLoading(false);
   
     return () => unsubscribe();
-  }, [user, role, userData]);
+  }, [user]);
   
 
   useEffect(() => {
@@ -225,7 +224,6 @@ const AuthProviders = ({ children }) => {
     formData.append("image", file);
   
     try {
-      setLoading(true)
       const response = await fetch(
         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGEBB_UPLOAD_API_KEY}`,
         {
@@ -235,8 +233,6 @@ const AuthProviders = ({ children }) => {
       );
       const data = await response.json();
       setImageUrl(data.data.url)
-
-      setLoading(false)
 
       return data.data.url; 
     } catch (error) {

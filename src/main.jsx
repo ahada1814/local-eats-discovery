@@ -13,6 +13,7 @@ import { Home } from "./pages/Home/Home.jsx";
 import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
 import ViewMenu from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
 import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
+import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
 import Message from "./pages/Message/Message.jsx";
@@ -48,22 +49,29 @@ const router = createBrowserRouter([
         path: "/view-menus",
         element: <ViewMenu />,
       },
-     
     ],
   },
   {
     path: "/rest-profile/:id",
     element: <RestProfile />,
     loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
+      fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
     children: [
       {
         path: "AddItems",
-        element: <ResturantRoutes><AddItems /></ResturantRoutes>,
+        element: (
+          <ResturantRoutes>
+            <AddItems />
+          </ResturantRoutes>
+        ),
       },
       {
         path: "edit-profile",
         element: <EditProfile />,
+      },
+      {
+        path: "owner-profile",
+        element: <OwnerProfile />,
       },
       {
         path: "message",

@@ -2,28 +2,29 @@ import { Field, Formik, Form } from "formik";
 import { useContext, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
+import { updateItem } from "../../hooks/api";
 
 
 const AddItems = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-
-  const {uploadImage} = useContext(AuthContext)
-
+  
+  const {uploadImage, user} = useContext(AuthContext)
+  
   const initialValues = {
     menuName: "",
     price: "",
     personPerPlatter: "",
     photos: "",
   };
-
+  
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-
+    
     try {
       setIsUploading(true);
-      const uploadedImageUrl = await uploadImage(file); // Call the uploadImage function
+      const uploadedImageUrl = await uploadImage(file);
       setUploadedImageUrl(uploadedImageUrl);
       console.log(uploadedImageUrl); // This is the URL of the uploaded image
     } catch (error) {
@@ -32,16 +33,19 @@ const AddItems = () => {
       setIsUploading(false);
     }
   };
-
+  
   const handleSubmit = async (values) => {
     setIsSubmit(true);
-
+    
     try {
       const formData = {
         ...values,
         photos: uploadedImageUrl,
       };
-
+      
+      await updateItem(formData, user.uid)
+      console.log(user.uid);
+      
       console.log(formData);
     } catch (error) {
       console.error("Error submitting form data:", error);
@@ -49,7 +53,7 @@ const AddItems = () => {
       setIsSubmit(false);
     }
   };
-
+  
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 lg:w-[60%] md:ps-20 pt-8">
