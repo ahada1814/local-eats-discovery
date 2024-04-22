@@ -14,6 +14,7 @@ export const OwnerProfile = () => {
   const { user, number, imageUrl } = useContext(AuthContext);
 
   const demoUser = "owner";
+  const id = user?.uid
 
   const submitFormData = async (values) => {
     const locationDataString = localStorage.getItem("locationData");
@@ -24,6 +25,7 @@ export const OwnerProfile = () => {
   
     try {
       const formData = {
+        name: values.fullName,
         restaurant_name: values?.restaurantName,
         place_name: selectedPlace?.name,
         ratings: 0,
@@ -51,7 +53,7 @@ export const OwnerProfile = () => {
       if (hasDataPosted) {
         // If data has been posted before, use PATCH or PUT
         method = "PATCH"; // Change to "PUT" if your backend requires it
-        url = `${import.meta.env.VITE_REACT_API}update-restarunt`;
+        url = `${import.meta.env.VITE_REACT_API}update-restarunt/${id}`;
       } else {
         method = "POST";
         url = `${import.meta.env.VITE_REACT_API}added-new-restarunt`;
@@ -67,7 +69,6 @@ export const OwnerProfile = () => {
   
       if (response.ok) {
         console.log("Form data submitted successfully!");
-        console.log(response);
         if (!hasDataPosted) {
           localStorage.setItem("hasDataPosted", "true");
         }

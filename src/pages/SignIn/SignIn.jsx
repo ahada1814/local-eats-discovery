@@ -5,6 +5,7 @@ import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { useContext, } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../Firebase/firebase.config";
+import logo from "../../assets/logo 1.png";
 
 const SignIn = () => {
   const { loginWithEmail, googleLogin, user } = useContext(AuthContext);
@@ -48,6 +49,12 @@ const SignIn = () => {
       className=" bg-no-repeat bg-cover
     "
     >
+     <Link to="/">
+        <img
+          src={logo}
+          className="text-white w-40 hover:scale-90 duration-200 absolute top-4 left-4"
+        />
+      </Link>
       <div className="flex gap-2 justify-end pt-6 pr-10">
         <Link
           to="/sign-up"

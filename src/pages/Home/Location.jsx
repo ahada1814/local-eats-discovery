@@ -1,29 +1,34 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import ResturantsCards from "../../components/ResturantCards/ResturantsCards";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
-import { fetchRestaurants } from "../../hooks/api";
 
 const Location = ({ filteredRestaurantsState }) => {
-  const { filteredRestaurants } = useContext(AuthContext);
-  const [restaurants, setRestaurants] = useState([]);
+  const { filteredRestaurants, restaurants } = useContext(AuthContext);
 
-  // console.log(selectedPlace);
-
-  useEffect(() => {
-    if (!filteredRestaurants.length) {
-      fetchRestaurants()
-        .then((data) => {
-          setRestaurants(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching restaurants:", error);
-        });
-    }
-  }, [filteredRestaurants]);
+  // console.log(restaurants);
+  // console.log(filteredRestaurants);
+  console.log(filteredRestaurantsState);
 
   return (
     <>
-      {filteredRestaurants && !filteredRestaurantsState.length
+      {
+        // Show default restaurants if both filteredRestaurants and filteredRestaurantsState are falsy
+        filteredRestaurants.length == 0 && filteredRestaurantsState.length == 0
+          ? restaurants?.map((restaurant) => (
+              <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+            ))
+          : // Show filteredRestaurants if it exists and filteredRestaurantsState has no items
+          filteredRestaurants && !filteredRestaurantsState.length
+          ? filteredRestaurants?.map((restaurant) => (
+              <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+            ))
+          : // Show filteredRestaurantsState if it exists
+            filteredRestaurantsState?.map((restaurant) => (
+              <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+            ))
+      }
+
+      {/* {filteredRestaurants && !filteredRestaurantsState.length
         ? filteredRestaurants.map((restaurant) => (
             <ResturantsCards key={restaurant._id} restaurant={restaurant} />
           ))
@@ -33,7 +38,10 @@ const Location = ({ filteredRestaurantsState }) => {
           ))
         : restaurants.map((restaurant) => (
             <ResturantsCards key={restaurant._id} restaurant={restaurant} />
-          ))}
+          ))} */}
+       {/* {restaurants.map((restaurant) => (
+            <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+          ))} */}
     </>
   );
 };

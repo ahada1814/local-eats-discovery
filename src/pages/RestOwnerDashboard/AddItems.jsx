@@ -45,7 +45,7 @@ const AddItems = () => {
       
       await updateItem(formData, user.uid)
       console.log(user.uid);
-      
+
       console.log(formData);
     } catch (error) {
       console.error("Error submitting form data:", error);

@@ -4,6 +4,7 @@ import bgImage from "/src/assets/background.png";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo 1.png";
 
 const SignUp = () => {
   const { createUserWithEmail, googleLogin } = useContext(AuthContext);
@@ -71,6 +72,12 @@ const SignUp = () => {
           <button>Sign In</button>
         </Link>
       </div>
+      <Link to="/">
+        <img
+          src={logo}
+          className="text-white w-40 hover:scale-90 duration-200 absolute top-4 left-4"
+        />
+      </Link>
       <SignUpForm
         handledUserCreation={handledUserCreation}
         handleGoogleLogin={handleGoogleLogin}

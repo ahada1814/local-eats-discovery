@@ -19,7 +19,7 @@ const Drawer = () => {
     navigate("/");
   };
 
-  const demoUser = "user";
+  const demoUser = "owner";
 
   return (
     <>

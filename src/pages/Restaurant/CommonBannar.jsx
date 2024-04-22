@@ -3,7 +3,6 @@ import { FaStar } from "react-icons/fa";
 import "./Restaurant.css";
 
 const CommonBannar = ({restaurants}) => {
-  console.log(restaurants);
   return (
     <div className="restImg rounded-sm mx-auto">
       <div className="flex flex-col justify-center items-center gap-3 h-full text-white">

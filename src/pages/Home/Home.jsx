@@ -30,14 +30,16 @@ export const Home = () => {
       // Fetch restaurants
       const restaurants = await fetchRestaurants();
   
-      // console.log(restaurants);
+
+      console.log(selectedPlace.latitude, selectedPlace.longitude);
+      console.log(restaurants);
 
       // Filter restaurants
       const filtered = filterRestaurantsByDistance(
         restaurants,
         selectedPlace.latitude,
         selectedPlace.longitude,
-        10
+        1
       );
       
       setFilteredRestaurantsState(filtered);

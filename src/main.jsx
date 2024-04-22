@@ -11,12 +11,14 @@ import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import { Home } from "./pages/Home/Home.jsx";
 import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
-import ViewMenu from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
+import { ViewMenu } from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
 import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
 import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
-import Message from "./pages/Message/Message.jsx";
+import  Message  from './pages/Message/Message.jsx'
+import Menue from "./pages/Restaurant/Menue.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -40,11 +42,21 @@ const router = createBrowserRouter([
         element: <RestaurantDetalis />,
         loader: ({ params }) =>
           fetch(`${import.meta.env.VITE_API_KEY}all-restaurants/${params.id}`),
+        children: [
+          {
+            path: "menu",
+            element: <Menue /> 
+          },
+          {
+            path: "FoodReview",
+            element: <Review />,
+          },
+        ],
       },
-      {
-        path: "/FoodReview",
-        element: <Review />,
-      },
+      // {
+      //   path: "/FoodReview",
+      //   element: <Review />,
+      // },
       {
         path: "/view-menus",
         element: <ViewMenu />,
