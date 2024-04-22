@@ -17,6 +17,13 @@ import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx"
 import Message from "./pages/Message/Message.jsx";
 
 import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
+import UserContextProvider from "./providers/UserContextProvider.jsx";
+import ChatContextProvider from "./providers/ChatContext.jsx";
+
+
+
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -44,6 +51,7 @@ const router = createBrowserRouter([
         path: "/FoodReview",
         element: <Review />,
       },
+      
      
     ],
   },
@@ -74,9 +82,15 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AutocompleteProvider>
     <AuthProviders>
+      <UserContextProvider>
+ 
+
       <React.StrictMode>
         <RouterProvider router={router} />
       </React.StrictMode>
+
+      
+      </UserContextProvider>
     </AuthProviders>
   </AutocompleteProvider>
 );

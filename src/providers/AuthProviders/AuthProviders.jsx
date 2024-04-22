@@ -11,8 +11,10 @@ import {
 import  {app}from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-import { addUserToDatabase } from "../../hooks/api";
-import getUser from "../../hooks/getUser.JS";
+
+
+
+
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -168,18 +170,15 @@ const AuthProviders = ({ children }) => {
       });
   };
 
-  // observer == it helps to give the current situation of user auth
+  // observer 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        getUser(currentUser)
-        console.log(currentUser);
+       
         const locationData = JSON.parse(localStorage.getItem("locationData"));
-        addUserToDatabase(currentUser, locationData, userData, role);
-
         
-        
+         
       } else {
         console.log("User is logged out");
       }

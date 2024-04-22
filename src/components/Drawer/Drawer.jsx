@@ -25,18 +25,6 @@ const Drawer = () => {
     <>
       <div className="bg-white w-96 hidden md:block ">
         <div className="flex flex-col font-semibold text-xl w-64 mx-auto pt-10 h-96">
-<<<<<<< HEAD
-          <Link to="/rest-profile/view-menus" className="pb-4">
-            View Menu
-          </Link>
-          <Link
-            to="/rest-profile/AddItems"
-            className="border-t py-4 border-slate-300"
-          >
-            Add Menu
-          </Link>
-          <Link to="/rest-profile/message" className="border-t py-4 border-slate-300">
-=======
           {!demoUser ? (
             <Link to="/rest-profile/view-menus" className="pb-4">
               View Menu
@@ -54,8 +42,7 @@ const Drawer = () => {
           ) : (
             <></>
           )}
-          <Link to="/" className={`${!demoUser ? 'border-t' : 'border-none'} py-4 border-slate-300`}>
->>>>>>> 8e26ddba07f8a0864c6c54eb1449846ac743047e
+          <Link to="/rest-profile/message" className={`${!demoUser ? 'border-t' : 'border-none'} py-4 border-slate-300`}>
             Messages
           </Link>
           <Link
@@ -72,9 +59,6 @@ const Drawer = () => {
 
       {isOpen ? (
         <>
-<<<<<<< HEAD
-          <div className={`flex  w-60 ml-1 md:hidden h-96 bg-slate-50 rounded-lg absolute top-0 ${isOpen ? "transition-transform translate-x-0 duration-300" : "transition-transform -translate-x-96 duration-300"} `}>
-=======
           <div
             className={`flex w-60 ml-1 md:hidden h-96 bg-slate-50 rounded-lg absolute top-0 ${
               isOpen
@@ -82,7 +66,6 @@ const Drawer = () => {
                 : "transition-transform -translate-x-96 duration-300"
             } `}
           >
->>>>>>> 8e26ddba07f8a0864c6c54eb1449846ac743047e
             <div className="flex flex-col font-semibold text-xl mx-auto justify-center">
               <Link to="/rest-profile/view-menus" className="pb-4">
                 View Menu
@@ -93,7 +76,7 @@ const Drawer = () => {
               >
                 Add Menu
               </Link>
-              <Link to="/" className="border-t py-4 border-slate-300">
+              <Link to="/rest-profile/message" className="border-t py-4 border-slate-300">
                 Messages
               </Link>
               <Link
