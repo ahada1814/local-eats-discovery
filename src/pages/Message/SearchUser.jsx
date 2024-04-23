@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {collection,query,where,getDocs, serverTimestamp, doc, updateDoc, setDoc, getDoc,} from "firebase/firestore";
 import { db } from "../../Firebase/firebase.config";
 
 import { UserContext } from "../../providers/UserContextProvider";
-import firebase from "firebase/compat/app";
+
 const SearchUser = () => {
     const [username, setUsername] = useState("");
     const [user, setUser] = useState(null);
@@ -65,7 +65,9 @@ const SearchUser = () => {
               },
               [combinedId + ".date"]: serverTimestamp(),
             });}
-        } catch (err) {}
+        } catch (err) {
+            console.log(err);
+        }
     
         setUser(null);
         setUsername("")

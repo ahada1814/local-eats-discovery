@@ -1,5 +1,5 @@
 import { doc, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { db } from "../../Firebase/firebase.config";
 import { UserContext } from "../../providers/UserContextProvider";
 
@@ -9,6 +9,11 @@ const BodyText = ({user}) => {
     const [messages, setMessages] = useState([]);
     const { currentUser } = useContext(UserContext);
     
+    const ref = useRef();
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
      //   ! @ # $ % ^ & * ( ) - _ + = [ ] { } \ | ; : ' " , . / < > ? ~ ¢ £ ¥ € 
     const combinedId =
@@ -30,9 +35,9 @@ const BodyText = ({user}) => {
   }, [combinedId]);
 
   return (
-    <div className="overflow-x-auto h-[40vh] mb-1">
+    <div className="overflow-x-auto h-[40vh] mb-1"  >
       {messages.map((message, index) => (
-        <div key={index} className={message.senderId === currentUser.uid ? 'flex justify-end items-end' : 'flex justify-start items-start'}>
+        <div ref={ref} key={index} className={message.senderId === currentUser.uid ? 'flex justify-end items-end' : 'flex justify-start items-start'}>
           
           <p className={message.senderId === currentUser.uid ? 'bg-blue-500 w-fit px-5 py-3 rounded-full text-white font-semibold mt-3' : 'bg-gray-100 font-semibold w-fit px-5 py-3 mt-3 rounded-full'}> {message.message}</p>
           
