@@ -60,7 +60,6 @@ const AuthProviders = ({ children }) => {
 
             // Reverse geocode
             const response = await fromLatLng(latitude, longitude);
-            console.log("Response from fromLatLng:", response);
             const address = response.results[0].formatted_address;
             setAddress(address);
             console.log(address);

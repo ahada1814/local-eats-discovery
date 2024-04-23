@@ -33,15 +33,15 @@ const RestaurantDetalis = () => {
           className="text-white w-24 md:w-40 hover:scale-90 duration-200 absolute top-4 left-4"
         />
       </Link>
-      <div className="bg-[#F5F5F5] w-10/12 h-full mt-32 lg:w-[65%] lg:h-[82%]  mx-auto  rounded-lg py-10">
+      <div className="bg-[#F5F5F5] w-10/12 h-fit xl:h-fit 2xl:h-[82%] mt-32 xl:w-[65%] mx-auto rounded-lg py-10">
         <div>
           {/* banner section */}
           <CommonBannar restaurants={restaurants} />
 
-          <div className="flex flex-col lg:flex-row justify-center mx-5 lg:mx-0 items-center gap-5 mt-5">
+          <div className="flex flex-col xl:flex-row justify-center mx-5 lg:mx-0 items-center gap-5">
             {/* address section */}
             <CommonAddress restaurants={restaurants} />
-            <div className="w-[55%] ">
+            <div className="w-full lg:w-[55%] h-full relative">
               <Outlet></Outlet>
             </div>
           </div>

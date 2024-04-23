@@ -4,10 +4,9 @@ import logo from "../../../assets/logo 1.png";
 import { useEffect, useState } from "react";
 
 export const ViewMenu = () => {
-
-
   const { id } = useParams();
   const [restaurants, setRestaurants] = useState();
+
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_REACT_API}single-restaurant/${id}`)

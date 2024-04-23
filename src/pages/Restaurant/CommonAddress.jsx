@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const CommonAddress = ({ restaurants }) => {
   return (
-    <div className="w-full lg:w-[45%] xl:w-[35%] flex justify-center items-center drop-shadow-2xl">
+    <div className="w-full lg:w-[55%] xl:w-[35%] flex justify-center items-center drop-shadow-2xl">
       <div className="bg-white w-full flex flex-col justify-start items-start mx-auto p-10 rounded-md">
         <h3 className="text-xl font-bold mb-1">
           {restaurants?.restaurant_name

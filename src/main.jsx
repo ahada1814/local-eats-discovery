@@ -16,9 +16,8 @@ import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.
 import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
-import  Message  from './pages/Message/Message.jsx'
+import Message from "./pages/Message/Message.jsx";
 import Menue from "./pages/Restaurant/Menue.jsx";
-
 
 const router = createBrowserRouter([
   {
@@ -45,21 +44,17 @@ const router = createBrowserRouter([
         children: [
           {
             path: "menu",
-            element: <Menue /> 
+            element: <Menue />,
           },
           {
             path: "FoodReview",
             element: <Review />,
           },
+          {
+            path: "view-menus",
+            element: <ViewMenu />,
+          },
         ],
-      },
-      // {
-      //   path: "/FoodReview",
-      //   element: <Review />,
-      // },
-      {
-        path: "/view-menus",
-        element: <ViewMenu />,
       },
     ],
   },
