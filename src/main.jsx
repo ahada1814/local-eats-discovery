@@ -20,6 +20,7 @@ import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx"
 import Menue from "./pages/Restaurant/Menue.jsx";
 import Permission from "./pages/Restaurant/Permission.jsx";
 import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
+import { PrivateRoutes } from "./Routes/PrivateRoutes.jsx";
 
 
 
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "menu",
-            element: <Menue /> 
+            element: <Menue />,
           },
           {
             path: "FoodReview",
@@ -56,17 +57,19 @@ const router = createBrowserRouter([
           },
         ],
       },
-     
-      {
-        path: "/view-menus",
-        element: <ViewMenu />,
-      },
-      
     ],
   },
   {
+    path: "view-menus",
+    element: <ViewMenu />,
+  },
+  {
     path: "/rest-profile/:id",
-    element: <RestProfile />,
+    element: (
+      <PrivateRoutes>
+        <RestProfile />
+      </PrivateRoutes>
+    ),
     loader: ({ params }) =>
       fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
     children: [

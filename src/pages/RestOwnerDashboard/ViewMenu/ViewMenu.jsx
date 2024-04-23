@@ -1,30 +1,32 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CommonBannar from "../../Restaurant/CommonBannar";
 import logo from "../../../assets/logo 1.png";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
+import { fetchRestaurants } from "../../../hooks/api";
 
 export const ViewMenu = () => {
+  const { user } = useContext(AuthContext);
+  const [restaurants, setRestaurants] = useState([]);
 
-
-  const { id } = useParams();
-  const [restaurants, setRestaurants] = useState();
+  console.log(restaurants);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_REACT_API}single-restaurant/${id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch restaurants");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setRestaurants(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching restaurants:", error);
-      });
-  }, [id]);
+    const fetchData = async () => {
+      try {
+        const fetchedRestaurants = await fetchRestaurants();
+        // Filter restaurants based on the ownerEmail matching the logged-in user's email
+        const userRestaurants = fetchedRestaurants.filter(
+          (restaurant) => restaurant.ownerEmail === user.email
+        );
+        setRestaurants(userRestaurants);
+      } catch (error) {
+        // Handle error here
+      }
+    };
 
+    fetchData();
+  }, [user.email]);
 
   return (
     <div className="bgImg flex justify-center relative items-center">
@@ -40,7 +42,16 @@ export const ViewMenu = () => {
           <CommonBannar restaurants={restaurants} />
 
           <div className="flex justify-center items-center gap-5 mt-5">
-            {/* Full Menu Section */}
+            {restaurants.map((restaurant) => (
+              <div key={restaurant._id}>
+                <h2>{restaurant.restaurant_name}</h2>
+                <ul>
+                  {restaurant.food_items.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 const Menue = () => {
@@ -27,27 +28,40 @@ const Menue = () => {
   // Calculate the index range for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = restaurants?.food_items.slice(
+  const currentItems = restaurants?.food_items?.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
 
+  // Total number of pages
+  const totalPages = Math.ceil(
+    (restaurants?.food_items?.length || 0) / itemsPerPage
+  );
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
   return (
-    <>
+    <div className="">
       <h5
-        className={`text-3xl flex border w-96 ${
+        className={`text-3xl mb-5 mt-5 flex w-96 ${
           !restaurants?.food_items[0] ? "text-center" : ""
         } font-bold mb-3`}
       >
         {!restaurants?.food_items[0] ? "No Items..." : "Trending Orders"}
       </h5>
       <div className="">
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 2xl:mb-0 mb-2 gap-5 2xl:gap-2">
           {currentItems?.map((f, index) => (
             <div key={index} className="drop-shadow-2xl">
-              <div className="flex justify-center items-center gap-4 bg-white py-2 px-2 rounded-md">
+              <div className="flex justify-center items-center gap-2 h-32 bg-white py-2 px-2 rounded-md">
                 <div className="flex flex-col justify-start items-start">
-                  <h3 className="text-xl font-semibold">{f?.menuName}</h3>
+                  <h3 className="text-lg font-semibold">{f?.menuName}</h3>
                   <p className="mt-2 text-gray-600">
                     {f?.personPerPlatter} persons
                   </p>
@@ -62,15 +76,30 @@ const Menue = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-end">
-          {restaurants?.food_items.length > itemsPerPage && (
-            <button className="" onClick={() => setCurrentPage((prevPage) => prevPage + 1)}>
-              Next Page
-            </button>
-          )}
+        <div className="flex justify-between items-center">
+          <button
+            className="flex items-center gap-3 mt-3"
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+          >
+            <div className="p-3 rounded-full bg-orange-500 text-white">
+              <FaChevronLeft />
+            </div>
+            <div className="font-bold">Previous</div>
+          </button>
+          <button
+            className="flex items-center gap-3 mt-3"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            <div className="font-bold">Next</div>
+            <div className="p-3 rounded-full bg-orange-500 text-white">
+              <FaChevronRight />
+            </div>
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -9,18 +9,18 @@ import { GridLoader } from "react-spinners";
 
 const BannerSecrion = () => {
   const fileInputRef = useRef(null);
-  const { uploadImage, loading } = useContext(AuthContext);
-  const [localImageUrl, setLocalImageUrl] = useState()
+  const { uploadImage, loading, user } = useContext(AuthContext);
+  const [localImageUrl, setLocalImageUrl] = useState();
 
+  console.log(user);
 
   useEffect(() => {
     // Check if there's an uploaded image URL in local storage
-    const uploadedImageUrl = localStorage.getItem('uploadedImageUrl');
+    const uploadedImageUrl = localStorage.getItem("uploadedImageUrl");
     if (uploadedImageUrl) {
       setLocalImageUrl(uploadedImageUrl);
     }
   }, []);
-
 
   // Function to handle file selection
   const handleImageChange = async (e) => {
@@ -29,7 +29,7 @@ const BannerSecrion = () => {
       try {
         const imageUrl = await uploadImage(file);
         // Store the uploaded image URL in local storage
-        localStorage.setItem('uploadedImageUrl', imageUrl);
+        localStorage.setItem("uploadedImageUrl", imageUrl);
         setLocalImageUrl(imageUrl);
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -39,6 +39,8 @@ const BannerSecrion = () => {
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
+
+  const demoUser = "user";
 
   return (
     <div className="coverImg text-white flex relative justify-start  items-end ">
@@ -76,15 +78,24 @@ const BannerSecrion = () => {
                   className="w-[100px] h-[100px] rounded-lg"
                 />
               ) : (
-                <img src={person} className="w-[100px] h-[100px] rounded-lg" />
+                <img
+                  src={user?.photoURL ? user?.photoURL : person}
+                  className="w-[100px] h-[100px] rounded-lg"
+                />
               )}
             </>
           )}
         </div>
         <div>
-          <h3 className="text-2xl font-bold text-[#EA6A12]">Devon Lane</h3>
+          <h3 className="text-2xl font-bold text-[#EA6A12]">
+            {user?.displayName}
+          </h3>
           <h3 className="md:text-2xl text-xl font-bold text-black">
-            Barishal Gate The Restaurant
+            {demoUser == "owner" ? (
+              <p>{user?.location?.address}</p>
+            ) : (
+              <p>{user?.email}</p>
+            )}
           </h3>
         </div>
       </div>

@@ -13,9 +13,12 @@ const Modal = () => {
   
   const {user} = useContext(AuthContext)
 
+  console.log(user);
+
   let email = user?.email
   let uid = user?.uid
-  let image = user?.image
+  let image = user?.photoURL
+  let name = user?.displayName
   
   const handleRatingChange = (newRating) => {
     setRating(newRating);
@@ -32,7 +35,7 @@ const Modal = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ rating, comment, email, uid, uniqueId, image }),
+        body: JSON.stringify({ rating, comment, email, uid, uniqueId, image, name }),
       });
 
       if (response.ok) {

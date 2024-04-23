@@ -11,7 +11,7 @@ import {
 import { app } from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-import { fetchRestaurants } from "../../hooks/api";
+import {fetchRestaurants } from "../../hooks/api";
 import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
 export const AuthContext = createContext(null);
@@ -60,7 +60,6 @@ const AuthProviders = ({ children }) => {
 
             // Reverse geocode
             const response = await fromLatLng(latitude, longitude);
-            console.log("Response from fromLatLng:", response);
             const address = response.results[0].formatted_address;
             setAddress(address);
             console.log(address);

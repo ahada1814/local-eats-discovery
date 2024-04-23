@@ -3,6 +3,7 @@ import { IoStar } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import Swal from "sweetalert2";
+import demoRes from "../../assets/images (7).jpeg";
 
 const ResturantsCards = ({ restaurant }) => {
   const { user } = useContext(AuthContext);
@@ -41,7 +42,11 @@ const ResturantsCards = ({ restaurant }) => {
             className="md:w-40 border rounded-md"
             width={1080}
             height={720}
-            src={restaurant?.image}
+            src={
+              restaurant?.food_items[0]?.photos
+                ? restaurant?.food_items[0]?.photos
+                : demoRes
+            }
             alt=""
           />
         </Link>

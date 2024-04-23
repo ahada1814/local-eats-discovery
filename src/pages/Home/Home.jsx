@@ -29,10 +29,7 @@ export const Home = () => {
     try {
       // Fetch restaurants
       const restaurants = await fetchRestaurants();
-  
 
-      console.log(selectedPlace.latitude, selectedPlace.longitude);
-      console.log(restaurants);
 
       // Filter restaurants
       const filtered = filterRestaurantsByDistance(
@@ -43,7 +40,6 @@ export const Home = () => {
       );
       
       setFilteredRestaurantsState(filtered);
-      console.log(filtered);
     } catch (error) {
       console.error("Error fetching and filtering restaurants:", error);
     }
@@ -138,9 +134,6 @@ export const Home = () => {
           // filteredRestaurants={filteredRestaurants}
           filteredRestaurantsState={filteredRestaurantsState}
         />
-        <h1 className="font-bold text-orange-400 text-3xl">
-          {selectedPlace?.latitude}
-        </h1>
       </div>
     </>
   );
