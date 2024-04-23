@@ -19,6 +19,7 @@ import { ViewMenu } from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
 import UserContextProvider from "./providers/UserContextProvider.jsx";
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 import Menue from "./pages/Restaurant/Menue.jsx";
+import Permission from "./pages/Restaurant/Permission.jsx";
 
 
 const router = createBrowserRouter([
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: "edit-profile",
         element: <EditProfile />,
+      },
+      {
+        path: "permission",
+        element: <Permission />,
       },
       // {
       //   path: "owner-profile",

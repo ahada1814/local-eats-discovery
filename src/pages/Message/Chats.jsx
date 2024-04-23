@@ -2,11 +2,15 @@ import { collection, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore
 import { useContext, useEffect, useState } from "react";
 import { db } from "../../Firebase/firebase.config";
 import { UserContext } from "../../providers/UserContextProvider";
+import { fetchRestaurants } from "../../hooks/api";
 
 const Chats = ({handelUid,combinedId}) => {
     // const [lastMessage,setLastMessage] = useState(null)
     const [allUsers, setAllUsers] = useState([]);
     const { currentUser } = useContext(UserContext);
+
+
+
    
     useEffect(() => {
         const fetchAllUsers = async () => {
@@ -16,6 +20,10 @@ const Chats = ({handelUid,combinedId}) => {
             const usersData = usersSnapshot.docs.map(doc => doc.data());
             const filteredUsers = usersData.filter(user => user.uid !== currentUser.uid);
             setAllUsers(filteredUsers);
+
+
+            const restaurants = await fetchRestaurants()
+            console.log(restaurants);
           } catch (error) {
             console.error("Error fetching all users:", error);
             // Handle error

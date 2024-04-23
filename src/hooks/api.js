@@ -34,6 +34,36 @@ export const addUserToDatabase = async (
     .catch((error) => console.error("Error adding user", error));
 };
 
+
+export const changeUserRole = async (id) => {
+
+  const url = `${import.meta.env.VITE_REACT_API}get-users/${id}`; 
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({role:'owner'}) 
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const updatedData = await response.json(); 
+    console.log('Data updated:', updatedData);
+    
+  } catch (error) {
+    console.error('Error updating data:', error);
+   
+  }
+
+}
+
+
 // For fetching All the Restaurants
 export const fetchRestaurants = async () => {
   try {

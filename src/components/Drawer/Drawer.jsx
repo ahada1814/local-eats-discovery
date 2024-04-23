@@ -57,6 +57,14 @@ const Drawer = () => {
           ) : (
             <></>
           )}
+
+          {demoUser == "owner" ? (
+            <Link to="permission" className="border-t py-4 border-slate-300">
+              Rest permission
+            </Link>
+          ) : (
+            <></>
+          )}
           <button
             onClick={userLogOut}
             className="border-t flex py-4 border-slate-300"
