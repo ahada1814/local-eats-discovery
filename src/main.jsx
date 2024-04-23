@@ -12,7 +12,6 @@ import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
 import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
-// import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
 import Message from "./pages/Message/Message.jsx";
 import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
 import { ViewMenu } from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
@@ -20,6 +19,8 @@ import UserContextProvider from "./providers/UserContextProvider.jsx";
 import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
 import Menue from "./pages/Restaurant/Menue.jsx";
 import Permission from "./pages/Restaurant/Permission.jsx";
+import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
+
 
 
 const router = createBrowserRouter([
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+     
       {
         path: "/view-menus",
         element: <ViewMenu />,
@@ -84,10 +86,10 @@ const router = createBrowserRouter([
         path: "permission",
         element: <Permission />,
       },
-      // {
-      //   path: "owner-profile",
-      //   element: <OwnerProfile />,
-      // },
+      {
+        path: "owner-profile",
+        element: <OwnerProfile />,
+      },
       {
         path: "message",
         element: <Message />,
