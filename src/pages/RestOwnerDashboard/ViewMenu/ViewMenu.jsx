@@ -1,12 +1,17 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CommonBannar from "../../Restaurant/CommonBannar";
 import logo from "../../../assets/logo 1.png";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
 
 export const ViewMenu = () => {
-  const { id } = useParams();
+  const {user} = useContext(AuthContext)
   const [restaurants, setRestaurants] = useState();
 
+
+  console.log(restaurants);
+
+  const id = user?.uid
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_REACT_API}single-restaurant/${id}`)
