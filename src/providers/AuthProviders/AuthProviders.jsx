@@ -198,6 +198,7 @@ const AuthProviders = ({ children }) => {
         console.log("User is logged out");
         localStorage.removeItem("uploadedImageUrl", imageUrl);
         localStorage.removeItem("locationData");
+        localStorage.removeItem("hasDataPosted");
       }
     });
 

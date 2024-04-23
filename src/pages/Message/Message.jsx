@@ -7,9 +7,9 @@ import avater from "../../assets/person.png";
 import { IoVideocam, IoCall } from "react-icons/io5";
 import { MdInfo } from "react-icons/md";
 import { MdStars } from "react-icons/md";
-
 import Input from "./Input";
 import Chats from "./Chats";
+
 const Message = () => {
   const { currentUser } = useContext(UserContext);
   const [user, setUser] = useState([]);
@@ -26,71 +26,73 @@ const Message = () => {
       : user.uid + currentUser.uid;
 
   return (
-    <div className="w-full pe-5 ps-5">
-      {/* top section */}
-      <div className="flex flex-col items-start justify-start gap-1 w-full  ">
-        <div className="grid grid-cols-2 gap-1 justify-center items-center w-full bg-gray-50 p-4 drop-shadow">
-          <div className="flex justify-start items-start">
-            <div className="flex justify-center items-start gap-2 ">
+    <div className="w-[80%]">
+      <div className="pe-5 ps-5">
+        {/* top section */}
+        <div className="flex flex-col items-start justify-start gap-1 w-full">
+          <div className="grid grid-cols-2 gap-1 justify-center items-center w-full bg-gray-50 p-4 drop-shadow">
+            <div className="flex justify-start items-start">
+              <div className="flex justify-center items-start gap-2 ">
+                <img
+                  src={currentUser?.photoURL}
+                  alt=""
+                  className="rounded-full w-12"
+                />
+                <h5 className="text-2xl font-bold">
+                  {currentUser?.displayName}
+                </h5>
+              </div>
+            </div>
+
+            <div className="flex  justify-end items-center gap-3">
+              <div>
+                <span className="text-xl font-bold">{user?.displayName} </span>
+                {user?.displayName && (
+                  <div className="text-sm flex justify-center items-center gap-2">
+                    <span>Woner</span>
+                    <span className="text-sm text-blue-500">
+                      <MdStars />
+                    </span>
+                  </div>
+                )}
+              </div>
               <img
-                src={currentUser?.photoURL}
+                src={user?.photoURL ? user?.photoURL : avater}
                 alt=""
-                className="rounded-full w-12"
+                className="w-12 rounded-full ring-2 hover:ring-4 duration-100"
               />
-              <h5 className="text-2xl font-bold">{currentUser?.displayName}</h5>
-            </div>
-          </div>
-
-          <div className="flex  justify-end items-center gap-3">
-            <div>
-              <span className="text-xl font-bold">{user?.displayName} </span>
-              {user?.displayName && (
-                <div className="text-sm flex justify-center items-center gap-2">
-                  <span>Woner</span>
-                  <span className="text-sm text-blue-500">
-                    <MdStars />
-                  </span>
+              <div className="flex justify-center items-center gap-2 text-2xl text-blue-500">
+                <div>
+                  <IoCall />
                 </div>
-              )}
-            </div>
-            <img
-              src={user?.photoURL ? user?.photoURL : avater}
-              alt=""
-              className="w-12 rounded-full ring-2 hover:ring-4 duration-100"
-            />
-            <div className="flex justify-center items-center gap-2 text-2xl text-blue-500">
-              <div>
-                <IoCall />
-              </div>
-              <div>
-                <IoVideocam />
-              </div>
-              <div>
-                <MdInfo />
+                <div>
+                  <IoVideocam />
+                </div>
+                <div>
+                  <MdInfo />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+        {/* lower section */}
+        <div className="flex ">
+          <div className="w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll">
+            <SearchUser />
 
-      {/* lower section */}
+            <div className="bg-white drop-shadow-sm p-3 border-spacing-1 mb-2 font-bold ">
+              All Message
+            </div>
 
-      <div className="flex ">
-        <div className="w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll">
-          <SearchUser />
-
-          <div className="bg-white drop-shadow-sm p-3 border-spacing-1 mb-2 font-bold ">
-            All Message
+            <Chats handelUid={handelUid} combinedId={combinedId} />
           </div>
-
-          <Chats handelUid={handelUid} combinedId={combinedId} />
-        </div>
-        <div className="flex flex-col justify-end items-end w-full">
-          <div className="h-[90%] w-full">
-            <BodyText user={user} />
-          </div>
-          <div className="h-[10%] w-full">
-            <Input user={user} />
+          <div className="flex flex-col justify-end items-end w-full">
+            <div className="h-[90%] w-full">
+              <BodyText user={user} />
+            </div>
+            <div className="h-[10%] w-full">
+              <Input user={user} />
+            </div>
           </div>
         </div>
       </div>
