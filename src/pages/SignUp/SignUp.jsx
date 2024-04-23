@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo 1.png";
 
 const SignUp = () => {
-  const { createUserWithEmail, googleLogin } = useContext(AuthContext);
+  const { createUserWithEmail, googleLogin,user} = useContext(AuthContext);
   const navigate = useNavigate();
+  
+  console.log(user);
   
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
     console.log(values);
@@ -20,16 +22,9 @@ const SignUp = () => {
         values.number
       );
 
-      // update(values.userName)
-      //   .then(() => {
-      //     console.log('kisu akta hoise');
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.message);
-      //   });
-
       if (userCreateResponse) {
         setSubmitting(false);
+        console.log(user[0]);
         navigate("/");
       } else {
         console.log("Failed to create a User");
@@ -45,14 +40,14 @@ const SignUp = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      const userCredential = await googleLogin(); // Await googleLogin() call
-      console.log("Login successful", userCredential);
+     await googleLogin();
       navigate("/");
+      
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
-
+  
   return (
     <div
       style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}

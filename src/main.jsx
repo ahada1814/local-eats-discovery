@@ -7,8 +7,6 @@ import SignUp from "./pages/SignUp/SignUp.jsx";
 import SignIn from "./pages/SignIn/SignIn.jsx";
 import RestaurantDetalis from "./pages/Restaurant/RestaurantDetalis.jsx";
 import Review from "./pages/Restaurant/Review.jsx";
-import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
-import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import { Home } from "./pages/Home/Home.jsx";
 import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
 import { ViewMenu } from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
@@ -19,6 +17,17 @@ import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
 import Message from "./pages/Message/Message.jsx";
 import Menue from "./pages/Restaurant/Menue.jsx";
 import { PrivateRoutes } from "./Routes/PrivateRoutes.jsx";
+import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
+import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
+import UserContextProvider from "./providers/UserContextProvider.jsx";
+
+
+
+
+
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -96,9 +105,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AutocompleteProvider>
     <AuthProviders>
+      <UserContextProvider>
       <React.StrictMode>
         <RouterProvider router={router} />
       </React.StrictMode>
+      </UserContextProvider>
     </AuthProviders>
   </AutocompleteProvider>
 );

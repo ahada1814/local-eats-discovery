@@ -30,6 +30,7 @@ export const Home = () => {
       // Fetch restaurants
       const restaurants = await fetchRestaurants();
 
+
       // Filter restaurants
       const filtered = filterRestaurantsByDistance(
         restaurants,

@@ -40,7 +40,7 @@ const Drawer = () => {
             <></>
           )}
           <Link
-            to="/"
+            to="message"
             className={`${
               demoUser == "owner" ? "border-t" : "border-none"
             } py-4 border-slate-300`}
@@ -85,7 +85,7 @@ const Drawer = () => {
               >
                 Add Menu
               </Link>
-              <Link to="/" className="border-t py-4 border-slate-300">
+              <Link to="/rest-profile/message" className="border-t py-4 border-slate-300">
                 Messages
               </Link>
               <Link
