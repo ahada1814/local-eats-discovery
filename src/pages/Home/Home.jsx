@@ -2,7 +2,7 @@ import logo from "/src/assets/logo 1.png";
 import searchIcon from "/src/assets/search.svg";
 import fidget from "/src/assets/fidget.svg";
 import "./home.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { Link } from "react-router-dom";
 import Location from "./Location";
@@ -10,9 +10,10 @@ import { LogOut } from "../../components/LogOut/LogOut";
 import { Autocomplete } from "@react-google-maps/api";
 import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
 import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
+import { fetchRestaurants } from "../../hooks/api";
 
 export const Home = () => {
-  const { logOut, user } = useContext(AuthContext);
+  const { logOut, user, filteredRestaurants } = useContext(AuthContext);
   const {
     autocompleteRef,
     handlePlaceSelect,
@@ -21,33 +22,40 @@ export const Home = () => {
     mapLoading,
   } = useAutocomplete();
 
+  const [filteredRestaurantsState, setFilteredRestaurantsState] = useState(filteredRestaurants || []);
 
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-
-  // console.log(filteredRestaurants);
 
   const fetchAndFilterRestaurants = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_API}all-restaurants`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch restaurants");
-      }
-      const restaurants = await response.json();
+      // Fetch restaurants
+      const restaurants = await fetchRestaurants();
+  
 
+      console.log(selectedPlace.latitude, selectedPlace.longitude);
+      console.log(restaurants);
+
+      // Filter restaurants
       const filtered = filterRestaurantsByDistance(
         restaurants,
-        selectedPlace.longitude,
         selectedPlace.latitude,
-        10
+        selectedPlace.longitude,
+        1
       );
-
-      setFilteredRestaurants(filtered);
+      
+      setFilteredRestaurantsState(filtered);
+      console.log(filtered);
     } catch (error) {
       console.error("Error fetching and filtering restaurants:", error);
     }
   };
+
+
+  useEffect(() => {
+    if (selectedPlace?.latitude && selectedPlace?.longitude) {
+      fetchAndFilterRestaurants();
+    }
+  }, [selectedPlace]);
+
 
   return (
     <>
@@ -127,7 +135,8 @@ export const Home = () => {
         </div>
         <Location
           selectedPlace={selectedPlace}
-          filteredRestaurants={filteredRestaurants}
+          // filteredRestaurants={filteredRestaurants}
+          filteredRestaurantsState={filteredRestaurantsState}
         />
         <h1 className="font-bold text-orange-400 text-3xl">
           {selectedPlace?.latitude}

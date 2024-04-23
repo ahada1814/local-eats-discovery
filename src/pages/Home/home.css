@@ -10,7 +10,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    height: 100vh; /* Default height for large devices */
+    height: 150vh; /* Default height for large devices */
 
     /* Media query for small devices */
     @media only screen and (max-width: 767px) {

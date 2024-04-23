@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 const SignInForm = ({ handledUserCreation, handleGoogleLogin }) => {
   return (
-    <div className="flex items-center w-full justify-center font-roboto">
-      <div className="bg-[#3D83D9] bg-opacity-70 p-8 w-3/12 rounded-md">
+    <div className="flex items-center w-full justify-center font-roboto mt-7 lg:mt-0">
+      <div className="bg-[#3D83D9] bg-opacity-70 p-8 border w-11/12 md:w-1/2 xl:w-3/12 rounded-md">
         <div className="mb-5 flex flex-col gap-3 items-start text-white">
           <div className="flex justify-between items-center w-full mb-5">
             <h1 className="font-bold text-2xl">Log in</h1>

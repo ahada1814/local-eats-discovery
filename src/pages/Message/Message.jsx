@@ -60,7 +60,7 @@ const Message = () => {
                 </div>
             </div>
 
-                {/* lower section */}
+      {/* lower section */}
 
                 <div className='flex '>
                     <div className='w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll'>

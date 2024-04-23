@@ -8,13 +8,11 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import  {app}from "../../Firebase/firebase.config";
+import { app } from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-
-
-
-
+import {fetchRestaurants } from "../../hooks/api";
+import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -27,46 +25,66 @@ const AuthProviders = ({ children }) => {
   const [address, setAddress] = useState(); // getting the address
   const [role, setRole] = useState("");
   const [number, setNumber] = useState();
-  const [userData, setUserData] = useState('');
-
-  // console.log(currentLocation, address);
-
+  const [userData, setUserData] = useState("");
+  const [imageUrl, setImageUrl] = useState();
+  const [restaurants, setRestaurants] = useState();
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   const provider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    const fetchRestaurantsData = async () => {
+      try {
+        const restaurants = await fetchRestaurants();
+        setRestaurants(restaurants);
+      } catch (error) {
+        console.error("Error fetching restaurants:", error);
+      }
+    };
+    fetchRestaurantsData();
+  }, []);
 
   // For Location
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
+        async (position) => {
+          try {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
 
-          setCurrentLocation({
-            latitude,
-            longitude,
-          });
-        // revrse geo code
-          fromLatLng(position.coords.latitude, position.coords.longitude)
-            .then((response) => {
-              // console.log(response);
-              const address = response.results[0].formatted_address;
-              setAddress(address);
-            
-              localStorage.setItem(
-                "locationData",
-                JSON.stringify({
-                  latitude,
-                  longitude,
-                  address,
-                })
-              );
-            })
-            .catch((error) => {
-              console.error("Error fetching address:", error);
+            setCurrentLocation({
+              latitude,
+              longitude,
             });
-        },
 
+            // Reverse geocode
+            const response = await fromLatLng(latitude, longitude);
+            console.log("Response from fromLatLng:", response);
+            const address = response.results[0].formatted_address;
+            setAddress(address);
+            console.log(address);
+            const restaurants = await fetchRestaurants();
+
+            const filtered = filterRestaurantsByDistance(
+              restaurants,
+              latitude,
+              longitude,
+              1
+            );
+            setFilteredRestaurants(filtered);
+            localStorage.setItem(
+              "locationData",
+              JSON.stringify({
+                latitude,
+                longitude,
+                address,
+              })
+            );
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        },
         (error) => {
           console.error("Error getting geolocation:", error);
         }
@@ -79,7 +97,7 @@ const AuthProviders = ({ children }) => {
   // User created with email
   const createUserWithEmail = async (email, password, displayName, number) => {
     setUserData(displayName);
-    setNumber(number)
+    setNumber(number);
     setLoading(true);
 
     // console.log(email, password, displayName, number, "recent");
@@ -87,11 +105,11 @@ const AuthProviders = ({ children }) => {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password,
+        password
       );
       const user = userCredential.user;
       // await updateProfile(user, { displayName });
-      await update(displayName)
+      await update(displayName);
 
       localStorage.setItem("user", JSON.stringify(user));
 
@@ -113,12 +131,11 @@ const AuthProviders = ({ children }) => {
 
   const update = async (userName) => {
     setLoading(true);
-    setUserData(userName)
+    setUserData(userName);
     return await updateProfile(auth.currentUser, {
       displayName: userName,
     });
   };
-
 
   // Email Login
   const loginWithEmail = async (email, password) => {
@@ -148,7 +165,7 @@ const AuthProviders = ({ children }) => {
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result.user, 'ki bal kam kore na?');
+      console.log(result.user, "ki bal kam kore na?");
       setUser(result.user);
       return result; // Return the result
     } catch (error) {
@@ -177,18 +194,19 @@ const AuthProviders = ({ children }) => {
         setUser(currentUser);
        
         const locationData = JSON.parse(localStorage.getItem("locationData"));
-        
+        console.log(locationData);
          
       } else {
         console.log("User is logged out");
+        localStorage.removeItem("uploadedImageUrl", imageUrl);
+        localStorage.removeItem("locationData");
       }
     });
-  
+
     setLoading(false);
-  
+
     return () => unsubscribe();
-  }, [user, role, userData]);
-  
+  }, [user]);
 
   useEffect(() => {
     // console.log(user);
@@ -211,6 +229,32 @@ const AuthProviders = ({ children }) => {
     }
   }, [user]);
 
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMAGEBB_UPLOAD_API_KEY
+        }`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      setImageUrl(data.data.url);
+
+      return data.data.url;
+    } catch (error) {
+      setLoading(false);
+
+      console.error("Error uploading image:", error);
+      throw error;
+    }
+  };
+
   const authInfo = {
     loading,
     user,
@@ -222,8 +266,12 @@ const AuthProviders = ({ children }) => {
     currentLocation,
     address,
     userData,
-    update, 
-    number
+    update,
+    number,
+    uploadImage,
+    imageUrl,
+    filteredRestaurants,
+    restaurants,
   };
 
   return (
