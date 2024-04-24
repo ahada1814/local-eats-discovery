@@ -10,15 +10,23 @@ const UserContextProvider = ({ children }) => {
     const [loading,setLoading] = useState(true)
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth,async (user) => {
-            setCurrentUser(user);
-            setLoading(false)
-            const userData = { displayName: currentUser?.displayName, email: currentUser?.email,photoURL: currentUser?.photoURL,  };
-        await addUserToDatabase(currentUser, userData);
-        });
-
-        return () => unsubscribe();
-    }, [currentUser]);
+        const fetchData = async () => {
+            const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                setCurrentUser(user);
+                setLoading(false);
+                const userData = { displayName: user?.displayName, email: user?.email, photoURL: user?.photoURL };
+                await addUserToDatabase(user, userData);
+            });
+    
+            return unsubscribe; 
+        };
+    
+        const unsubscribe = fetchData(); 
+    
+        return () => {
+            unsubscribe();
+        };
+    }, []);
 
     return (
         <UserContext.Provider value={{ currentUser }}>

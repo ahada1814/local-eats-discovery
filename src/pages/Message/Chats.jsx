@@ -59,8 +59,6 @@ const replaceDisplayImg = (email) => {
   const restaurant = restaurants.find(restaurant => restaurant.ownerEmail === email);
   return restaurant ? restaurant.restaurant_img : '';
 };
-   console.log(messages);
-   console.log(combinedId);
   
    
     return (

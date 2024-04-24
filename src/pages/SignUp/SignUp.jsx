@@ -24,7 +24,7 @@ const SignUp = () => {
 
       if (userCreateResponse) {
         setSubmitting(false);
-        console.log(user[0]);
+        console.log(userCreateResponse);
         navigate("/");
       } else {
         console.log("Failed to create a User");
@@ -50,7 +50,7 @@ const SignUp = () => {
   
   return (
     <div
-      style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}
+      style={{ backgroundImage: `url(${bgImage})`, height: "110vh" }}
       className="bg-no-repeat bg-cover"
     >
       <div className="flex gap-2 justify-end pt-6 pr-10">

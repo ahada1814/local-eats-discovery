@@ -12,7 +12,8 @@ const addUserToDatabase = async (user, userData) => {
       uid: user?.uid,
       displayName: userData?.displayName,
       email: userData?.email,
-      photoURL: userData?.photoURL
+      photoURL: userData?.photoURL,
+      role: 'user',
       // Add other user data as needed
     };
     await setDoc(userDocRef, userDataForFirestore);

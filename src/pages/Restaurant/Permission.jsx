@@ -12,7 +12,7 @@ const Permission = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  const handelRoleChange =(id,role) => {
+  const handelRoleChange =async (id,role,name) => {
 
     if (role == 'owner') {
         Swal.fire({
@@ -22,8 +22,15 @@ const Permission = () => {
            
           });
           return
+    } else{
+       // update User Role to firebase Database
+        const isUpdate = await changeUserRole(id,name)
+        console.log(isUpdate);
+      // update User Role to firebase Database
+
     }
-    changeUserRole(id)
+   
+
   }
   return (
     <div className="container mx-auto px-5">
@@ -39,7 +46,7 @@ const Permission = () => {
             </div>
             {/* Add more fields as needed */}
            <div className='flex justify-center items-center flex-col gap-5 text-white'>
-           <p className='bg-yellow-400  px-2 py-1 flex justify-center items-center rounded-full cursor-pointer' onClick={() => handelRoleChange(user._id,user.role)}>{user.role ==  'owner'? 'Alrady Owner' : 'Make owner'}</p>
+           <p className='bg-yellow-400  px-2 py-1 flex justify-center items-center rounded-full cursor-pointer' onClick={() => handelRoleChange(user._id,user.role,user.name)}>{user.role ==  'owner'? 'Alrady Owner' : 'Make owner'}</p>
            <p disabled={user.role === 'owner'} className='font-semibold h-6 px-3 py-2 flex justify-center items-center rounded-full text-black'>{user.role}</p>
            </div>
           </div>

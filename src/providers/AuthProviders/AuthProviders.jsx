@@ -11,7 +11,7 @@ import {
 import { app } from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-import {fetchRestaurants } from "../../hooks/api";
+import {addUserToDatabase, fetchRestaurants } from "../../hooks/api";
 import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
 export const AuthContext = createContext(null);
@@ -164,7 +164,6 @@ const AuthProviders = ({ children }) => {
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result.user, "ki bal kam kore na?");
       setUser(result.user);
       return result; // Return the result
     } catch (error) {
@@ -191,6 +190,7 @@ const AuthProviders = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        await addUserToDatabase(currentUser)
         const locationData = JSON.parse(localStorage.getItem("locationData"));
         console.log(locationData);
          
@@ -205,7 +205,7 @@ const AuthProviders = ({ children }) => {
     setLoading(false);
 
     return () => unsubscribe();
-  }, [user]);
+  }, [imageUrl]);
 
   useEffect(() => {
     // console.log(user);

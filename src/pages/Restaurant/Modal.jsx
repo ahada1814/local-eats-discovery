@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 // import { FaStar } from "react-icons/fa";
 
 const Modal = () => {
@@ -42,6 +43,8 @@ const Modal = () => {
         setRating(0);
         setComment("");
         console.log("submitted successfully");
+       
+    
       } else {
         const errorMessage = await response.text();
         alert(`Error: ${errorMessage}`);
@@ -53,7 +56,7 @@ const Modal = () => {
       );
     }
   };
-
+ 
   return (
     <div>
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
