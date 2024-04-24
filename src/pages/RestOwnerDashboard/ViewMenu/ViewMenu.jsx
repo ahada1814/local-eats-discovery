@@ -17,7 +17,7 @@ export const ViewMenu = () => {
         const fetchedRestaurants = await fetchRestaurants();
         // Filter restaurants based on the ownerEmail matching the logged-in user's email
         const userRestaurants = fetchedRestaurants.filter(
-          (restaurant) => restaurant.ownerEmail === user.email
+          (restaurant) => restaurant?.ownerEmail === user.email
         );
         setRestaurants(userRestaurants);
       } catch (error) {
@@ -26,7 +26,7 @@ export const ViewMenu = () => {
     };
 
     fetchData();
-  }, [user.email]);
+  }, [user?.email]);
 
   return (
     <div className="bgImg flex justify-center relative items-center">
@@ -44,12 +44,32 @@ export const ViewMenu = () => {
           <div className="flex justify-center items-center gap-5 mt-5">
             {restaurants.map((restaurant) => (
               <div key={restaurant._id}>
-                <h2>{restaurant.restaurant_name}</h2>
-                <ul>
-                  {restaurant.food_items.map((item, index) => (
-                    <li key={index}>{item}</li>
+                <div className="grid grid-cols-6 gap-6">
+                  {restaurant?.food_items.map((f, index) => (
+                    <div key={index} className="drop-shadow-2xl">
+                      <div className="flex justify-center items-center gap-2 h-36 bg-white py-2 px-2 rounded-md">
+                        <div className="flex flex-col justify-start items-start">
+                          <h3 className="text-lg font-semibold">
+                            {f?.menuName}
+                          </h3>
+                          <p className="mt-2 text-gray-600">
+                            {f?.personPerPlatter} persons
+                          </p>
+                          <p className="mt-2 text-[#EA6A12] font-semibold">
+                            ${f?.price}
+                          </p>
+                        </div>
+                        <div>
+                          <img
+                            src={f?.photos}
+                            alt=""
+                            className="w-[70px] rounded-lg"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </div>

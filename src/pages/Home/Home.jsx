@@ -131,7 +131,6 @@ export const Home = () => {
         </div>
         <Location
           selectedPlace={selectedPlace}
-          // filteredRestaurants={filteredRestaurants}
           filteredRestaurantsState={filteredRestaurantsState}
         />
       </div>

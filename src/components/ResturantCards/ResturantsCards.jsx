@@ -3,7 +3,6 @@ import { IoStar } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import Swal from "sweetalert2";
-import demoRes from "../../assets/images (7).jpeg";
 
 const ResturantsCards = ({ restaurant }) => {
   const { user } = useContext(AuthContext);
@@ -11,7 +10,7 @@ const ResturantsCards = ({ restaurant }) => {
   const handleAlert = () => {
     Swal.fire({
       title: "Sign Up / Sign In To Visit The Restaurant",
-      confirmButtonColor: "#EA6A12", // Set the color of the "OK" button
+      confirmButtonColor: "#EA6A12",
     });
   };
 
@@ -43,9 +42,9 @@ const ResturantsCards = ({ restaurant }) => {
             width={1080}
             height={720}
             src={
-              restaurant?.food_items[0]?.photos
+              !restaurant?.restaurant_img
                 ? restaurant?.food_items[0]?.photos
-                : demoRes
+                : restaurant?.restaurant_img
             }
             alt=""
           />
