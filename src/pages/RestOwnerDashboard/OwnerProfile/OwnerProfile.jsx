@@ -12,8 +12,15 @@ export const OwnerProfile = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
-    useAutocomplete();
+  const {
+    autocompleteRef,
+    handlePlaceSelect,
+    isLoaded,
+    selectedPlace,
+    mapLoading,
+  } = useAutocomplete();
+
+  console.log(selectedPlace);
 
   const { user, number, uploadImage } = useContext(AuthContext);
 
@@ -60,7 +67,6 @@ export const OwnerProfile = () => {
           longitude: selectedPlace?.longitude || longitude,
         },
       };
-
 
       const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
 
@@ -190,7 +196,7 @@ export const OwnerProfile = () => {
           <div className="bg-white w-full p-4 rounded-md flex flex-col space-y-1">
             <span className="text-xs">Address</span>
             {isEditingEmail ? (
-              <>
+              <div className="flex justify-between items-center">
                 {isLoaded && (
                   <Autocomplete
                     onLoad={(autocomplete) =>
@@ -212,7 +218,15 @@ export const OwnerProfile = () => {
                     />
                   </Autocomplete>
                 )}
-              </>
+                {mapLoading ? (
+                  <AiOutlineLoading3Quarters
+                    size={24}
+                    className="animate-spin text-yellow-400"
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
             ) : (
               <input
                 type="address"
@@ -233,11 +247,11 @@ export const OwnerProfile = () => {
             </button>
             <button
               className={`${
-                !isUploading
+                !mapLoading
                   ? "bg-[#FFC153] text-white"
                   : "bg-slate-300  text-slate-50"
               } px-6 py-2  font-semibold rounded-md`}
-              disabled={isUploading ? true : false}
+              disabled={mapLoading ? true : false}
               type="submit"
             >
               Update

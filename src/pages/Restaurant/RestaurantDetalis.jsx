@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import logo from "../../assets/logo 1.png";
-import { Welcome } from "../../components/Welcome/Welcome";
+import { Welcome } from "../../components/Welcome/Welcome.jsx";
 
 const RestaurantDetalis = () => {
   const { id } = useParams();

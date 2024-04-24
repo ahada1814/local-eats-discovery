@@ -21,10 +21,10 @@ const AutocompleteProvider = ({ children }) => {
         });
         console.log(selectedPlace);
 
-        setMapLoading(false)
       } else {
         console.log("Selected place does not have geometry information.");
       }
+      setMapLoading(false)
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
