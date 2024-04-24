@@ -12,7 +12,6 @@ const BannerSecrion = () => {
   const { uploadImage, loading, user } = useContext(AuthContext);
   const [localImageUrl, setLocalImageUrl] = useState();
 
-  console.log(user);
 
   useEffect(() => {
     // Check if there's an uploaded image URL in local storage

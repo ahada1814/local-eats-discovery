@@ -4,25 +4,43 @@ import { CiEdit } from "react-icons/ci";
 import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 import { Autocomplete } from "@react-google-maps/api";
 import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { showErrorAlert, showSuccessAlert } from "../../../hooks/alert";
 
 export const OwnerProfile = () => {
   const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
   const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
     useAutocomplete();
 
-  const { user, number, imageUrl } = useContext(AuthContext);
+  const { user, number, uploadImage } = useContext(AuthContext);
 
   const demoUser = "owner";
-  const id = user?.uid
+  const id = user?.uid;
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+
+    try {
+      setIsUploading(true);
+      const uploadedImageUrl = await uploadImage(file);
+      setUploadedImageUrl(uploadedImageUrl);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const submitFormData = async (values) => {
     const locationDataString = localStorage.getItem("locationData");
     const locationData = JSON.parse(locationDataString);
-  
+
     const latitude = locationData.latitude;
     const longitude = locationData.longitude;
-  
+
     try {
       const formData = {
         name: values.fullName,
@@ -33,7 +51,8 @@ export const OwnerProfile = () => {
         uid: user?.uid,
         ownerEmail: user?.email,
         opening_time: "",
-        image: imageUrl || "",
+        image: user.photoURL || "",
+        restaurant_img: uploadedImageUrl,
         phoneNumber: values?.phoneNumber,
         food_items: [],
         location: {
@@ -41,24 +60,22 @@ export const OwnerProfile = () => {
           longitude: selectedPlace?.longitude || longitude,
         },
       };
-  
-      console.log(formData);
-  
-      // Check if data has been posted before
+
+
       const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
-  
+
       let url;
       let method;
-  
+
       if (hasDataPosted) {
-        // If data has been posted before, use PATCH or PUT
-        method = "PATCH"; // Change to "PUT" if your backend requires it
+        // If data has been posted before, use PATCH
+        method = "PATCH";
         url = `${import.meta.env.VITE_REACT_API}update-restarunt/${id}`;
       } else {
         method = "POST";
         url = `${import.meta.env.VITE_REACT_API}added-new-restarunt`;
       }
-  
+
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -66,20 +83,20 @@ export const OwnerProfile = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
-        console.log("Form data submitted successfully!");
+        showSuccessAlert("Form data submitted successfully!");
         if (!hasDataPosted) {
           localStorage.setItem("hasDataPosted", "true");
         }
       } else {
         console.error("Error submitting form data:", response.statusText);
+        showErrorAlert("Error submitting form data");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  
 
   return (
     <>
@@ -87,7 +104,6 @@ export const OwnerProfile = () => {
         initialValues={{
           fullName: user?.displayName,
           email: user?.email,
-          // password: "******",
           phoneNumber: number,
           address: selectedPlace?.name || "",
           restaurantName: "",
@@ -98,20 +114,6 @@ export const OwnerProfile = () => {
           // onSubmit={handleFormSubmit}
           className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 w-4/5 md:w-[550px] lg:w-[60%] md:ps-20 pt-8"
         >
-          <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
-            <div className="flex flex-col space-y-1">
-              <span className="text-xs">User Name</span>
-              {isEditingEmail ? (
-                <Field
-                  className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
-                  type="text"
-                  name="fullName"
-                />
-              ) : (
-                <h3 className="text-xl font-semibold">{user?.displayName}</h3>
-              )}
-            </div>
-          </div>
           {demoUser ? (
             <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
               <div className="flex flex-col space-y-1">
@@ -123,7 +125,7 @@ export const OwnerProfile = () => {
                     name="restaurantName"
                   />
                 ) : (
-                  <h3 className="text-xl font-semibold">Restaurant Name</h3>
+                  <input type="text" readOnly />
                 )}
               </div>
             </div>
@@ -132,7 +134,7 @@ export const OwnerProfile = () => {
           )}
           <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
             <div className="flex flex-col space-y-1">
-              <span className="text-xs">Email Address</span>
+              <span className="text-xs">Restaurant Email Address</span>
               {isEditingEmail ? (
                 <Field
                   className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
@@ -140,7 +142,7 @@ export const OwnerProfile = () => {
                   name="email"
                 />
               ) : (
-                <h3 className="text-xl font-semibold">{user?.email}</h3>
+                <input type="text" readOnly />
               )}
             </div>
           </div>
@@ -154,12 +156,36 @@ export const OwnerProfile = () => {
                   name="phoneNumber"
                 />
               ) : (
-                <h3 className="text-xl font-semibold">
-                  {number ? number : "12345"}
-                </h3>
+                <input type="number" readOnly />
               )}
             </div>
           </div>
+          <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
+            <div className="flex flex-col space-y-1 w-full">
+              <span className="text-xs">Upload Image</span>
+              {isEditingEmail ? (
+                <div className="flex justify-between items-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="photos"
+                    onChange={handleFileUpload}
+                  />
+                  {isUploading ? (
+                    <AiOutlineLoading3Quarters
+                      size={24}
+                      className="animate-spin text-yellow-400"
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              ) : (
+                <input type="file" readOnly disabled />
+              )}
+            </div>
+          </div>
+
           {/* This is map field */}
           <div className="bg-white w-full p-4 rounded-md flex flex-col space-y-1">
             <span className="text-xs">Address</span>
@@ -192,10 +218,6 @@ export const OwnerProfile = () => {
                 type="address"
                 name="address"
                 readOnly
-                placeholder='Add Your Location'
-                // placeholder={`${
-                //   selectedPlace ? selectedPlace.name : "Add your location"
-                // }`}
                 className="focus:outline-none font-semibold text-lg"
               />
             )}
@@ -210,8 +232,13 @@ export const OwnerProfile = () => {
               <CiEdit size={24} />
             </button>
             <button
+              className={`${
+                !isUploading
+                  ? "bg-[#FFC153] text-white"
+                  : "bg-slate-300  text-slate-50"
+              } px-6 py-2  font-semibold rounded-md`}
+              disabled={isUploading ? true : false}
               type="submit"
-              className="bg-[#FFC153] px-6 py-2 duration-200 text-white font-semibold hover:bg-opacity-80 hover:scale-95 rounded-md"
             >
               Update
             </button>

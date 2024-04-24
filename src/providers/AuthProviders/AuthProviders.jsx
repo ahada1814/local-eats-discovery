@@ -62,7 +62,7 @@ const AuthProviders = ({ children }) => {
             const response = await fromLatLng(latitude, longitude);
             const address = response.results[0].formatted_address;
             setAddress(address);
-            console.log(address);
+            // console.log(address);
             const restaurants = await fetchRestaurants();
 
             const filtered = filterRestaurantsByDistance(

@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
+import { TbPinnedFilled } from "react-icons/tb";
 
 const Drawer = () => {
   const [isOpen, setOpen] = useState(false);
   const { logOut } = useContext(AuthContext);
+  const [isHovered, setIsHovered] = useState(false);
 
   const openMenu = () => {
     setOpen(!isOpen);
@@ -18,6 +20,8 @@ const Drawer = () => {
     logOut();
     navigate("/");
   };
+
+  const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
 
   const demoUser = "owner";
 
@@ -47,12 +51,39 @@ const Drawer = () => {
           >
             Messages
           </Link>
-          <Link to="edit-profile" className="border-t py-4 border-slate-300">
-            Edit Profile
-          </Link>
+          {/* For Normal User */}
+          {demoUser == "user" ? (
+            <Link to="edit-profile" className="border-t py-4 border-slate-300">
+              Edit Profile
+            </Link>
+          ) : (
+            <></>
+          )}
+          {/* For Restaurant Owner */}
           {demoUser == "owner" ? (
-            <Link to="owner-profile" className="border-t py-4 border-slate-300">
-              Rest Profile
+            <Link
+              to="owner-profile"
+              className="border-t flex justify-between items-center py-4 border-slate-300"
+            >
+              <h1>Edit Profile</h1>
+              {!hasDataPosted ? (
+                <div
+                  className="relative"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  <div className="text-red-500 hover:scale-95 rounded-full w-6">
+                    <TbPinnedFilled size={25} />
+                  </div>
+                  {isHovered && (
+                    <div className="absolute -top-10 duration-200 left-0 text-sm bg-slate-200 w-52 text-black p-2 rounded">
+                      Set up your restaurant Profile
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
             </Link>
           ) : (
             <></>
@@ -84,27 +115,27 @@ const Drawer = () => {
             } `}
           >
             <div className="flex flex-col font-semibold text-xl mx-auto justify-center">
-              <Link to="/rest-profile/view-menus" className="pb-4">
+              <Link to="/view-menus" className="pb-4">
                 View Menu
               </Link>
-              <Link
-                to="/rest-profile/AddItems"
-                className="border-t py-4 border-slate-300"
-              >
+              <Link to="AddItems" className="border-t py-4 border-slate-300">
                 Add Menu
               </Link>
-              <Link to="/rest-profile/message" className="border-t py-4 border-slate-300">
+              <Link to="message" className="border-t py-4 border-slate-300">
                 Messages
               </Link>
               <Link
-                to="/rest-profile/edit-profile"
+                to="edit-profile"
                 className="border-t py-4 border-slate-300"
               >
                 Edit Profile
               </Link>
-              <Link to="/" className="border-t py-4 border-slate-300">
+              <button
+                onClick={userLogOut}
+                className="border-t flex py-4 border-slate-300"
+              >
                 Logout
-              </Link>
+              </button>
             </div>
           </div>
         </>
