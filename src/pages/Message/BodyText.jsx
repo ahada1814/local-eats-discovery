@@ -33,7 +33,6 @@ const BodyText = ({user}) => {
 
     return () => unsubscribe();
   }, [combinedId]);
-
   return (
     <div className="overflow-x-auto h-[40vh] mb-1"  >
       {messages.map((message, index) => (

@@ -5,7 +5,9 @@ import { VscCommentUnresolved } from "react-icons/vsc";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
-const CommonAddress = ({ restaurants }) => {
+const CommonAddress = ({ restaurants}) => {
+
+   {/* todo-- {handelUid, restaurants.uid} */}
   return (
     <div className="w-full lg:w-[55%] xl:w-[35%] flex justify-center items-center drop-shadow-2xl">
       <div className="bg-white w-full flex flex-col justify-start items-start mx-auto p-10 rounded-md">
@@ -23,7 +25,8 @@ const CommonAddress = ({ restaurants }) => {
         </p>
 
         <div className="grid grid-cols-4 xl:text-xl 2xl:text-3xl justify-center items-center xl:gap-1 2xl:gap-6 gap-4 mt-5">
-          <div className="bg-[#F2613F] px-2 xl:px-4 py-2 rounded-md text-white">
+          {/* todo-- onClick={() => handelUid(restaurants.uid)} */}
+          <div className="bg-[#F2613F] px-2 xl:px-4 py-2 rounded-md text-white" >
             <IoMailUnreadSharp />
           </div>
           <div className="bg-[#F2613F] px-2 xl:px-4 py-2 rounded-md text-white">

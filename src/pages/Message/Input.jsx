@@ -1,7 +1,7 @@
 import { db } from "../../Firebase/firebase.config";
 import { useContext, useState } from "react";
 import { UserContext } from "../../providers/UserContextProvider";
-import {  serverTimestamp, doc, setDoc,arrayUnion } from "firebase/firestore";
+import { doc, setDoc,arrayUnion } from "firebase/firestore";
 
 const Input = ({user}) => {
    
@@ -9,12 +9,14 @@ const Input = ({user}) => {
     const { currentUser } = useContext(UserContext);
     
         const [message, setMessage] = useState('');
-      console.log(user);
         const sendMessage = async () => {
           if (message.trim() !== '') {
             const conversationId = generateConversationId(currentUser,user);
             const conversationRef = doc(db, 'conversations', conversationId);
-      
+           
+            
+            
+            
             try {
               await setDoc(conversationRef, {
                 messages: arrayUnion({

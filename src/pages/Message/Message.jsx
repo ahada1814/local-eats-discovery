@@ -49,7 +49,7 @@ const Message = () => {
                 <span className="text-xl font-bold">{user?.displayName} </span>
                 {user?.displayName && (
                   <div className="text-sm flex justify-center items-center gap-2">
-                    <span>Woner</span>
+                    <span>Owner</span>
                     <span className="text-sm text-blue-500">
                       <MdStars />
                     </span>
