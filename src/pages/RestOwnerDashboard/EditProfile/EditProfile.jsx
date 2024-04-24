@@ -4,6 +4,9 @@ import { CiEdit } from "react-icons/ci";
 import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 import { Autocomplete } from "@react-google-maps/api";
 import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
+import { showErrorAlert, showSuccessAlert } from "../../../hooks/alert";
+
+
 
 export const EditProfile = () => {
   const [isEditingEmail, setIsEditingEmail] = useState(false);
@@ -11,11 +14,13 @@ export const EditProfile = () => {
   const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
     useAutocomplete();
 
-  const { user, number, imageUrl } = useContext(AuthContext);
-
+  const { user, number, imageUrl, update, updateImage} = useContext(AuthContext);
 
   const submitFormData = async (values) => {
-  
+
+   await update(values?.fullName)
+   await updateImage(imageUrl)
+
     try {
       const formData = {
         name: values.fullName,
@@ -27,26 +32,24 @@ export const EditProfile = () => {
         location: {
           latitude: selectedPlace?.latitude,
           longitude: selectedPlace?.longitude,
-          address: selectedPlace?.name
+          address: selectedPlace?.name,
         },
       };
-  
+
       console.log(formData);
-  
-      // Check if data has been posted before
       const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
-  
+
       let url;
       let method;
-  
+
       if (hasDataPosted) {
-        method = "PATCH"; 
+        method = "PATCH";
         url = `${import.meta.env.VITE_REACT_API}user-update/${user.uid}`;
       } else {
         method = "POST";
         url = `${import.meta.env.VITE_REACT_API}added-user`;
       }
-  
+
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -54,21 +57,23 @@ export const EditProfile = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         console.log("Form data submitted successfully!");
         console.log(response);
+        showSuccessAlert("Form data submitted successfully!")
         if (!hasDataPosted) {
           localStorage.setItem("hasDataPosted", "true");
         }
       } else {
         console.error("Error submitting form data:", response.statusText);
+        showErrorAlert("Error submitting form data!")
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  
+
 
   return (
     <>
@@ -81,9 +86,7 @@ export const EditProfile = () => {
         }}
         onSubmit={submitFormData}
       >
-        <Form
-          className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 w-4/5 md:w-[550px] lg:w-[60%] md:ps-20 pt-8"
-        >
+        <Form className="flex flex-col md:items-start mx-auto md:mx-0 md:justify-start gap-3 w-4/5 md:w-[550px] lg:w-[60%] md:ps-20 pt-8">
           <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
             <div className="flex flex-col space-y-1">
               <span className="text-xs">User Name</span>
@@ -103,9 +106,10 @@ export const EditProfile = () => {
               <span className="text-xs">Email Address</span>
               {isEditingEmail ? (
                 <Field
-                  className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+                  className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-none text-black"
                   type="email"
                   name="email"
+                  readOnly
                 />
               ) : (
                 <h3 className="text-xl font-semibold">{user?.email}</h3>

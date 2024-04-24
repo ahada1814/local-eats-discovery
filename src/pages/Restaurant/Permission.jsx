@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { changeUserRole } from '../../hooks/api';
 import Swal from 'sweetalert2';
+import updateUserRoleInDatabase from '../../hooks/updateUserRoleInFIREBASE.JS';
+// import updateUserRoleInDatabase from '../../hooks/updateUserRoleInFIREBASE.JS';
 
 const Permission = () => {
   const [data, setData] = useState([]);
@@ -12,7 +14,8 @@ const Permission = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  const handelRoleChange =async (id,role,name) => {
+  console.log(data);
+  const handelRoleChange =async (id,role,name,uid) => {
 
     if (role == 'owner') {
         Swal.fire({
@@ -27,9 +30,9 @@ const Permission = () => {
         const isUpdate = await changeUserRole(id,name)
         console.log(isUpdate);
       // update User Role to firebase Database
-
+      updateUserRoleInDatabase(uid,'owner')
     }
-   
+   console.log(uid);
 
   }
   return (
@@ -46,7 +49,7 @@ const Permission = () => {
             </div>
             {/* Add more fields as needed */}
            <div className='flex justify-center items-center flex-col gap-5 text-white'>
-           <p className='bg-yellow-400  px-2 py-1 flex justify-center items-center rounded-full cursor-pointer' onClick={() => handelRoleChange(user._id,user.role,user.name)}>{user.role ==  'owner'? 'Alrady Owner' : 'Make owner'}</p>
+           <p className='bg-yellow-400  px-2 py-1 flex justify-center items-center rounded-full cursor-pointer' onClick={() => handelRoleChange(user._id,user.role,user.name,user.uid)}>{user.role ==  'owner'? 'Alrady Owner' : 'Make owner'}</p>
            <p disabled={user.role === 'owner'} className='font-semibold h-6 px-3 py-2 flex justify-center items-center rounded-full text-black'>{user.role}</p>
            </div>
           </div>

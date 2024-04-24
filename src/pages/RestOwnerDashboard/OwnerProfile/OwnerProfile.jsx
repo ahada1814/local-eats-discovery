@@ -14,7 +14,7 @@ export const OwnerProfile = () => {
 
   const { autocompleteRef, handlePlaceSelect, isLoaded, selectedPlace } =
     useAutocomplete();
-
+console.log(selectedPlace);
   const { user, number, uploadImage } = useContext(AuthContext);
 
   const demoUser = "owner";

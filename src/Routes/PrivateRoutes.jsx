@@ -11,7 +11,7 @@ export const PrivateRoutes = ({ children }) => {
 
   if (loading) {
     return (
-        <div className="flex items-center mx-auto">
+        <div className="flex items-center justify-center mx-auto">
             <HashLoader color="#ff8a00" size={100} />
         </div>
     );

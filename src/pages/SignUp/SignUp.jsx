@@ -50,9 +50,9 @@ const SignUp = () => {
   
   return (
     <div
-      style={{ backgroundImage: `url(${bgImage})`, height: "110vh" }}
-      className="bg-no-repeat bg-cover"
-    >
+  style={{ backgroundImage: `url(${bgImage})`, minHeight: "100%", height: "auto" }}
+  className="bg-no-repeat bg-cover"
+>
       <div className="flex gap-2 justify-end pt-6 pr-10">
         <Link
           to="/sign-up"

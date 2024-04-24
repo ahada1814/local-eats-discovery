@@ -9,19 +9,19 @@ import RestaurantDetalis from "./pages/Restaurant/RestaurantDetalis.jsx";
 import Review from "./pages/Restaurant/Review.jsx";
 import { Home } from "./pages/Home/Home.jsx";
 import AuthProviders from "./providers/AuthProviders/AuthProviders.jsx";
+import { ViewMenu } from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
+import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
+import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
+import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
+import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
+import Message from "./pages/Message/Message.jsx";
+import Menue from "./pages/Restaurant/Menue.jsx";
+// import { PrivateRoutes } from "./Routes/PrivateRoutes.jsx";
 import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
-import { EditProfile } from "./pages/RestOwnerDashboard/EditProfile/EditProfile.jsx";
-import Message from "./pages/Message/Message.jsx";
-import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
-import { ViewMenu } from "./pages/RestOwnerDashboard/ViewMenu/ViewMenu.jsx";
 import UserContextProvider from "./providers/UserContextProvider.jsx";
-import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx";
-import Menue from "./pages/Restaurant/Menue.jsx";
 import Permission from "./pages/Restaurant/Permission.jsx";
-import { OwnerProfile } from "./pages/RestOwnerDashboard/OwnerProfile/OwnerProfile.jsx";
-import { PrivateRoutes } from "./Routes/PrivateRoutes.jsx";
-
+import RestaurantPagination from "./components/RestaurantPagination/RestaurantPagination.jsx";
 
 
 const router = createBrowserRouter([
@@ -40,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/sign-in",
         element: <SignIn />,
+      },
+      {
+        path: '/homes',
+        element: <RestaurantPagination />
       },
       {
         path: "/Restaurant/:id",
@@ -65,11 +69,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/rest-profile/:id",
-    element: (
-      <PrivateRoutes>
-        <RestProfile />
-      </PrivateRoutes>
-    ),
+    element: <RestProfile />,
+    // element: (
+    //   <PrivateRoutes>
+    //     <RestProfile />
+    //   </PrivateRoutes>
+    // ),
     loader: ({ params }) =>
       fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
     children: [
@@ -105,9 +110,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AutocompleteProvider>
     <AuthProviders>
       <UserContextProvider>
-      <React.StrictMode>
-        <RouterProvider router={router} />
-      </React.StrictMode>
+        <React.StrictMode>
+          <RouterProvider router={router} />
+        </React.StrictMode>
       </UserContextProvider>
     </AuthProviders>
   </AutocompleteProvider>

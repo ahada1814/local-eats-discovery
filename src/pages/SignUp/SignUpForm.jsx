@@ -65,7 +65,9 @@ const SignUpForm = ({ handledUserCreation, handleGoogleLogin }) => {
                   </div>
                   {errors.password && touched.password && errors.password}
                   <div className="mb-5 flex flex-col gap-3 items-start text-white">
-                    <h1 className="font-bold text-xl text-white">Phone Number</h1>
+                    <h1 className="font-bold text-xl text-white">
+                      Phone Number
+                    </h1>
                     <Field
                       className="border w-full border-gray-300 bg-transparent rounded-md py-4 px-4 focus:outline-none focus:border-white"
                       type="tel"
