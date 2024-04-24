@@ -4,16 +4,14 @@ import { db } from "../../Firebase/firebase.config";
 import { UserContext } from "../../providers/UserContextProvider";
 import { fetchRestaurants } from "../../hooks/api";
 import avater from '../../assets/person.png'
-import comonRest from '../../assets/comonRest.jpg'
 const Chats = ({handelUid,combinedId}) => {
   
     const [allUsers, setAllUsers] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
     const { currentUser } = useContext(UserContext);
     const [messages, setMessages] = useState([]);
-
-
-
+    const [usersArray, setUsersArray] = useState([]);
+    const [ownersArray, setOwnersArray] = useState([]);
    
     useEffect(() => {
         const fetchAllUsers = async () => {
@@ -24,6 +22,11 @@ const Chats = ({handelUid,combinedId}) => {
             const filteredUsers = usersData.filter(user => user.uid !== currentUser.uid);
             setAllUsers(filteredUsers);
 
+            // seperate users and owner
+            const usersArray = filteredUsers.filter(user => user.role === 'user');
+            const ownersArray = filteredUsers.filter(user => user.role === 'owner');
+            setUsersArray(usersArray);
+            setOwnersArray(ownersArray);
 
             const restaurants = await fetchRestaurants()
             setRestaurants(restaurants);
@@ -59,8 +62,11 @@ const replaceDisplayImg = (email) => {
   const restaurant = restaurants.find(restaurant => restaurant.ownerEmail === email);
   return restaurant ? restaurant.restaurant_img : '';
 };
-  
-   
+
+
+
+console.log(usersArray);
+console.log(ownersArray);
     return (
         <div className="">
           {allUsers.map((u) =>
