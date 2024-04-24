@@ -9,8 +9,8 @@ export const addUserToDatabase = async (
   role
 ) => {
   const person = {
-    // name: currentUser.userName || currentUser.displayName || userData,
-    name: currentUser.displayName || userData,
+    name: currentUser.userName || currentUser.displayName || userData,
+    // name: currentUser.displayName || userData,
     email: currentUser.email,
     displayPhoto: currentUser.photoURL,
     uid: currentUser.uid,
@@ -18,6 +18,8 @@ export const addUserToDatabase = async (
     role: role || "user",
     location: locationData,
   };
+  console.log(person);
+
 
   return fetch(`${import.meta.env.VITE_REACT_API}added-user`, {
     method: "POST",

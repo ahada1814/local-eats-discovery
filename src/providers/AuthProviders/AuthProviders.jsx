@@ -195,7 +195,7 @@ const AuthProviders = ({ children }) => {
   // observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
+      if (currentUser?.displayName) {
         setUser(currentUser);
         await addUserToDatabase(currentUser)
         const locationData = JSON.parse(localStorage.getItem("locationData"));
