@@ -16,18 +16,11 @@ import { AutocompleteProvider } from "./providers/AutoComplete/AutoComplete.jsx"
 import { ResturantRoutes } from "./Routes/ResturantRoutes.jsx";
 import Message from "./pages/Message/Message.jsx";
 import Menue from "./pages/Restaurant/Menue.jsx";
-import { PrivateRoutes } from "./Routes/PrivateRoutes.jsx";
+// import { PrivateRoutes } from "./Routes/PrivateRoutes.jsx";
 import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import UserContextProvider from "./providers/UserContextProvider.jsx";
-
-
-
-
-
-
-
-
+import { RestaurantPagination } from "./components/RestaurantPagination/RestaurantPagination.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/sign-in",
         element: <SignIn />,
+      },
+      {
+        path: '/homes',
+        element: <RestaurantPagination />
       },
       {
         path: "/Restaurant/:id",
@@ -70,11 +67,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/rest-profile/:id",
-    element: (
-      <PrivateRoutes>
-        <RestProfile />
-      </PrivateRoutes>
-    ),
+    element: <RestProfile />,
+    // element: (
+    //   <PrivateRoutes>
+    //     <RestProfile />
+    //   </PrivateRoutes>
+    // ),
     loader: ({ params }) =>
       fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
     children: [
@@ -106,9 +104,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AutocompleteProvider>
     <AuthProviders>
       <UserContextProvider>
-      <React.StrictMode>
-        <RouterProvider router={router} />
-      </React.StrictMode>
+        <React.StrictMode>
+          <RouterProvider router={router} />
+        </React.StrictMode>
       </UserContextProvider>
     </AuthProviders>
   </AutocompleteProvider>

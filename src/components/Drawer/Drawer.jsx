@@ -52,9 +52,9 @@ const Drawer = () => {
             Messages
           </Link>
           {/* For Normal User */}
-          {demoUser == "user" ? (
+          {demoUser == "owner" ? (
             <Link to="edit-profile" className="border-t py-4 border-slate-300">
-              Edit Profile
+              Edits Profile
             </Link>
           ) : (
             <></>

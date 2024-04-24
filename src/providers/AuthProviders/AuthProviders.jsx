@@ -11,7 +11,7 @@ import {
 import { app } from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-import {fetchRestaurants } from "../../hooks/api";
+import { addUserToDatabase, fetchRestaurants } from "../../hooks/api";
 import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
 export const AuthContext = createContext(null);
@@ -29,6 +29,7 @@ const AuthProviders = ({ children }) => {
   const [imageUrl, setImageUrl] = useState();
   const [restaurants, setRestaurants] = useState();
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [imgLoading, setImgLoading] = useState(false);
 
   const provider = new GoogleAuthProvider();
 
@@ -135,6 +136,12 @@ const AuthProviders = ({ children }) => {
       displayName: userName,
     });
   };
+  const updateImage = async (image) => {
+    setLoading(true);
+    return await updateProfile(auth.currentUser, {
+      photoURL: image,
+    });
+  };
 
   // Email Login
   const loginWithEmail = async (email, password) => {
@@ -164,7 +171,6 @@ const AuthProviders = ({ children }) => {
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result.user, "ki bal kam kore na?");
       setUser(result.user);
       return result; // Return the result
     } catch (error) {
@@ -186,14 +192,14 @@ const AuthProviders = ({ children }) => {
       });
   };
 
-  // observer 
+  // observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
         const locationData = JSON.parse(localStorage.getItem("locationData"));
         console.log(locationData);
-         
+        await addUserToDatabase(currentUser);
       } else {
         console.log("User is logged out");
         localStorage.removeItem("uploadedImageUrl", imageUrl);
@@ -229,6 +235,8 @@ const AuthProviders = ({ children }) => {
   }, [user]);
 
   const uploadImage = async (file) => {
+    setImgLoading(true);
+
     const formData = new FormData();
     formData.append("image", file);
 
@@ -245,9 +253,11 @@ const AuthProviders = ({ children }) => {
       const data = await response.json();
       setImageUrl(data.data.url);
 
+      setImgLoading(false);
+
       return data.data.url;
     } catch (error) {
-      setLoading(false);
+      setImgLoading(false);
 
       console.error("Error uploading image:", error);
       throw error;
@@ -271,6 +281,8 @@ const AuthProviders = ({ children }) => {
     imageUrl,
     filteredRestaurants,
     restaurants,
+    imgLoading,
+    updateImage,
   };
 
   return (

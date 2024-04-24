@@ -1,13 +1,15 @@
 import CommonAddress from "./CommonAddress";
 import CommonBannar from "./CommonBannar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import logo from "../../assets/logo 1.png";
+import { Welcome } from "../../components/Welcome/Welcome";
 
 const RestaurantDetalis = () => {
   const { id } = useParams();
   const [restaurants, setRestaurants] = useState();
+  const location = useLocation();
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_REACT_API}single-restaurant/${id}`)
@@ -35,14 +37,15 @@ const RestaurantDetalis = () => {
       </Link>
       <div className="bg-[#F5F5F5] w-10/12 h-fit xl:h-fit 2xl:h-[82%] mt-32 xl:w-[65%] mx-auto rounded-lg py-10">
         <div>
-          {/* banner section */}
           <CommonBannar restaurants={restaurants} />
-
           <div className="flex flex-col xl:flex-row justify-center mx-5 lg:mx-0 items-center gap-5">
-            {/* address section */}
             <CommonAddress restaurants={restaurants} />
             <div className="w-full lg:w-[55%] h-full relative">
-              <Outlet></Outlet>
+              {location.pathname == `/Restaurant/${id}` ? (
+                <Welcome restaurants={restaurants} />
+              ) : (
+                <Outlet></Outlet>
+              )}
             </div>
           </div>
         </div>

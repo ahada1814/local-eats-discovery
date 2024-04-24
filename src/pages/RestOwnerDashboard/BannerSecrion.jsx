@@ -9,8 +9,10 @@ import { GridLoader } from "react-spinners";
 
 const BannerSecrion = () => {
   const fileInputRef = useRef(null);
-  const { uploadImage, loading, user } = useContext(AuthContext);
+  const { uploadImage, imgLoading, user } = useContext(AuthContext);
   const [localImageUrl, setLocalImageUrl] = useState();
+
+  console.log(user);
 
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const BannerSecrion = () => {
         // Store the uploaded image URL in local storage
         localStorage.setItem("uploadedImageUrl", imageUrl);
         setLocalImageUrl(imageUrl);
+
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -65,7 +68,7 @@ const BannerSecrion = () => {
             <IoCameraOutline size={28} className="" />
             Select
           </button>
-          {loading ? (
+          {imgLoading ? (
             <GridLoader />
           ) : (
             <>
