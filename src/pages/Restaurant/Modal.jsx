@@ -1,28 +1,31 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { useParams } from "react-router-dom";
-// import { FaStar } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
+
 
 const Modal = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
-  const {id} = useParams()
-  
-  let uniqueId = id
-  
-  const {user} = useContext(AuthContext)
+  const { id } = useParams();
 
-  console.log(user);
+  let uniqueId = id;
 
-  let email = user?.email
-  let uid = user?.uid
-  let image = user?.photoURL
-  let name = user?.displayName
-  
+  const { user } = useContext(AuthContext);
+
+  let email = user?.email;
+  let uid = user?.uid;
+  let image = user?.photoURL;
+  let name = user?.displayName;
+
   const handleRatingChange = (newRating) => {
     setRating(newRating);
+    console.log(newRating);
   };
+
+  const buttonStyles = (index) =>
+    index <= rating ? "text-[#FEBD01]" : "text-black border-yellow-300" ;
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -35,7 +38,15 @@ const Modal = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ rating, comment, email, uid, uniqueId, image, name }),
+        body: JSON.stringify({
+          rating,
+          comment,
+          email,
+          uid,
+          uniqueId,
+          image,
+          name,
+        }),
       });
 
       if (response.ok) {
@@ -66,10 +77,14 @@ const Modal = () => {
             </button>
           </form>
           <h3 className="font-bold text-lg">Review</h3>
-          <div className="flex justify-start items-start gap-1 text-[#FEBD01] mt-3">
+          <div className="flex justify-start items-start gap-1 mt-3">
             {[1, 2, 3, 4, 5].map((index) => (
-              <button key={index} onClick={() => handleRatingChange(index)}>
-                ⭐
+              <button
+                key={index}
+                className={buttonStyles(index)} // Apply styles based on current rating
+                onClick={() => handleRatingChange(index)}
+              >
+                <FaRegStar />
               </button>
             ))}
           </div>
