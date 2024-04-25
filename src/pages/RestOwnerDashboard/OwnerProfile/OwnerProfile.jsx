@@ -22,7 +22,7 @@ export const OwnerProfile = () => {
 
   console.log(selectedPlace);
 
-  const { user, number, uploadImage } = useContext(AuthContext);
+  const { user, number, uploadImage, imgLoading } = useContext(AuthContext);
 
   const demoUser = "owner";
   const id = user?.uid;
@@ -247,7 +247,7 @@ export const OwnerProfile = () => {
             </button>
             <button
               className={`${
-                !mapLoading
+                !mapLoading && imgLoading
                   ? "bg-[#FFC153] text-white"
                   : "bg-slate-300  text-slate-50"
               } px-6 py-2  font-semibold rounded-md`}
