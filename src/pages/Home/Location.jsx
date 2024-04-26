@@ -1,55 +1,78 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ResturantsCards from "../../components/ResturantCards/ResturantsCards";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
-// import { RestaurantPagination } from "../../components/RestaurantPagination/RestaurantPagination";
 
 
 const Location = ({ filteredRestaurantsState }) => {
   const { filteredRestaurants, restaurants } = useContext(AuthContext);
-
-  // const [isClose, setIsClose] = useState(false);
-
-  console.log(filteredRestaurantsState);
-
-  // const handleIsClose = () => {
-  //   setIsClose(!isClose);
-  // };
-
+  const [showAllRestaurants, setShowAllRestaurants] = useState(false);
+  
+  const sliceRestaurants = (data) => {
+    return showAllRestaurants ? data : data?.slice(0, MAX_RESTAURANTS_TO_SHOW);
+  };
+  
+  const MAX_RESTAURANTS_TO_SHOW = 3; 
   return (
     <div>
-      {/* <Link
-        className="bg-white p-3 left-[1180px] mt-3 rounded-xl text-orange-500"
-        to="/homes"
-      >
-        View All
-      </Link> */}
       {
         // Show default restaurants if both filteredRestaurants and filteredRestaurantsState are falsy
-        filteredRestaurants.length == 0 && filteredRestaurantsState.length == 0
-          ? restaurants?.map((restaurant) => (
+        filteredRestaurants.length === 0 &&
+        filteredRestaurantsState.length === 0
+          ? sliceRestaurants(restaurants)?.map((restaurant) => (
               <ResturantsCards key={restaurant._id} restaurant={restaurant} />
             ))
-          : // Show filteredRestaurants if it exists and filteredRestaurantsState has no items
-          filteredRestaurants && !filteredRestaurantsState.length
-          ? filteredRestaurants?.map((restaurant) => (
+          : filteredRestaurants && !filteredRestaurantsState.length
+          ? // Show filteredRestaurants if it exists and filteredRestaurantsState has no items
+            sliceRestaurants(filteredRestaurants)?.map((restaurant) => (
               <ResturantsCards key={restaurant._id} restaurant={restaurant} />
             ))
-          : // Show filteredRestaurantsState if it exists
-            filteredRestaurantsState?.map((restaurant) => (
+          : filteredRestaurantsState?.map((restaurant) => (
+              // Show filteredRestaurantsState if it exists
               <ResturantsCards key={restaurant._id} restaurant={restaurant} />
             ))
       }
-
-      {/* <div className="relative">
-        <button
-          onClick={handleIsClose}
-          className="bg-white p-3 absolute left-[1180px] mt-3 rounded-xl text-orange-500"
-        >
-          View All
-        </button>
-      </div> */}
+      {
+        (filteredRestaurantsState?.length > MAX_RESTAURANTS_TO_SHOW ||
+          filteredRestaurants?.length > MAX_RESTAURANTS_TO_SHOW ||
+          restaurants?.length > MAX_RESTAURANTS_TO_SHOW) && (
+          <button
+            className="bg-white p-2 rounded-xl font-semibold text-orange-500 flex mx-auto mt-4"
+            onClick={() => setShowAllRestaurants(!showAllRestaurants)}
+          >
+            {showAllRestaurants ? "Show Less" : "View All"}
+          </button>
+        )
+      }
     </div>
   );
 };
 
 export default Location;
+
+// import { useContext } from "react";
+// import ResturantsCards from "../../components/ResturantCards/ResturantsCards";
+// import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
+
+// const Location = ({ filteredRestaurantsState }) => {
+//   const { filteredRestaurants, restaurants } = useContext(AuthContext);
+
+//   console.log(filteredRestaurants);
+
+//   return (
+//     <div>
+//       {filteredRestaurants.length == 0 && filteredRestaurantsState.length == 0
+//         ? restaurants?.map((restaurant) => (
+//             <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+//           ))
+//         : filteredRestaurants && !filteredRestaurantsState.length
+//         ? filteredRestaurants?.map((restaurant) => (
+//             <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+//           ))
+//         : filteredRestaurantsState?.map((restaurant) => (
+//             <ResturantsCards key={restaurant._id} restaurant={restaurant} />
+//           ))}
+//     </div>
+//   );
+// };
+
+// export default Location;

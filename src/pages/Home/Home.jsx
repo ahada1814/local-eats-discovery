@@ -96,21 +96,21 @@ export const Home = () => {
               <input
                 type="text"
                 placeholder="Search Nearby Restaurant"
-                className="py-4 pl-8 w-[500px] rounded-lg shadow-lg focus:outline-blue-500 focus:outline-offset-1 text-black"
+                className="py-4 px-6 md:pl-8 md:w-[500px] rounded-lg shadow-lg focus:outline-blue-500 focus:outline-offset-1 text-black"
               />
             </Autocomplete>
           ) : (
             <input
               type="text"
               placeholder="Search Nearby Restaurant"
-              className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+              className="py-4 pl-8 w-80 lg:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
             />
           )}
           <button
             onClick={fetchAndFilterRestaurants}
             className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg"
           >
-            {!mapLoading ? (
+            {isLoaded && !mapLoading ? (
               <img
                 className="rounded-lg"
                 width={1080}

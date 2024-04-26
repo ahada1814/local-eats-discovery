@@ -59,19 +59,22 @@ const AuthProviders = ({ children }) => {
               longitude,
             });
 
+            console.log(latitude, longitude);
             // Reverse geocode
             const response = await fromLatLng(latitude, longitude);
             const address = response.results[0].formatted_address;
             setAddress(address);
-            // console.log(address);
+            console.log(address);
             const restaurants = await fetchRestaurants();
 
-            const filtered = filterRestaurantsByDistance(
+             const filtered = await filterRestaurantsByDistance(
               restaurants,
               latitude,
               longitude,
-              1
+              10
             );
+
+            console.log(filtered);
             setFilteredRestaurants(filtered);
             localStorage.setItem(
               "locationData",
@@ -100,7 +103,6 @@ const AuthProviders = ({ children }) => {
     setNumber(number);
     setLoading(true);
 
-    // console.log(email, password, displayName, number, "recent");
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -206,7 +208,7 @@ const AuthProviders = ({ children }) => {
         localStorage.removeItem("uploadedImageUrl", imageUrl);
         localStorage.removeItem("locationData");
         localStorage.removeItem("hasDataPosted");
-        localStorage.removeItemItem("user");
+        localStorage.removeItem("user");
       }
     });
 

@@ -53,8 +53,8 @@ useEffect(() => {
      
      
   return (
-    <div className="w-[80%]">
-      <div className="pe-5 ps-5">
+    <div className="lg:w-[80%] w-full">
+      <div className="px-5">
         {/* top section */}
         <div className="flex flex-col items-start justify-start gap-1 w-full">
           <div className="grid grid-cols-2 gap-1 justify-center items-center w-full bg-gray-50 p-4 drop-shadow">
@@ -113,7 +113,7 @@ useEffect(() => {
 
             <Chats handelUid={handelUid} combinedId={combinedId} />
           </div>
-          <div className="flex flex-col justify-end items-end w-full">
+          <div className="flex flex-col justify-end items-end w-8/12 xl:w-full">
             <div className="h-[90%] w-full">
               <BodyText user={user} />
             </div>

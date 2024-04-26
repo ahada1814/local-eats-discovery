@@ -24,7 +24,9 @@ const ResturantsCards = ({ restaurant }) => {
           <div className="flex mb-4 md:mb-0 flex-col gap-2 justify-center">
             <h1 className="font-bold">{restaurant?.restaurant_name}</h1>
             <div className="flex gap-2">
-              <h1 className="font-semibold">({restaurant?.ratings})</h1>
+              <h1 className="font-semibold">
+                ({restaurant?.ratings ? restaurant?.ratings : "4"})
+              </h1>
               <p className="text-yellow-300 flex gap-2 items-center">
                 <IoStar />
                 <IoStar />

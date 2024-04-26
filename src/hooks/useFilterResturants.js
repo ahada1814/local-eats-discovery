@@ -2,6 +2,7 @@ export const filterRestaurantsByDistance = (restaurants, selectLat, selectLong, 
   const earthRadius = 6371; 
 
   const filtered = restaurants.filter((restaurant) => {
+    console.log(restaurant, selectLat, selectLong);
     if (restaurant.location) {
       const { latitude, longitude } = restaurant.location;
       const dLat = toRadians(latitude - selectLat);
@@ -22,6 +23,7 @@ export const filterRestaurantsByDistance = (restaurants, selectLat, selectLong, 
     }
   });
 
+  console.log(filtered);
   return filtered;
 };
 

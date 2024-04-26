@@ -28,6 +28,7 @@ const addUserToDatabase = async (user, userData) => {
 
     // Set the user data document
     await setDoc(userDocRef, userDataForFirestore);
+    setupUserChatDocument
     console.log("User data added to Firestore");
   } catch (error) {
     console.error("Error adding user to Firestore:", error);

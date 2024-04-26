@@ -7,7 +7,7 @@ import { TbPinnedFilled } from "react-icons/tb";
 
 const Drawer = () => {
   const [isOpen, setOpen] = useState(false);
-  const { logOut,role } = useContext(AuthContext);
+  const { logOut,role,user } = useContext(AuthContext);
   const [isHovered, setIsHovered] = useState(false);
 
   const openMenu = () => {

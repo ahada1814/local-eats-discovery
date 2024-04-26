@@ -22,7 +22,7 @@ export const OwnerProfile = () => {
 
   console.log(selectedPlace);
 
-  const { user, number, uploadImage } = useContext(AuthContext);
+  const { user, number, uploadImage, imgLoading } = useContext(AuthContext);
 
   const demoUser = "owner";
   const id = user?.uid;
@@ -246,12 +246,8 @@ export const OwnerProfile = () => {
               <CiEdit size={24} />
             </button>
             <button
-              className={`${
-                !mapLoading
-                  ? "bg-[#FFC153] text-white"
-                  : "bg-slate-300  text-slate-50"
-              } px-6 py-2  font-semibold rounded-md`}
-              disabled={mapLoading ? true : false}
+              className={` ${isEditingEmail ? 'bg-[#FFC153]' : 'bg-slate-400'} text-white px-6 py-2 font-semibold rounded-md`}
+              disabled={isEditingEmail ? false : true}
               type="submit"
             >
               Update
