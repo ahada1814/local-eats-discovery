@@ -14,7 +14,6 @@ const Permission = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  console.log(data);
   const handelRoleChange =async (id,role,name,uid) => {
 
     if (role == 'owner') {

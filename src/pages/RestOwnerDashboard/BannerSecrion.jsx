@@ -12,7 +12,6 @@ const BannerSecrion = () => {
   const { uploadImage, imgLoading, user, role } = useContext(AuthContext);
   const [localImageUrl, setLocalImageUrl] = useState();
 
-  console.log(user);
 
 
   useEffect(() => {

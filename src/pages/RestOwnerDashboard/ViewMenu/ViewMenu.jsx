@@ -9,7 +9,6 @@ export const ViewMenu = () => {
   const { user } = useContext(AuthContext);
   const [restaurants, setRestaurants] = useState([]);
 
-  console.log(restaurants);
 
   useEffect(() => {
     const fetchData = async () => {

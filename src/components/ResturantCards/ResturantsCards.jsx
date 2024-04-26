@@ -9,7 +9,7 @@ const ResturantsCards = ({ restaurant }) => {
 
   const handleAlert = () => {
     Swal.fire({
-      title: "Sign Up / Sign In To Visit The Restaurant",
+      title: "Sign Up to see more",
       confirmButtonColor: "#EA6A12",
     });
   };

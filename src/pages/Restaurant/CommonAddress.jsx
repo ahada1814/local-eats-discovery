@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const CommonAddress = ({ restaurants }) => {
-  console.log(restaurants);
-
   const handleEmailButtonClick = () => {
     const gmailComposeURL = `https://mail.google.com/mail/u/0/?view=cm&fs=1&to=${encodeURIComponent(
       restaurants.ownerEmail
@@ -24,8 +22,7 @@ const CommonAddress = ({ restaurants }) => {
       const telURI = `tel:${phoneNumber}`;
       window.open(telURI);
     } else {
-      Swal
-      .fire({
+      Swal.fire({
         icon: "error",
         title: "Phone number not available",
         text: "This restaurant has not added their phone number.",

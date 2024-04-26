@@ -19,11 +19,10 @@ const SignIn = () => {
       const loginResponse = await loginWithEmail(values.email, values.password);
       if (loginResponse) {
         setSubmitting(false);
-        
         await setDoc(doc(db,'users',user.uid),{
-          
         })
         navigate("/");
+        // TODO: Show Asif 
       } else {
         console.log("Login Failed");
       }
