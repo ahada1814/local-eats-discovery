@@ -246,12 +246,8 @@ export const OwnerProfile = () => {
               <CiEdit size={24} />
             </button>
             <button
-              className={`${
-                !mapLoading && imgLoading
-                  ? "bg-[#FFC153] text-white"
-                  : "bg-slate-300  text-slate-50"
-              } px-6 py-2  font-semibold rounded-md`}
-              disabled={mapLoading ? true : false}
+              className={` ${isEditingEmail ? 'bg-[#FFC153]' : 'bg-slate-400'} text-white px-6 py-2 font-semibold rounded-md`}
+              disabled={isEditingEmail ? false : true}
               type="submit"
             >
               Update
