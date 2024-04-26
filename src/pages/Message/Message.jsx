@@ -26,8 +26,8 @@ const Message = () => {
       : user.uid + currentUser.uid;
 
   return (
-    <div className="w-[80%]">
-      <div className="pe-5 ps-5">
+    <div className="lg:w-[80%] w-full">
+      <div className="px-5">
         {/* top section */}
         <div className="flex flex-col items-start justify-start gap-1 w-full">
           <div className="grid grid-cols-2 gap-1 justify-center items-center w-full bg-gray-50 p-4 drop-shadow">
@@ -49,7 +49,7 @@ const Message = () => {
                 <span className="text-xl font-bold">{user?.displayName} </span>
                 {user?.displayName && (
                   <div className="text-sm flex justify-center items-center gap-2">
-                    <span>Woner</span>
+                    <span>Owner</span>
                     <span className="text-sm text-blue-500">
                       <MdStars />
                     </span>
@@ -76,8 +76,8 @@ const Message = () => {
           </div>
         </div>
         {/* lower section */}
-        <div className="flex ">
-          <div className="w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll">
+        <div className="flex gap-3">
+          <div className="lg:w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll">
             <SearchUser />
 
             <div className="bg-white drop-shadow-sm p-3 border-spacing-1 mb-2 font-bold ">
@@ -86,7 +86,7 @@ const Message = () => {
 
             <Chats handelUid={handelUid} combinedId={combinedId} />
           </div>
-          <div className="flex flex-col justify-end items-end w-full">
+          <div className="flex flex-col justify-end items-end w-8/12 xl:w-full">
             <div className="h-[90%] w-full">
               <BodyText user={user} />
             </div>

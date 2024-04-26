@@ -42,7 +42,7 @@ const Input = ({user}) => {
         };
       
         return (
-          <div className="flex ">
+          <div className="flex">
             <input 
               type="text" 
               value={message} 
