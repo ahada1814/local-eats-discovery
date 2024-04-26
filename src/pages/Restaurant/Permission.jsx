@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { changeUserRole } from '../../hooks/api';
 import Swal from 'sweetalert2';
 import updateUserRoleInDatabase from '../../hooks/updateUserRoleInFIREBASE.JS';

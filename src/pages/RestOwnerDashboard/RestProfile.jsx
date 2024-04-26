@@ -2,6 +2,7 @@ import BannerSecrion from "./BannerSecrion";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import Drawer from "../../components/Drawer/Drawer";
 import { EditProfile } from "./EditProfile/EditProfile";
+import ProfileWelcome from "../../components/Welcome/ProfleWelcome";
 
 
 const RestProfile = () => {
@@ -16,7 +17,7 @@ const RestProfile = () => {
         <div className="flex ">
           <Drawer />
           {
-            location.pathname == `/rest-profile/${id}` ? <EditProfile />  : <Outlet id={id} />
+            location.pathname == `/rest-profile/${id}` ? <ProfileWelcome />  : <Outlet id={id} />
           }
         </div>
       </div>

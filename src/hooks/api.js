@@ -6,7 +6,6 @@ export const addUserToDatabase = async (
   currentUser,
   locationData,
   userData,
-  role
 ) => {
   const person = {
     name: currentUser.userName || currentUser.displayName || userData,
@@ -15,7 +14,7 @@ export const addUserToDatabase = async (
     displayPhoto: currentUser.photoURL,
     uid: currentUser.uid,
     phNumber: currentUser.phoneNumber,
-    role: role || "user",
+    role: "user",
     location: locationData,
   };
 

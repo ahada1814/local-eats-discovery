@@ -9,7 +9,7 @@ import { GridLoader } from "react-spinners";
 
 const BannerSecrion = () => {
   const fileInputRef = useRef(null);
-  const { uploadImage, imgLoading, user } = useContext(AuthContext);
+  const { uploadImage, imgLoading, user, role } = useContext(AuthContext);
   const [localImageUrl, setLocalImageUrl] = useState();
 
   console.log(user);
@@ -42,7 +42,7 @@ const BannerSecrion = () => {
     fileInputRef.current.click();
   };
 
-  const demoUser = "user";
+  // const demoUser = "user";
 
   return (
     <div className="coverImg text-white flex relative justify-start  items-end ">
@@ -93,7 +93,7 @@ const BannerSecrion = () => {
             {user?.displayName}
           </h3>
           <h3 className="md:text-2xl text-xl font-bold text-black">
-            {demoUser == "owner" ? (
+            {role == "owner" ? (
               <p>{user?.location?.address}</p>
             ) : (
               <p>{user?.email}</p>

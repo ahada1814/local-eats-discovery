@@ -42,11 +42,11 @@ export const OwnerProfile = () => {
   };
 
   const submitFormData = async (values) => {
-    const locationDataString = localStorage.getItem("locationData");
-    const locationData = JSON.parse(locationDataString);
+    // const locationDataString = localStorage.getItem("locationData");
+    // const locationData = JSON.parse(locationDataString);
 
-    const latitude = locationData.latitude;
-    const longitude = locationData.longitude;
+    // const latitude = locationData.latitude;
+    // const longitude = locationData.longitude;
 
     try {
       const formData = {
@@ -63,10 +63,15 @@ export const OwnerProfile = () => {
         phoneNumber: values?.phoneNumber,
         food_items: [],
         location: {
-          latitude: selectedPlace?.latitude || latitude,
-          longitude: selectedPlace?.longitude || longitude,
+          latitude: selectedPlace?.latitude,
+          longitude: selectedPlace?.longitude,
         },
-      };
+        // location: {
+          //   latitude: selectedPlace?.latitude || latitude,
+          //   longitude: selectedPlace?.longitude || longitude,
+          // },
+        };
+        console.log(formData);
 
       const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
 

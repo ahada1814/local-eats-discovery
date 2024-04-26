@@ -22,12 +22,14 @@ import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import UserContextProvider from "./providers/UserContextProvider.jsx";
 import Permission from "./pages/Restaurant/Permission.jsx";
 import RestaurantPagination from "./components/RestaurantPagination/RestaurantPagination.jsx";
-
+import ErrorPage from "./error/ErrorPage.jsx";
+import { AdminRoutes } from "./Routes/AdminRoutes.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -42,8 +44,8 @@ const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
-        path: '/homes',
-        element: <RestaurantPagination />
+        path: "/homes",
+        element: <RestaurantPagination />,
       },
       {
         path: "/Restaurant/:id",
@@ -92,11 +94,19 @@ const router = createBrowserRouter([
       },
       {
         path: "permission",
-        element: <Permission />,
+        element: (
+          <AdminRoutes>
+            <Permission />
+          </AdminRoutes>
+        ),
       },
       {
         path: "owner-profile",
-        element: <OwnerProfile />,
+        element: (
+          <ResturantRoutes>
+            <OwnerProfile />
+          </ResturantRoutes>
+        ),
       },
       {
         path: "message",

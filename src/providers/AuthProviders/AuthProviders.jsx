@@ -208,6 +208,7 @@ const AuthProviders = ({ children }) => {
         localStorage.removeItem("uploadedImageUrl", imageUrl);
         localStorage.removeItem("locationData");
         localStorage.removeItem("hasDataPosted");
+        localStorage.removeItem("hasDataUserPosted");
         localStorage.removeItem("user");
       }
     });
@@ -215,7 +216,7 @@ const AuthProviders = ({ children }) => {
     setLoading(false);
 
     return () => unsubscribe();
-  }, [imageUrl]);
+  }, [user, imageUrl]);
 
   useEffect(() => {
     // console.log(user);
@@ -229,7 +230,7 @@ const AuthProviders = ({ children }) => {
         })
         .then((data) => {
           setRole(data.role);
-          // console.log(data.role);
+          console.log(data.role);
           setLoading(false);
         })
         .catch((error) => {

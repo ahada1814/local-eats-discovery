@@ -37,12 +37,12 @@ export const EditProfile = () => {
       };
 
       console.log(formData);
-      const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
+      const hasDataUserPosted = localStorage.getItem("hasDataUserPosted") === "true";
 
       let url;
       let method;
 
-      if (hasDataPosted) {
+      if (hasDataUserPosted) {
         method = "PATCH";
         url = `${import.meta.env.VITE_REACT_API}user-update/${user.uid}`;
       } else {
@@ -62,8 +62,8 @@ export const EditProfile = () => {
         console.log("Form data submitted successfully!");
         console.log(response);
         showSuccessAlert("Form data submitted successfully!")
-        if (!hasDataPosted) {
-          localStorage.setItem("hasDataPosted", "true");
+        if (!hasDataUserPosted) {
+          localStorage.setItem("hasDataUserPosted", "true");
         }
       } else {
         console.error("Error submitting form data:", response.statusText);
@@ -182,6 +182,7 @@ export const EditProfile = () => {
             </button>
             <button
               type="submit"
+              // TODO: loading must be applied
               className="bg-[#FFC153] px-6 py-2 duration-200 text-white font-semibold hover:bg-opacity-80 hover:scale-95 rounded-md"
             >
               Update

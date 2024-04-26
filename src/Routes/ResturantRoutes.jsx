@@ -6,9 +6,8 @@ import { HashLoader } from "react-spinners";
 export const ResturantRoutes = ({ children }) => {
   const location = useLocation();
 
-  const { loading } = useContext(AuthContext);
+  const { loading, role } = useContext(AuthContext);
 
-  const demoUser = 'owner'
 
 
   if (loading) {
@@ -19,8 +18,8 @@ export const ResturantRoutes = ({ children }) => {
     );
   }
 
-  if (demoUser == 'owner') {
+  if (role == 'owner') {
     return children;
   }
-  return <Navigate to="/sign-up" state={{ from: location }} replace />;
+  return <Navigate to="/" state={{ from: location }} replace />;
 };

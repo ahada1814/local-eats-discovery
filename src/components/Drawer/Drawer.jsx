@@ -7,7 +7,7 @@ import { TbPinnedFilled } from "react-icons/tb";
 
 const Drawer = () => {
   const [isOpen, setOpen] = useState(false);
-  const { logOut,role,user } = useContext(AuthContext);
+  const { logOut, role } = useContext(AuthContext);
   const [isHovered, setIsHovered] = useState(false);
 
   const openMenu = () => {
@@ -22,8 +22,9 @@ const Drawer = () => {
   };
 
   const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
-console.log(role);
   const demoUser = role;
+
+  
 
   return (
     <>
@@ -89,7 +90,7 @@ console.log(role);
             <></>
           )}
 
-          {demoUser == "owner" ? (
+          {role == "admin" ? (
             <Link to="permission" className="border-t py-4 border-slate-300">
               Rest permission
             </Link>
