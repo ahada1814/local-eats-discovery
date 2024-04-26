@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import { AuthContext } from '../../providers/AuthProviders/AuthProviders';
 import SearchUser from "./SearchUser";
 import { UserContext } from "../../providers/UserContextProvider";
@@ -9,12 +9,15 @@ import { MdInfo } from "react-icons/md";
 import { MdStars } from "react-icons/md";
 import Input from "./Input";
 import Chats from "./Chats";
+import { fetchRestaurants } from "../../hooks/api";
 
 const Message = () => {
   const { currentUser } = useContext(UserContext);
   const [user, setUser] = useState([]);
+  const [restaName, setRestName] = useState([]);
+  const [restaImg, setRestImg] = useState('');
 
-  console.log(user);
+  
   const handelUid = (uid) => {
     setUser(uid);
   };
@@ -25,6 +28,30 @@ const Message = () => {
       ? currentUser.uid + user.uid
       : user.uid + currentUser.uid;
 
+     
+useEffect(() => {
+  const replaceDisplayName = async(email) => {
+    const restaurants = await fetchRestaurants();
+    const restaurant = restaurants.find(restaurant => restaurant.ownerEmail === email);
+    setRestName(restaurant? restaurant.restaurant_name : '')
+    
+  };
+
+
+  const replaceDisplayImg = async (email) => {
+    const restaurants = await fetchRestaurants();
+    const restaurant = restaurants.find(restaurant => restaurant.ownerEmail === email);
+    setRestImg(restaurant? restaurant.restaurant_img : '')
+    
+  };
+
+  replaceDisplayImg(user.email)
+  replaceDisplayName(user.email)
+  
+},[user.email])
+
+     
+     
   return (
     <div className="w-[80%]">
       <div className="pe-5 ps-5">
@@ -46,10 +73,10 @@ const Message = () => {
 
             <div className="flex  justify-end items-center gap-3">
               <div>
-                <span className="text-xl font-bold">{user?.displayName} </span>
+                <span className="text-xl font-bold">{restaName? restaName : user?.displayName} </span>
                 {user?.displayName && (
                   <div className="text-sm flex justify-center items-center gap-2">
-                    <span>Owner</span>
+                    <span>{restaName? 'Owner' : 'User' }</span>
                     <span className="text-sm text-blue-500">
                       <MdStars />
                     </span>
@@ -57,7 +84,7 @@ const Message = () => {
                 )}
               </div>
               <img
-                src={user?.photoURL ? user?.photoURL : avater}
+                src={restaImg? restaImg : user?.photoURL ? user?.photoURL : avater}
                 alt=""
                 className="w-12 rounded-full ring-2 hover:ring-4 duration-100"
               />
@@ -78,7 +105,7 @@ const Message = () => {
         {/* lower section */}
         <div className="flex ">
           <div className="w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll">
-            <SearchUser />
+            <SearchUser  user={user} handelUid={handelUid}/>
 
             <div className="bg-white drop-shadow-sm p-3 border-spacing-1 mb-2 font-bold ">
               All Message
