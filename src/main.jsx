@@ -20,7 +20,9 @@ import Menue from "./pages/Restaurant/Menue.jsx";
 import RestProfile from "./pages/RestOwnerDashboard/RestProfile.jsx";
 import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import UserContextProvider from "./providers/UserContextProvider.jsx";
-import { RestaurantPagination } from "./components/RestaurantPagination/RestaurantPagination.jsx";
+import Permission from "./pages/Restaurant/Permission.jsx";
+import RestaurantPagination from "./components/RestaurantPagination/RestaurantPagination.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -87,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: "edit-profile",
         element: <EditProfile />,
+      },
+      {
+        path: "permission",
+        element: <Permission />,
       },
       {
         path: "owner-profile",

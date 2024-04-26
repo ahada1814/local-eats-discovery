@@ -1,5 +1,7 @@
 // For posting all the user to database.
 
+import Swal from "sweetalert2";
+
 export const addUserToDatabase = async (
   currentUser,
   locationData,
@@ -33,6 +35,75 @@ export const addUserToDatabase = async (
     })
     .catch((error) => console.error("Error adding user", error));
 };
+// get all user 
+export const getAllUser = async (id) => {
+
+  const url = `${import.meta.env.VITE_REACT_API}get-users/${id}`; 
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({role:'owner'}) 
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const updatedData = await response.json(); 
+    console.log('Data updated:', updatedData);
+    
+  } catch (error) {
+    console.error('Error updating data:', error);
+   
+  }
+
+}
+
+
+
+// change user role
+export const changeUserRole = async (id,name) => {
+
+  const url = `${import.meta.env.VITE_REACT_API}get-users/${id}`; 
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({role:'owner'}) 
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const updatedData = await response.json(); 
+    console.log('Data updated:', updatedData);
+    if (updatedData.modifiedCount == 1) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: `${name} is now owner`,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+    
+  } catch (error) {
+    console.error('Error updating data:', error);
+   
+  }
+
+}
+
 
 // For fetching All the Restaurants
 export const fetchRestaurants = async () => {

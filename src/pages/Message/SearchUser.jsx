@@ -3,19 +3,26 @@ import {collection,query,where,getDocs, serverTimestamp, doc, updateDoc, setDoc,
 import { db } from "../../Firebase/firebase.config";
 
 import { UserContext } from "../../providers/UserContextProvider";
+import { fetchRestaurants } from "../../hooks/api";
 
-const SearchUser = () => {
+const SearchUser = (handelUid) => {
     const [username, setUsername] = useState("");
     const [user, setUser] = useState(null);
     const [err, setErr] = useState(false);
     const { currentUser } = useContext(UserContext);
+    const [cngName, setCngNme] = useState("");
+    const [restImg, setRestIMG] = useState("");
    
-
-    console.log(currentUser);
     const handleSearch = async () => {
+
+      const restaurants = await fetchRestaurants();
+    const restaurant = restaurants.find(restaurant => restaurant.restaurant_name == username);
+    setRestIMG(restaurant? restaurant.restaurant_img : '')
+    setCngNme(restaurant? restaurant.name : '')
+      
         const q = query(
           collection(db, "users"),
-          where("displayName", "==", username)
+          where("displayName", "==", cngName)
         );
     
         try {
@@ -34,40 +41,7 @@ const SearchUser = () => {
 
       const handleSelect = async () => {
         //check whether the group(chats in firestore) exists, if not create
-        const combinedId =
-          currentUser.uid > user.uid
-            ? currentUser.uid + user.uid
-            : user.uid + currentUser.uid;
-        try {
-          const res = await getDoc(doc(db, "chats", combinedId));
-          console.log(res);
-    
-          if (!res.exists()) {
-            //create a chat in chats collection
-            await setDoc(doc(db, "chats", combinedId), { messages: [] });
-          
-
-          //create user chats
-            await updateDoc(doc(db, "userChats", currentUser.uid), {
-              [combinedId + ".userInfo"]: {
-                uid: user.uid,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-              },
-              [combinedId + ".date"]: serverTimestamp(),
-            });
-    
-            await updateDoc(doc(db, "userChats", user.uid), {
-              [combinedId + ".userInfo"]: {
-                uid: currentUser.uid,
-                displayName: currentUser.displayName,
-                photoURL: currentUser.photoURL,
-              },
-              [combinedId + ".date"]: serverTimestamp(),
-            });}
-        } catch (err) {
-            console.log(err);
-        }
+        handelUid(user)
     
         setUser(null);
         setUsername("")
@@ -90,11 +64,11 @@ const SearchUser = () => {
           
                 <div className="flex justify-start items-start gap-3 p-5 drop-shadow-md bg-gray-100 mt-4" onClick={handleSelect}>
                     <div>
-                        <img src={user.photoURL} alt="" className="w-20" />
+                        <img src={restImg? restImg : '' } alt="" className="w-20" />
                     </div>
                     <div>
-                        <h4 className="text-2xs font-bold">{user.displayName}</h4>
-                        <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea harum veniam aspernatur voluptatem ex non ....</p>
+                        <h4 className="text-2xl font-semibold">{username}</h4>
+                       
                     </div>
                 </div>
              )}

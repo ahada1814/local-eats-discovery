@@ -7,13 +7,13 @@ import { TbPinnedFilled } from "react-icons/tb";
 
 const Drawer = () => {
   const [isOpen, setOpen] = useState(false);
-  const { logOut } = useContext(AuthContext);
+  const { logOut,role,user } = useContext(AuthContext);
   const [isHovered, setIsHovered] = useState(false);
 
   const openMenu = () => {
     setOpen(!isOpen);
   };
-
+  console.log(role);
   const navigate = useNavigate();
 
   const userLogOut = () => {
@@ -22,8 +22,8 @@ const Drawer = () => {
   };
 
   const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
-
-  const demoUser = "owner";
+console.log(role);
+  const demoUser = role;
 
   return (
     <>
@@ -52,9 +52,9 @@ const Drawer = () => {
             Messages
           </Link>
           {/* For Normal User */}
-          {demoUser == "owner" ? (
+          {demoUser == "user" ? (
             <Link to="edit-profile" className="border-t py-4 border-slate-300">
-              Edits Profile
+              Edit Profile
             </Link>
           ) : (
             <></>
@@ -84,6 +84,14 @@ const Drawer = () => {
               ) : (
                 <></>
               )}
+            </Link>
+          ) : (
+            <></>
+          )}
+
+          {demoUser == "owner" ? (
+            <Link to="permission" className="border-t py-4 border-slate-300">
+              Rest permission
             </Link>
           ) : (
             <></>

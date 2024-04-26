@@ -4,6 +4,7 @@ import { CiEdit } from "react-icons/ci";
 import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 import { Autocomplete } from "@react-google-maps/api";
 import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
+import { showErrorAlert, showSuccessAlert } from "../../../hooks/alert";
 
 
 
@@ -60,11 +61,13 @@ export const EditProfile = () => {
       if (response.ok) {
         console.log("Form data submitted successfully!");
         console.log(response);
+        showSuccessAlert("Form data submitted successfully!")
         if (!hasDataPosted) {
           localStorage.setItem("hasDataPosted", "true");
         }
       } else {
         console.error("Error submitting form data:", response.statusText);
+        showErrorAlert("Error submitting form data!")
       }
     } catch (error) {
       console.error("Error:", error);

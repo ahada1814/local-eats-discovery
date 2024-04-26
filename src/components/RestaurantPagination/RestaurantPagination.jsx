@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IoStar } from "react-icons/io5";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 
-export const RestaurantPagination = () => {
+const RestaurantPagination = () => {
   const { filteredRestaurants, restaurants } = useContext(AuthContext);
   //   const location = useLocation();
 
@@ -63,3 +63,4 @@ export const RestaurantPagination = () => {
     </div>
   );
 };
+export default RestaurantPagination

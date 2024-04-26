@@ -1,4 +1,7 @@
-export const Welcome = ({ restaurants }) => {
+
+
+
+const Welcome = ({ restaurants }) => {
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col justify-center items-center font-semibold">
@@ -10,3 +13,5 @@ export const Welcome = ({ restaurants }) => {
     </div>
   );
 };
+
+export default Welcome;

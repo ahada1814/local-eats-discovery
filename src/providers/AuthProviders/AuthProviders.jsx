@@ -11,7 +11,7 @@ import {
 import { app } from "../../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import { fromLatLng, setKey } from "react-geocode";
-import { addUserToDatabase, fetchRestaurants } from "../../hooks/api";
+import {addUserToDatabase, fetchRestaurants } from "../../hooks/api";
 import { filterRestaurantsByDistance } from "../../hooks/useFilterResturants";
 
 export const AuthContext = createContext(null);
@@ -199,6 +199,7 @@ const AuthProviders = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser?.displayName) {
         setUser(currentUser);
+        await addUserToDatabase(currentUser)
         const locationData = JSON.parse(localStorage.getItem("locationData"));
         console.log(locationData);
         await addUserToDatabase(currentUser);
@@ -207,14 +208,14 @@ const AuthProviders = ({ children }) => {
         localStorage.removeItem("uploadedImageUrl", imageUrl);
         localStorage.removeItem("locationData");
         localStorage.removeItem("hasDataPosted");
-        localStorage.removeItemItem("user");
+        localStorage.removeItem("user");
       }
     });
 
     setLoading(false);
 
     return () => unsubscribe();
-  }, [user]);
+  }, [imageUrl]);
 
   useEffect(() => {
     // console.log(user);

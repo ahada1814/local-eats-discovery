@@ -11,26 +11,22 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        setCurrentUser(user);
-        setLoading(false);
-        const userData = {
-          displayName: user?.displayName,
-          email: user?.email,
-          photoURL: user?.photoURL,
-        };
-        await addUserToDatabase(user, userData);
-      });
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            setCurrentUser(user);
+            setLoading(false);
+            const userData = { displayName: user?.displayName, email: user?.email, photoURL: user?.photoURL };
+            await addUserToDatabase(user, userData);
+        });
 
-      return unsubscribe;
+        return unsubscribe; 
     };
 
-    const unsubscribe = fetchData();
+    const unsubscribe = fetchData(); 
 
     return () => {
-      unsubscribe();
+        unsubscribe();
     };
-  }, []);
+}, []);
 
   return (
     <UserContext.Provider value={{ currentUser }}>

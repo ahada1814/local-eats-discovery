@@ -1,72 +1,81 @@
-import { collection, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, collection, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { db } from "../../Firebase/firebase.config";
+import avater from '../../assets/person.png'
+import { fetchRestaurants } from "../../hooks/api";
 import { UserContext } from "../../providers/UserContextProvider";
 
-const Chats = ({handelUid,combinedId}) => {
-    // const [lastMessage,setLastMessage] = useState(null)
-    const [allUsers, setAllUsers] = useState([]);
-    const { currentUser } = useContext(UserContext);
-   
-    useEffect(() => {
-        const fetchAllUsers = async () => {
-          try {
-            const usersCollection = collection(db, "users"); // Assuming your users are stored in a "users" collection
-            const usersSnapshot = await getDocs(usersCollection);
-            const usersData = usersSnapshot.docs.map(doc => doc.data());
-            const filteredUsers = usersData.filter(user => user.uid !== currentUser.uid);
-            setAllUsers(filteredUsers);
-          } catch (error) {
-            console.error("Error fetching all users:", error);
-            // Handle error
-          }
-        };
-      
-        fetchAllUsers();
-      }, []);
-      
-     
-    //   useEffect(() => {
-    //     const fetchLastMessages = async () => {
-    //       const promises = allUsers.map(async (user) => {
-    //         const conversationRef = doc(db, 'conversations', combinedId); // Assuming conversation ID is same as user ID
-    //         const snapshot = await getDoc(conversationRef);
-    //         if (snapshot.exists()) {
-    //           const data = snapshot.data();
-    //           if (data && data.messages && data.messages.length > 0) {
-    //             const lastMessage = data.messages[data.messages.length - 1];
-    //             return { ...user, lastMessage };
-    //           }
-    //         }
-    //         return { ...user, lastMessage: null };
-    //       });
-    //       const updatedUsers = await Promise.all(promises);
-    //       setAllUsers(updatedUsers);
-    //     };
-    
-    //     fetchLastMessages();
-    //   }, [allUsers,combinedId]);
-    
-   
-   console.log();
-    return (
-        <div className="">
-          {allUsers.map((u) =>
-            <div className='flex flex-col cursor-pointer border transition-colors duration-300 ease-in-out hover:bg-gray-200 ' key={u.uid} onClick={() => handelUid(u)}>
-              <div className='flex justify-start items-center gap-3 p-5 drop-shadow-md'>
-                <div className='lg:flex justify-center items-center gap-3'>
-                <img src={u.photoURL} alt="" className="rounded-full w-12 h-12 ring-2 "/>
-                  <div className="">
-                  <h4 className=' font-bold text-blue-600 mt-2 mb-2'>{u.displayName}</h4>
-                  <p className='text-sm text-gray-500 hidden md:block'>Connect With Us</p>
-                  </div>
-                </div>
+const Chats = ({ handelUid, combinedId }) => {
+  const [allUsers, setAllUsers] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const { currentUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const usersCollection = collection(db, "users");
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersData = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const filteredUsers = usersData.filter(user => user.uid !== currentUser.uid);
+        setAllUsers(filteredUsers);
+
+        const restaurants = await fetchRestaurants();
+        setRestaurants(restaurants);
+      } catch (error) {
+        console.error("Error fetching all users:", error);
+      }
+    };
+
+    fetchAllUsers();
+  }, [currentUser.uid]);
+
+  useEffect(() => {
+    const conversationRef = doc(db, 'conversations', combinedId);
+    const unsubscribe = onSnapshot(conversationRef, (snapshot) => {
+      const data = snapshot.data();
+      if (data) {
+        // handle messages update
+      }
+    });
+
+    return () => unsubscribe();
+  }, [combinedId]);
+
+  const replaceDisplayName = (email) => {
+    const user = allUsers.find(user => user.email === email);
+    const restaurant = restaurants.find(restaurant => restaurant.ownerEmail === email);
+    return restaurant ? restaurant.restaurant_name : user ? user.displayName : '';
+  };
+
+  const replaceDisplayImg = (email) => {
+    const restaurant = restaurants.find(restaurant => restaurant.ownerEmail === email);
+    return restaurant ? restaurant.restaurant_img : '';
+  };
+
+  // Sort users based on the timestamp of the last message
+  const sortedUsers = allUsers.slice().sort((a, b) => {
+    const timestampA = a.lastMessage ? (a.lastMessage.timestamp ? a.lastMessage.timestamp.seconds : 0) : 0;
+    const timestampB = b.lastMessage ? (b.lastMessage.timestamp ? b.lastMessage.timestamp.seconds : 0) : 0;
+    return timestampB - timestampA;
+  });
+
+  return (
+    <div className="">
+      {sortedUsers.map((u) =>
+        <div className='flex flex-col cursor-pointer border transition-colors duration-300 ease-in-out hover:bg-gray-200 ' key={u.id} onClick={() => handelUid(u)}>
+          <div className='flex justify-start items-center gap-3 p-5 drop-shadow-md'>
+            <div className='flex justify-center items-center gap-3'>
+              <img src={replaceDisplayImg(u.email) ? replaceDisplayImg(u.email) : u.photoURL ? u.photoURL : avater} alt="" className="rounded-full w-12 h-12 ring-2 " />
+              <div className="">
+                <h4 className=' font-bold text-blue-600 mt-2 mb-2'>{replaceDisplayName(u.email)}</h4>
+                <p className='text-sm text-black font-semibold'>{u.lastMessage?.lastText && u.lastMessage.lastText.split(' ').slice(0, 15).join(' ')}...</p>
               </div>
             </div>
-          )}
-          
+          </div>
         </div>
-      );
+      )}
+    </div>
+  );
 };
 
 export default Chats;
