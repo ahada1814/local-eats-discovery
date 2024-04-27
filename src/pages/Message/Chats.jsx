@@ -16,7 +16,7 @@ const Chats = ({ handelUid, combinedId }) => {
         const usersCollection = collection(db, "users");
         const usersSnapshot = await getDocs(usersCollection);
         const usersData = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        const filteredUsers = usersData.filter(user => user.uid !== currentUser.uid);
+        const filteredUsers = usersData.filter(user => user?.uid !== currentUser?.uid);
         setAllUsers(filteredUsers);
 
         const restaurants = await fetchRestaurants();
@@ -27,7 +27,7 @@ const Chats = ({ handelUid, combinedId }) => {
     };
 
     fetchAllUsers();
-  }, [currentUser.uid]);
+  }, [currentUser?.uid]);
 
   useEffect(() => {
     const conversationRef = doc(db, 'conversations', combinedId);

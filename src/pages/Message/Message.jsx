@@ -24,9 +24,9 @@ const Message = () => {
 
   // CombineId
   const combinedId =
-    currentUser.uid > user.uid
-      ? currentUser.uid + user.uid
-      : user.uid + currentUser.uid;
+    currentUser?.uid > user?.uid
+      ? currentUser?.uid + user?.uid
+      : user?.uid + currentUser?.uid;
 
      
 useEffect(() => {

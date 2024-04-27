@@ -228,7 +228,7 @@ const AuthProviders = ({ children }) => {
         })
         .then((data) => {
           setRole(data.role);
-          // console.log(data.role);
+          console.log(data);
           setLoading(false);
         })
         .catch((error) => {

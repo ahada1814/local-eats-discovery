@@ -12,9 +12,9 @@ const BodyText = ({ user }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]); //
   const combinedId =
-    currentUser.uid > user.uid
-      ? currentUser.uid + user.uid
-      : user.uid + currentUser.uid;
+    currentUser?.uid > user?.uid
+      ? currentUser?.uid + user?.uid
+      : user?.uid + currentUser?.uid;
 
   useEffect(() => {
     const conversationRef = doc(db, 'conversations', combinedId);
