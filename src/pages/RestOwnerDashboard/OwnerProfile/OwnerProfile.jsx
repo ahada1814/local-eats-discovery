@@ -61,7 +61,7 @@ export const OwnerProfile = () => {
         image: user.photoURL || "",
         restaurant_img: uploadedImageUrl,
         phoneNumber: values?.phoneNumber,
-        website: '',
+        website: values?.website,
         food_items: [],
         location: {
           latitude: selectedPlace?.latitude,
@@ -169,6 +169,20 @@ export const OwnerProfile = () => {
                 />
               ) : (
                 <input type="number" readOnly />
+              )}
+            </div>
+          </div>
+          <div className="bg-white w-full flex items-center justify-between p-4 rounded-md">
+            <div className="flex flex-col space-y-1">
+              <span className="text-xs">Website Link</span>
+              {isEditingEmail ? (
+                <Field
+                  className="py-4 pl-8 w-80 md:w-[500px] rounded-lg shadow-lg focus:outline-stone-300 focus:outline-offset-1 text-black"
+                  type="website"
+                  name="website"
+                />
+              ) : (
+                <input type="text" readOnly />
               )}
             </div>
           </div>

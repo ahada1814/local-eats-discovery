@@ -6,13 +6,15 @@ import { GoArrowLeft } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { GridLoader } from "react-spinners";
+import { useAutocomplete } from "../../providers/AutoComplete/AutoComplete";
 
 const BannerSecrion = () => {
   const fileInputRef = useRef(null);
   const { uploadImage, imgLoading, user, role } = useContext(AuthContext);
+  const {selectedPlace} = useAutocomplete()
   const [localImageUrl, setLocalImageUrl] = useState();
 
-
+console.log(selectedPlace,);
 
   useEffect(() => {
     // Check if there's an uploaded image URL in local storage
@@ -94,7 +96,7 @@ const BannerSecrion = () => {
           </h3>
           <h3 className="md:text-2xl text-xl font-bold text-black">
             {role == "owner" ? (
-              <p>{user?.location?.address}</p>
+              <p>{selectedPlace?.name || user?.location?.address}</p>
             ) : (
               <p>{user?.email}</p>
             )}

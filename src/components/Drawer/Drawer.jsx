@@ -37,7 +37,7 @@ useEffect(() => {
   const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
   const demoUser = role;
 
-  
+  console.log(role);
 
   return (
     <>
