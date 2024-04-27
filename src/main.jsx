@@ -22,14 +22,14 @@ import AddItems from "./pages/RestOwnerDashboard/AddItems.jsx";
 import UserContextProvider from "./providers/UserContextProvider.jsx";
 import Permission from "./pages/Restaurant/Permission.jsx";
 import RestaurantPagination from "./components/RestaurantPagination/RestaurantPagination.jsx";
-import ErrorPage from "./error/ErrorPage.jsx";
+import ErrorPage from '../src/error/ErrorPage.jsx'
 import { AdminRoutes } from "./Routes/AdminRoutes.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: "/",
@@ -72,11 +72,7 @@ const router = createBrowserRouter([
   {
     path: "/rest-profile/:id",
     element: <RestProfile />,
-    // element: (
-    //   <PrivateRoutes>
-    //     <RestProfile />
-    //   </PrivateRoutes>
-    // ),
+  
     loader: ({ params }) =>
       fetch(`${import.meta.env.VITE_API_KEY}user/${params.id}`),
     children: [

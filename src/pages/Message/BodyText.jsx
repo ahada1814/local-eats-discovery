@@ -20,9 +20,12 @@ const BodyText = ({ user }) => {
     const conversationRef = doc(db, 'conversations', combinedId);
     const unsubscribe = onSnapshot(conversationRef, (snapshot) => {
       const data = snapshot.data();
-      if (data) {
-        setMessages(data.messages);
+      console.log(data);
+      if (!data) {
+        setMessages([])
       }
+      
+      setMessages(data.messages);
     });
 
     return () => unsubscribe();
