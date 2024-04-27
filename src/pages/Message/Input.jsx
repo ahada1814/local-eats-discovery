@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../providers/UserContextProvider";
 import { doc, setDoc, arrayUnion, updateDoc, serverTimestamp } from "firebase/firestore";
 
-const Input = ({ user }) => {
+const Input = ({ user, setCheck}) => {
   const { currentUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
 
@@ -27,7 +27,7 @@ const Input = ({ user }) => {
         // Update last message time only if message is sent
         await updateLastMessage(currentUser.uid, user.uid,message);
         await updateLastMessage(user.uid, currentUser.uid,message);
-
+        setCheck(true)
         setMessage('');
       } catch (error) {
         console.error('Error sending message:', error);
@@ -52,9 +52,9 @@ const Input = ({ user }) => {
 
   const generateConversationId = (currentUser, user) => {
     const combinedId =
-      currentUser.uid > user.uid
-        ? currentUser.uid + user.uid
-        : user.uid + currentUser.uid;
+      currentUser?.uid > user?.uid
+        ? currentUser?.uid + user?.uid
+        : user?.uid + currentUser?.uid;
 
     return combinedId
   };

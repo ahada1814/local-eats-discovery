@@ -16,7 +16,7 @@ const Message = () => {
   const [user, setUser] = useState([]);
   const [restaName, setRestName] = useState([]);
   const [restaImg, setRestImg] = useState('');
-
+  const [check, setCheck] = useState(false);
   
   const handelUid = (uid) => {
     setUser(uid);
@@ -24,9 +24,9 @@ const Message = () => {
 
   // CombineId
   const combinedId =
-    currentUser.uid > user.uid
-      ? currentUser.uid + user.uid
-      : user.uid + currentUser.uid;
+    currentUser?.uid > user?.uid
+      ? currentUser?.uid + user?.uid
+      : user?.uid + currentUser?.uid;
 
      
 useEffect(() => {
@@ -105,20 +105,20 @@ useEffect(() => {
         {/* lower section */}
         <div className="flex ">
           <div className="w-[30%] bg-white flex flex-col max-h-[50vh] overflow-y-scroll">
-            <SearchUser  user={user} handelUid={handelUid}/>
+            <SearchUser  user={user}  handelUid={handelUid}/>
 
             <div className="bg-white drop-shadow-sm p-3 border-spacing-1 mb-2 font-bold ">
               All Message
             </div>
 
-            <Chats handelUid={handelUid} combinedId={combinedId} />
+            <Chats handelUid={handelUid} combinedId={combinedId} user={user}/>
           </div>
           <div className="flex flex-col justify-end items-end w-8/12 xl:w-full">
             <div className="h-[90%] w-full">
-              <BodyText user={user} />
+              <BodyText user={user} check={check}/>
             </div>
             <div className="h-[10%] w-full">
-              <Input user={user} />
+              <Input user={user} setCheck={setCheck}/>
             </div>
           </div>
         </div>

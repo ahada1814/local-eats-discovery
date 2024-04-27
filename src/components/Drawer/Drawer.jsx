@@ -1,14 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 import { AuthContext } from "../../providers/AuthProviders/AuthProviders";
 import { TbPinnedFilled } from "react-icons/tb";
+import getUserRole from "../../hooks/getUserRole";
 
 const Drawer = () => {
   const [isOpen, setOpen] = useState(false);
-  const { logOut, role } = useContext(AuthContext);
+  const { logOut, user } = useContext(AuthContext);
   const [isHovered, setIsHovered] = useState(false);
+  const [role, setRole] = useState('');
 
   const openMenu = () => {
     setOpen(!isOpen);
@@ -21,6 +23,17 @@ const Drawer = () => {
     navigate("/");
   };
 
+
+
+useEffect(() => {
+
+  const  getRole = async() => {
+    const rol = await getUserRole(user)
+    setRole(rol);
+  }
+  getRole()
+},[user])
+
   const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
   const demoUser = role;
 
@@ -29,6 +42,8 @@ const Drawer = () => {
   return (
     <>
       <div className="bg-white w-96 hidden md:block ">
+        <div className="text-xl font-semibold flex justify-center items-center p-7 bg-slate-300 uppercase">Welcom To <span className="text-[#fb923c] mx-1">{role}</span><span className="ms-1"> Dashboard</span> </div>
+        <hr />
         <div className="flex flex-col font-semibold text-xl w-64 mx-auto pt-10 h-96">
           {demoUser == "owner" ? (
             <Link to="/view-menus" className="pb-4">

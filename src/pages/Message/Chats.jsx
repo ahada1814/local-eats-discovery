@@ -4,11 +4,28 @@ import { db } from "../../Firebase/firebase.config";
 import avater from '../../assets/person.png'
 import { fetchRestaurants } from "../../hooks/api";
 import { UserContext } from "../../providers/UserContextProvider";
+import getUserRole from "../../hooks/getUserRole";
 
-const Chats = ({ handelUid, combinedId }) => {
+const Chats = ({ handelUid, combinedId, user}) => {
   const [allUsers, setAllUsers] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser} = useContext(UserContext);
+  const [role, setRole] = useState('');
+
+
+
+
+
+
+  useEffect(() => {
+
+    const  getRole = async() => {
+     
+      const rol = await getUserRole(currentUser)
+      setRole(rol);
+    }
+    getRole()
+  },[currentUser])
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -56,13 +73,21 @@ const Chats = ({ handelUid, combinedId }) => {
   const sortedUsers = allUsers.slice().sort((a, b) => {
     const timestampA = a.lastMessage ? (a.lastMessage.timestamp ? a.lastMessage.timestamp.seconds : 0) : 0;
     const timestampB = b.lastMessage ? (b.lastMessage.timestamp ? b.lastMessage.timestamp.seconds : 0) : 0;
-    return timestampB - timestampA;
+    const result = timestampB - timestampA
+    return result ;
   });
+  const users =sortedUsers.filter((user) => user.role == 'user');
+  const owner =sortedUsers.filter((user) => user.role == 'owner');
 
+  // console.log(users);
+  // console.log(owner);
+
+ 
   return (
     <div className="">
-      {sortedUsers.map((u) =>
-        <div className='flex flex-col cursor-pointer border transition-colors duration-300 ease-in-out hover:bg-gray-200 ' key={u.id} onClick={() => handelUid(u)}>
+      {role === 'user' ? (
+        owner.map((u) => (
+          <div className='flex flex-col cursor-pointer border transition-colors duration-300 ease-in-out hover:bg-gray-200 ' key={u.id} onClick={() => handelUid(u)}>
           <div className='flex justify-start items-center gap-3 p-5 drop-shadow-md'>
             <div className='flex justify-center items-center gap-3'>
               <img src={replaceDisplayImg(u.email) ? replaceDisplayImg(u.email) : u.photoURL ? u.photoURL : avater} alt="" className="rounded-full w-12 h-12 ring-2 " />
@@ -73,9 +98,43 @@ const Chats = ({ handelUid, combinedId }) => {
             </div>
           </div>
         </div>
+        ))
+      ) : (
+        users.map((u) => (
+          <div className='flex flex-col cursor-pointer border transition-colors duration-300 ease-in-out hover:bg-gray-200 ' key={u.id} onClick={() => handelUid(u)}>
+          <div className='flex justify-start items-center gap-3 p-5 drop-shadow-md'>
+            <div className='flex justify-center items-center gap-3'>
+              <img src={replaceDisplayImg(u.email) ? replaceDisplayImg(u.email) : u.photoURL ? u.photoURL : avater} alt="" className="rounded-full w-12 h-12 ring-2 " />
+              <div className="">
+                <h4 className=' font-bold text-blue-600 mt-2 mb-2'>{replaceDisplayName(u.email)}</h4>
+                <p className='text-sm text-black font-semibold'>{u.lastMessage?.senderId == currentUser.uid == u.lastMessage.recipientId ||u.lastMessage?.recipientId == user.uid == u.lastMessage.recipientId ? u.lastMessage.lastText : 'Cnnected'}...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        ))
       )}
     </div>
   );
+
+
+  // return (
+  //   <div className="">
+  //     {sortedUsers.map((u) =>
+  //       <div className='flex flex-col cursor-pointer border transition-colors duration-300 ease-in-out hover:bg-gray-200 ' key={u.id} onClick={() => handelUid(u)}>
+  //         <div className='flex justify-start items-center gap-3 p-5 drop-shadow-md'>
+  //           <div className='flex justify-center items-center gap-3'>
+  //             <img src={replaceDisplayImg(u.email) ? replaceDisplayImg(u.email) : u.photoURL ? u.photoURL : avater} alt="" className="rounded-full w-12 h-12 ring-2 " />
+  //             <div className="">
+  //               <h4 className=' font-bold text-blue-600 mt-2 mb-2'>{replaceDisplayName(u.email)}</h4>
+  //               <p className='text-sm text-black font-semibold'>{u.lastMessage?.lastText && u.lastMessage.lastText.split(' ').slice(0, 15).join(' ')}...</p>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     )}
+  //   </div>
+  // );
 };
 
 export default Chats;
