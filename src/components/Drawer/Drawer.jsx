@@ -13,7 +13,7 @@ const Drawer = () => {
   const openMenu = () => {
     setOpen(!isOpen);
   };
-  console.log(role);
+  
   const navigate = useNavigate();
 
   const userLogOut = () => {

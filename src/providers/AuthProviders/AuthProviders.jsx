@@ -59,12 +59,12 @@ const AuthProviders = ({ children }) => {
               longitude,
             });
 
-            console.log(latitude, longitude);
+            // console.log(latitude, longitude);
             // Reverse geocode
             const response = await fromLatLng(latitude, longitude);
             const address = response.results[0].formatted_address;
             setAddress(address);
-            console.log(address);
+            // console.log(address);
             const restaurants = await fetchRestaurants();
 
              const filtered = await filterRestaurantsByDistance(
@@ -74,7 +74,6 @@ const AuthProviders = ({ children }) => {
               10
             );
 
-            console.log(filtered);
             setFilteredRestaurants(filtered);
             localStorage.setItem(
               "locationData",
@@ -208,7 +207,6 @@ const AuthProviders = ({ children }) => {
         localStorage.removeItem("uploadedImageUrl", imageUrl);
         localStorage.removeItem("locationData");
         localStorage.removeItem("hasDataPosted");
-        localStorage.removeItem("hasDataUserPosted");
         localStorage.removeItem("user");
       }
     });
@@ -230,14 +228,14 @@ const AuthProviders = ({ children }) => {
         })
         .then((data) => {
           setRole(data.role);
-          console.log(data.role);
+          // console.log(data.role);
           setLoading(false);
         })
         .catch((error) => {
           console.error("There was a problem fetching the role:", error);
         });
     }
-  }, [user]);
+  }, [user, role]);
 
   const uploadImage = async (file) => {
     setImgLoading(true);

@@ -61,6 +61,7 @@ export const OwnerProfile = () => {
         image: user.photoURL || "",
         restaurant_img: uploadedImageUrl,
         phoneNumber: values?.phoneNumber,
+        website: '',
         food_items: [],
         location: {
           latitude: selectedPlace?.latitude,
@@ -251,8 +252,8 @@ export const OwnerProfile = () => {
               <CiEdit size={24} />
             </button>
             <button
-              className={` ${isEditingEmail ? 'bg-[#FFC153]' : 'bg-slate-400'} text-white px-6 py-2 font-semibold rounded-md`}
-              disabled={isEditingEmail ? false : true}
+              className={` ${!imgLoading ? 'bg-[#FFC153]' : 'bg-slate-400'} text-white px-6 py-2 font-semibold rounded-md`}
+              disabled={!imgLoading ? false : true}
               type="submit"
             >
               Update

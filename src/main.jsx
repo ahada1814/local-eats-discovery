@@ -24,6 +24,7 @@ import Permission from "./pages/Restaurant/Permission.jsx";
 import RestaurantPagination from "./components/RestaurantPagination/RestaurantPagination.jsx";
 import ErrorPage from '../src/error/ErrorPage.jsx'
 import { AdminRoutes } from "./Routes/AdminRoutes.jsx";
+// import { UserRoutes } from "./Routes/UserRoutes.jsx";
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,7 @@ const router = createBrowserRouter([
   },
   {
     path: "view-menus",
-    element: <ViewMenu />,
+    element: <ResturantRoutes><ViewMenu /></ResturantRoutes>,
   },
   {
     path: "/rest-profile/:id",

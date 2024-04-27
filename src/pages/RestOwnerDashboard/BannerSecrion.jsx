@@ -12,7 +12,6 @@ const BannerSecrion = () => {
   const { uploadImage, imgLoading, user, role } = useContext(AuthContext);
   const [localImageUrl, setLocalImageUrl] = useState();
 
-  console.log(user);
 
 
   useEffect(() => {
@@ -30,6 +29,7 @@ const BannerSecrion = () => {
       try {
         const imageUrl = await uploadImage(file);
         // Store the uploaded image URL in local storage
+        console.log(imageUrl);
         localStorage.setItem("uploadedImageUrl", imageUrl);
         setLocalImageUrl(imageUrl);
 

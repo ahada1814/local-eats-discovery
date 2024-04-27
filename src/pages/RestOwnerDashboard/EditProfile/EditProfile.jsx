@@ -17,17 +17,16 @@ export const EditProfile = () => {
   const { user, number, imageUrl, update, updateImage} = useContext(AuthContext);
 
   const submitFormData = async (values) => {
-
-   await update(values?.fullName)
-   await updateImage(imageUrl)
-
+    await update(values?.fullName);
+    await updateImage(imageUrl);
+  
     try {
       const formData = {
         name: values.fullName,
         place_name: selectedPlace?.name,
         email: user?.email,
         uid: user?.uid,
-        image: imageUrl || "",
+        displayPhoto: imageUrl || user?.displayPhoto,
         phNumber: values?.phoneNumber,
         location: {
           latitude: selectedPlace?.latitude,
@@ -35,21 +34,12 @@ export const EditProfile = () => {
           address: selectedPlace?.name,
         },
       };
-
+  
       console.log(formData);
-      const hasDataUserPosted = localStorage.getItem("hasDataUserPosted") === "true";
-
-      let url;
-      let method;
-
-      if (hasDataUserPosted) {
-        method = "PATCH";
-        url = `${import.meta.env.VITE_REACT_API}user-update/${user.uid}`;
-      } else {
-        method = "POST";
-        url = `${import.meta.env.VITE_REACT_API}added-user`;
-      }
-
+  
+      const url = `${import.meta.env.VITE_REACT_API}user-update/${user.uid}`;
+      const method = "PATCH";
+  
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -57,17 +47,14 @@ export const EditProfile = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         console.log("Form data submitted successfully!");
         console.log(response);
-        showSuccessAlert("Form data submitted successfully!")
-        if (!hasDataUserPosted) {
-          localStorage.setItem("hasDataUserPosted", "true");
-        }
+        showSuccessAlert("Form data submitted successfully!");
       } else {
         console.error("Error submitting form data:", response.statusText);
-        showErrorAlert("Error submitting form data!")
+        showErrorAlert("Error submitting form data!");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -182,7 +169,6 @@ export const EditProfile = () => {
             </button>
             <button
               type="submit"
-              // TODO: loading must be applied
               className="bg-[#FFC153] px-6 py-2 duration-200 text-white font-semibold hover:bg-opacity-80 hover:scale-95 rounded-md"
             >
               Update

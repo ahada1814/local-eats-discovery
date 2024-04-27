@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo 1.png";
 
 const SignUp = () => {
-  const { createUserWithEmail, googleLogin,user} = useContext(AuthContext);
+  const { createUserWithEmail, googleLogin,} = useContext(AuthContext);
   const navigate = useNavigate();
   
-  console.log(user);
   
   const handledUserCreation = async (values, { setSubmitting, setErrors }) => {
     console.log(values);
