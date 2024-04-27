@@ -26,7 +26,7 @@ export const EditProfile = () => {
         place_name: selectedPlace?.name,
         email: user?.email,
         uid: user?.uid,
-        image: imageUrl || "",
+        displayPhoto: imageUrl || user?.displayPhoto,
         phNumber: values?.phoneNumber,
         location: {
           latitude: selectedPlace?.latitude,

@@ -207,7 +207,6 @@ const AuthProviders = ({ children }) => {
         localStorage.removeItem("uploadedImageUrl", imageUrl);
         localStorage.removeItem("locationData");
         localStorage.removeItem("hasDataPosted");
-        localStorage.removeItem("hasDataUserPosted");
         localStorage.removeItem("user");
       }
     });
