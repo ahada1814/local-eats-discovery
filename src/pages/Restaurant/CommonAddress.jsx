@@ -72,12 +72,12 @@ const CommonAddress = ({ restaurants }) => {
             <span className="text-xs">Website</span>
           </div>
           <div className="text-center">
-            <div
+            <button
               onClick={handleEmailButtonClick}
               className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white"
             >
               <IoMailUnreadSharp />
-            </div>
+            </button>
             <span className="text-xs">Mail</span>
           </div>
           <div className="text-center">

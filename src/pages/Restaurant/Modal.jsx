@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { FaRegStar } from "react-icons/fa";
 
 
-const Modal = () => {
+const Modal = ({fetchReviews}) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
@@ -54,7 +54,7 @@ const Modal = () => {
         setRating(0);
         setComment("");
         console.log("submitted successfully");
-       
+        fetchReviews()
     
       } else {
         const errorMessage = await response.text();

@@ -86,7 +86,7 @@ const Review = () => {
       ) : (
         <p className="text-4xl text-center border">No Reviews Found</p>
       )}
-      <Modal />
+      <Modal fetchReviews={fetchReviews} />
     </div>
   );
 };
