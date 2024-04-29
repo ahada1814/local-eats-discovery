@@ -44,7 +44,6 @@ console.log(selectedPlace,);
     fileInputRef.current.click();
   };
 
-  // const demoUser = "user";
 
   return (
     <div className="coverImg text-white flex relative justify-start  items-end ">
