@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { changeUserRole } from '../../hooks/api';
 import Swal from 'sweetalert2';
-import updateUserRoleInDatabase from '../../hooks/updateUserRoleInFIREBASE.JS';
+import updatedRoleFirebase from '../../hooks/updatedRoleFirebase';
 
 
 const Permission = () => {
@@ -25,11 +25,13 @@ const Permission = () => {
           });
           return
     } else{
+
+       // update User Role to firebase Database
+       updatedRoleFirebase(uid,'owner')
        // update User Role to firebase Database
         const isUpdate = await changeUserRole(id,name)
         console.log(isUpdate);
-      // update User Role to firebase Database
-      updateUserRoleInDatabase(uid,'owner')
+     
     }
    console.log(uid);
 

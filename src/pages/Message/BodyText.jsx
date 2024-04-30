@@ -27,7 +27,8 @@ const BodyText = ({ user,check}) => {
       //   setMessages(data.messages);
       // }
       // setMessages([])
-      if (data && data.messages && data.messages.length > 0) { // Check if messages array exists and is not empty
+      if (data && data.messages && data.messages.length > 0) { 
+        // Check if messages array exists and is not empty
         setMessages(data.messages);
       }
       

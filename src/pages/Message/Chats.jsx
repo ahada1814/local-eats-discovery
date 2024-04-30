@@ -70,14 +70,14 @@ const Chats = ({ handelUid, combinedId, user}) => {
   };
 
   // Sort users based on the timestamp of the last message
-  const sortedUsers = allUsers.slice().sort((a, b) => {
-    const timestampA = a.lastMessage ? (a.lastMessage.timestamp ? a.lastMessage.timestamp.seconds : 0) : 0;
-    const timestampB = b.lastMessage ? (b.lastMessage.timestamp ? b.lastMessage.timestamp.seconds : 0) : 0;
-    const result = timestampB - timestampA
-    return result ;
-  });
-  const users =sortedUsers.filter((user) => user.role == 'user');
-  const owner =sortedUsers.filter((user) => user.role == 'owner');
+  // const sortedUsers = allUsers.slice().sort((a, b) => {
+  //   const timestampA = a.lastMessage ? (a.lastMessage.timestamp ? a.lastMessage.timestamp.seconds : 0) : 0;
+  //   const timestampB = b.lastMessage ? (b.lastMessage.timestamp ? b.lastMessage.timestamp.seconds : 0) : 0;
+  //   const result = timestampB - timestampA
+  //   return result ;
+  // });
+  const users =allUsers.filter((user) => user.role == 'user');
+  const owner =allUsers.filter((user) => user.role == 'owner');
 
   // console.log(users);
   // console.log(owner);
@@ -93,7 +93,7 @@ const Chats = ({ handelUid, combinedId, user}) => {
               <img src={replaceDisplayImg(u.email) ? replaceDisplayImg(u.email) : u.photoURL ? u.photoURL : avater} alt="" className="rounded-full w-12 h-12 ring-2 " />
               <div className="">
                 <h4 className=' font-bold text-blue-600 mt-2 mb-2'>{replaceDisplayName(u.email)}</h4>
-                <p className='text-sm text-black font-semibold'>{u.lastMessage?.lastText && u.lastMessage.lastText.split(' ').slice(0, 15).join(' ')}...</p>
+                <p className='text-sm text-black font-semibold'>Conected...</p>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ const Chats = ({ handelUid, combinedId, user}) => {
               <img src={replaceDisplayImg(u.email) ? replaceDisplayImg(u.email) : u.photoURL ? u.photoURL : avater} alt="" className="rounded-full w-12 h-12 ring-2 " />
               <div className="">
                 <h4 className=' font-bold text-blue-600 mt-2 mb-2'>{replaceDisplayName(u.email)}</h4>
-                <p className='text-sm text-black font-semibold'>{u.lastMessage?.senderId == currentUser.uid == u.lastMessage.recipientId ||u.lastMessage?.recipientId == user.uid == u.lastMessage.recipientId ? u.lastMessage.lastText : 'Cnnected'}...</p>
+                <p className='text-sm text-black font-semibold'>Cnnected...</p>
               </div>
             </div>
           </div>

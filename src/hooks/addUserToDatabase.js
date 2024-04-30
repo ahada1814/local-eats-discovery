@@ -10,10 +10,18 @@ const addUserToDatabase = async (user, userData) => {
 
     // Retrieve the user document snapshot
     const userDocSnapshot = await getDoc(userDocRef);
-
+    // Initialize messages as an empty array
+    const initialMessages = [];
     // Check if the user document exists and if it has a lastMessage field
     const lastMessageExists = userDocSnapshot.exists() && userDocSnapshot.data().lastMessage;
-   
+   // Check if the user document exists and if it has a role field
+   const roleExists = userDocSnapshot.exists() && userDocSnapshot.data().role;
+
+   // Check if the role is already set to "owner"
+   const roleIsOwner = roleExists && userDocSnapshot.data().role === 'owner';
+
+   // Check if the role is already set to "user" 
+   const roleIsUser = roleExists && userDocSnapshot.data().role === 'user';
 
     // Initialize lastMessage as an empty object only if it doesn't exist
     const userDataForFirestore = {
@@ -21,9 +29,10 @@ const addUserToDatabase = async (user, userData) => {
       displayName: userData?.displayName,
       email: userData?.email,
       photoURL: userData?.photoURL,
-      role: 'user',
+      role: roleIsOwner ? 'owner' : (roleIsUser ? 'user' : 'user'),
       lastMessage: lastMessageExists ? userDocSnapshot.data().lastMessage : {},
-      lastText: ''
+      lastText: '',
+      messages: initialMessages
     };
 
     // Set the user data document
