@@ -83,7 +83,7 @@ const Menue = () => {
             disabled={currentPage === 1}
           >
             <div className="p-3 rounded-full bg-orange-500 text-white">
-              <FaChevronLeft />
+              <FaChevronLeft size={10} />
             </div>
             <div className="font-bold">Previous</div>
           </button>
@@ -94,7 +94,7 @@ const Menue = () => {
           >
             <div className="font-bold">Next</div>
             <div className="p-3 rounded-full bg-orange-500 text-white">
-              <FaChevronRight />
+              <FaChevronRight size={10} />
             </div>
           </button>
         </div>

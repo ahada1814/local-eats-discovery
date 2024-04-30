@@ -62,7 +62,7 @@ const CommonAddress = ({ restaurants }) => {
         </p>
 
         <div className="grid grid-cols-5 xl:text-xl 2xl:text-3xl justify-center items-center xl:gap-1 2xl:gap-6 gap-4 mt-5">
-          <div className="text-center">
+          <div className="text-center flex flex-col">
             <button
               onClick={handleWebsiteLinkClick}
               className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white"
@@ -71,40 +71,38 @@ const CommonAddress = ({ restaurants }) => {
             </button>
             <span className="text-xs">Website</span>
           </div>
-          <div className="text-center">
-            <div
+          <div className="text-center flex flex-col">
+            <button
               onClick={handleEmailButtonClick}
               className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white"
             >
               <IoMailUnreadSharp />
-            </div>
+            </button>
             <span className="text-xs">Mail</span>
           </div>
-          <div className="text-center">
-            <div
+          <div className="text-center flex flex-col">
+            <button
               onClick={handlePhoneButtonClick}
               className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white"
             >
               <FaPhoneAlt />
-            </div>
+            </button>
             <span className="text-xs">Phone</span>
           </div>
-          <div className="flex flex-col gap-4 text-center">
-            <Link
-              to="FoodReview"
-              className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white"
-            >
-              <VscCommentUnresolved />
-            </Link>
+          <div className="text-center flex flex-col">
+            <button className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white">
+              <Link to="FoodReview">
+                <VscCommentUnresolved />
+              </Link>
+            </button>
             <span className="text-xs">Review</span>
           </div>
-          <div className="flex flex-col gap-4 text-center">
-            <Link
-              to="menu"
-              className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white"
-            >
-              <GiHamburgerMenu />
-            </Link>
+          <div className="text-center flex flex-col">
+            <button className="border-[#F2613F] text-[#F2613F] border hover:bg-[#F2613F] px-2 py-2 rounded-md hover:text-white">
+              <Link to="menu">
+                <GiHamburgerMenu />
+              </Link>
+            </button>
             <span className="text-xs">Menu</span>
           </div>
         </div>

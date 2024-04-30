@@ -12,6 +12,8 @@ export const OwnerProfile = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
+  const [demoValues, setDemoValues] = useState({})
+
   const {
     autocompleteRef,
     handlePlaceSelect,
@@ -40,6 +42,7 @@ export const OwnerProfile = () => {
       setIsUploading(false);
     }
   };
+  console.log(demoValues);
 
   const submitFormData = async (values) => {
     // const locationDataString = localStorage.getItem("locationData");
@@ -72,7 +75,7 @@ export const OwnerProfile = () => {
           //   longitude: selectedPlace?.longitude || longitude,
           // },
         };
-        console.log(formData);
+        setDemoValues(formData)
 
       const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
 
@@ -137,7 +140,7 @@ export const OwnerProfile = () => {
                     name="restaurantName"
                   />
                 ) : (
-                  <input type="text" readOnly />
+                  <input type="text" placeholder={demoValues?.restaurant_name} readOnly />
                 )}
               </div>
             </div>
@@ -154,7 +157,7 @@ export const OwnerProfile = () => {
                   name="email"
                 />
               ) : (
-                <input type="text" readOnly />
+                <input type="text" placeholder={demoValues?.ownerEmail} readOnly />
               )}
             </div>
           </div>
@@ -168,7 +171,7 @@ export const OwnerProfile = () => {
                   name="phoneNumber"
                 />
               ) : (
-                <input type="number" readOnly />
+                <input type="number" placeholder={demoValues?.phoneNumber} readOnly />
               )}
             </div>
           </div>
@@ -182,7 +185,7 @@ export const OwnerProfile = () => {
                   name="website"
                 />
               ) : (
-                <input type="text" readOnly />
+                <input type="text" placeholder={demoValues?.website} readOnly />
               )}
             </div>
           </div>
@@ -253,6 +256,7 @@ export const OwnerProfile = () => {
                 name="address"
                 readOnly
                 className="focus:outline-none font-semibold text-lg"
+                placeholder={demoValues?.place_name}
               />
             )}
           </div>

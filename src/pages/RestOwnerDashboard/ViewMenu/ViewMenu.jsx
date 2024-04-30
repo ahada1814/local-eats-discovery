@@ -4,11 +4,11 @@ import logo from "../../../assets/logo 1.png";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../providers/AuthProviders/AuthProviders";
 import { fetchRestaurants } from "../../../hooks/api";
+import profile from "../../../assets/profile.png";
 
 export const ViewMenu = () => {
   const { user } = useContext(AuthContext);
   const [restaurants, setRestaurants] = useState([]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,12 +29,37 @@ export const ViewMenu = () => {
 
   return (
     <div className="bgImg flex justify-center relative items-center">
-      <Link to="/">
-        <img
-          src={logo}
-          className="text-white w-40 hover:scale-90 duration-200 absolute top-4 left-4"
-        />
-      </Link>
+      <div>
+        <Link to="/">
+          <img
+            src={logo}
+            className="text-white w-40 hover:scale-90 duration-200 absolute top-4 left-4"
+          />
+        </Link>
+        <div className="mr-5">
+          {user?.photoURL ? (
+            <Link to={`/rest-profile/${user.uid}`}>
+              <img
+                className="rounded-full w-14 absolute top-4 right-4 ring-4 hover:scale-95 hover:ring-orange-400 duration-300 ring-white"
+                width={1080}
+                height={720}
+                src={user?.photoURL}
+                alt=""
+              />
+            </Link>
+          ) : (
+            <Link to={`/rest-profile/${user.uid}`}>
+              <img
+                src={profile}
+                className="rounded-full w-14 ring-4 hover:scale-95 hover:ring-orange-400 duration-300 ring-white"
+                width={1080}
+                height={720}
+                alt="demo"
+              />
+            </Link>
+          )}
+        </div>
+      </div>
       <div className="bg-[#F5F5F5] w-[65%] h-[82%]  mx-auto  rounded-lg py-10">
         <div>
           {/* banner section */}

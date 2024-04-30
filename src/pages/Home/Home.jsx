@@ -110,7 +110,7 @@ export const Home = () => {
             onClick={fetchAndFilterRestaurants}
             className="bg-[#3D83D9] hover:bg-blue-500 hover:scale-95 duration-300 p-1 w-14 rounded-lg"
           >
-            {isLoaded && !mapLoading ? (
+            {!mapLoading ? (
               <img
                 className="rounded-lg"
                 width={1080}
