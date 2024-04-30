@@ -41,7 +41,7 @@ const RestaurantDetalis = () => {
             />
           </Link>
         </div>
-        <div className="mr-5">
+        <div className="">
           {user?.photoURL ? (
             <Link to={`/rest-profile/${user.uid}`}>
               <img

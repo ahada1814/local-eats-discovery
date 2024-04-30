@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { useAutocomplete } from "../../../providers/AutoComplete/AutoComplete";
 import { Autocomplete } from "@react-google-maps/api";
@@ -12,7 +12,7 @@ export const OwnerProfile = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  const [demoValues, setDemoValues] = useState({})
+  const [demoValues, setDemoValues] = useState({});
 
   const {
     autocompleteRef,
@@ -45,12 +45,6 @@ export const OwnerProfile = () => {
   console.log(demoValues);
 
   const submitFormData = async (values) => {
-    // const locationDataString = localStorage.getItem("locationData");
-    // const locationData = JSON.parse(locationDataString);
-
-    // const latitude = locationData.latitude;
-    // const longitude = locationData.longitude;
-
     try {
       const formData = {
         name: values.fullName,
@@ -71,11 +65,14 @@ export const OwnerProfile = () => {
           longitude: selectedPlace?.longitude,
         },
         // location: {
-          //   latitude: selectedPlace?.latitude || latitude,
-          //   longitude: selectedPlace?.longitude || longitude,
-          // },
-        };
-        setDemoValues(formData)
+        //   latitude: selectedPlace?.latitude || latitude,
+        //   longitude: selectedPlace?.longitude || longitude,
+        // },
+      };
+      setDemoValues(formData);
+
+      // Store form data in localStorage
+      localStorage.setItem("formData", JSON.stringify(formData));
 
       const hasDataPosted = localStorage.getItem("hasDataPosted") === "true";
 
@@ -113,6 +110,18 @@ export const OwnerProfile = () => {
     }
   };
 
+  const loadFormDataFromLocalStorage = () => {
+    const storedFormData = localStorage.getItem("formData");
+    if (storedFormData) {
+      const parsedFormData = JSON.parse(storedFormData);
+      setDemoValues(parsedFormData);
+    }
+  };
+
+  useEffect(() => {
+    loadFormDataFromLocalStorage();
+  }, []);
+
   return (
     <>
       <Formik
@@ -140,7 +149,11 @@ export const OwnerProfile = () => {
                     name="restaurantName"
                   />
                 ) : (
-                  <input type="text" placeholder={demoValues?.restaurant_name} readOnly />
+                  <input
+                    type="text"
+                    placeholder={demoValues?.restaurant_name}
+                    readOnly
+                  />
                 )}
               </div>
             </div>
@@ -157,7 +170,11 @@ export const OwnerProfile = () => {
                   name="email"
                 />
               ) : (
-                <input type="text" placeholder={demoValues?.ownerEmail} readOnly />
+                <input
+                  type="text"
+                  placeholder={demoValues?.ownerEmail}
+                  readOnly
+                />
               )}
             </div>
           </div>
@@ -171,7 +188,11 @@ export const OwnerProfile = () => {
                   name="phoneNumber"
                 />
               ) : (
-                <input type="number" placeholder={demoValues?.phoneNumber} readOnly />
+                <input
+                  type="number"
+                  placeholder={demoValues?.phoneNumber}
+                  readOnly
+                />
               )}
             </div>
           </div>
@@ -270,7 +291,9 @@ export const OwnerProfile = () => {
               <CiEdit size={24} />
             </button>
             <button
-              className={` ${!imgLoading ? 'bg-[#FFC153]' : 'bg-slate-400'} text-white px-6 py-2 font-semibold rounded-md`}
+              className={` ${
+                !imgLoading ? "bg-[#FFC153]" : "bg-slate-400"
+              } text-white px-6 py-2 font-semibold rounded-md`}
               disabled={!imgLoading ? false : true}
               type="submit"
             >

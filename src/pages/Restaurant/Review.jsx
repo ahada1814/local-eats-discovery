@@ -73,7 +73,7 @@ const Review = () => {
       </div>
 
       {demoUser ? (
-        <div className="flex gap-3 mt-5 xl:absolute xl:-bottom-28 xl:left-0">
+        <div className="flex gap-3 mt-5">
           <button
             onClick={() => document.getElementById("my_modal_3").showModal()}
             className="font-semibold hover:scale-90 duration-300 bg-[#FFC153] p-3 text-white rounded-lg"

@@ -28,14 +28,16 @@ export const ViewMenu = () => {
   }, [user?.email]);
 
   return (
-    <div className="bgImg flex justify-center relative items-center">
-      <div>
-        <Link to="/">
-          <img
-            src={logo}
-            className="text-white w-40 hover:scale-90 duration-200 absolute top-4 left-4"
-          />
-        </Link>
+    <div className="bgImg justify-center relative items-center">
+      <div className="flex justify-between px-8 py-7">
+        <div>
+          <Link to="/">
+            <img
+              src={logo}
+              className="text-white w-40 hover:scale-90 duration-200"
+            />
+          </Link>
+        </div>
         <div className="mr-5">
           {user?.photoURL ? (
             <Link to={`/rest-profile/${user.uid}`}>

@@ -13,16 +13,20 @@ const BannerSecrion = () => {
   const { uploadImage, imgLoading, user, role } = useContext(AuthContext);
   const {selectedPlace} = useAutocomplete()
   const [localImageUrl, setLocalImageUrl] = useState();
+  const [placeName, setPlaceName] = useState();
 
-console.log(selectedPlace,);
+  console.log(selectedPlace,);
 
   useEffect(() => {
-    // Check if there's an uploaded image URL in local storage
     const uploadedImageUrl = localStorage.getItem("uploadedImageUrl");
     if (uploadedImageUrl) {
       setLocalImageUrl(uploadedImageUrl);
     }
-  }, []);
+    const storedFormData = localStorage.getItem("formData");
+    if(storedFormData){
+      setPlaceName(placeName)
+    }
+  }, [placeName]);
 
   // Function to handle file selection
   const handleImageChange = async (e) => {
@@ -95,7 +99,7 @@ console.log(selectedPlace,);
           </h3>
           <h3 className="md:text-2xl text-xl font-bold text-black">
             {role == "owner" ? (
-              <p>{selectedPlace?.name || user?.location?.address}</p>
+              <p>{selectedPlace?.name || user?.location?.address || placeName?.place_name}</p>
             ) : (
               <p>{user?.email}</p>
             )}

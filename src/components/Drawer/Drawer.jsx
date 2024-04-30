@@ -42,7 +42,7 @@ useEffect(() => {
   return (
     <>
       <div className="bg-white w-96 hidden md:block ">
-        <div className="text-xl font-semibold flex justify-center items-center p-7 bg-slate-300 uppercase">Welcom To <span className="text-[#fb923c] mx-1">{role}</span><span className="ms-1"> Dashboard</span> </div>
+        <div className="text-xl tracking-tighter font-semibold flex justify-center items-center p-7 bg-slate-300 uppercase">Welcome To <span className="text-[#fb923c] mx-1">{role}</span><span className="ms-1"> Dashboard</span> </div>
         <hr />
         <div className="flex flex-col font-semibold text-xl w-64 mx-auto pt-10 h-96">
           {demoUser == "owner" ? (
