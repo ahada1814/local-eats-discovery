@@ -44,14 +44,7 @@ const AddItems = () => {
       };
 
 
-      const hasEmptyField = Object.values(formData).some(
-        (value) => value === ""
-      );
-
-      if (hasEmptyField) {
-        showErrorAlert("Please fill in all fields before submitting.");
-        return;
-      }
+     
 
       await updateItem(formData, user.uid);
       showSuccessAlert("Added a Menu item Successfully");
